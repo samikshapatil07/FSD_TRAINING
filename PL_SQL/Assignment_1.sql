@@ -1,3 +1,19 @@
+/* Book(id, title, price, author, publication_house,category,book_count,status)
+
+publication_house:- ["Mcgraw Hill", "DreamFolks", "Warner Bros"]
+category:- ["FICTION", "WAR", "COMEDY", "SPORTS"]
+
+status:- ["IN STOCK","OUT_OF_STOCK"]
+
+
+Write following procedures:- 
+
+1. Fetch all Books that are "IN STOCK" and price is less than given value. 
+2. Delete books that are from given publication_house. do not activate safe mode. 
+3. Update the price of books by given percent based on given category. do not activate safe mode. 
+ */
+
+
 use book_store;
 
 CREATE TABLE Book (
