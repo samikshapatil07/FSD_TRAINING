@@ -9,15 +9,14 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
-@ComponentScan
-(basePackages = "com.spring") //<-- please scan these packages 
-
+@ComponentScan(basePackages = "com.springcore.main") //<-- please scan these packages 
 public class AppConfig {  //Central Configuration Class 
+
 	static {
 		System.out.println("App Config File Detected and Loaded...");
 	}
 	
-@Bean
+	@Bean
 	public DataSource getDataSource() {
 		String url="jdbc:mysql://localhost:3306/lms_db"; 
 		String userDB = "root";
@@ -28,10 +27,10 @@ public class AppConfig {  //Central Configuration Class
 		
 		return dataSource; 
 	}
-//dB connection
-@Bean
+	//db connection
+	@Bean
 	JdbcTemplate getJdbcTemplate(DataSource dataSource){ 
-// this jdbctemplate will fire queries on this DS
+		// this jdbctemplate will fire queries on this DS
 		return new JdbcTemplate(dataSource); 
 	}
 	

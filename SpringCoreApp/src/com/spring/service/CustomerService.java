@@ -1,5 +1,7 @@
 package com.spring.service;
 
+import java.awt.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,5 +32,28 @@ public class CustomerService {
 		customerDao.insertCustomer(name,city);
 		
 	}
+    public List<Customer> getAll() {
+		
+		return customerDao.getAll();
+	}
+    
+    
+    public List<Customer> getAllv2() {
+		List<Map<String, Object>> list =  customerDao.getAllv2();
+		List<Customer> listCustomer = new ArrayList<>();
+	//	System.out.println(list);
+		for(Map<String,Object> map : list) {
+			//System.out.println(map);
+			Customer c = new Customer();
+			c.setId((int)map.get("id"));
+			c.setName((String)map.get("name"));
+			c.setCity((String)map.get("city"));
+			listCustomer.add(c);
+		}
+		return listCustomer; 
+	}
+
+}
+	
 
 }
