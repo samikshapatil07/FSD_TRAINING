@@ -1,0 +1,446 @@
+{
+	"info": {
+		"_postman_id": "babce7be-1371-4cc0-bd50-df3be5271d8c",
+		"name": "lms_postman",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45311589",
+		"_collection_link": "https://samikshapatil-4081751.postman.co/workspace/Samiksha-Patil's-Workspace~7329192a-a3b8-46ef-8f7f-05f88cba4b2c/collection/45311589-babce7be-1371-4cc0-bd50-df3be5271d8c?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "learner",
+			"item": [
+				{
+					"name": "localhost:8080/api/learner/add",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Harry Potter\",\r\n  \"contact\": \"98667434344\",\r\n  \"user\": {\r\n    \"username\": \"user3@gmail.com\",\r\n    \"password\": \"user3@3\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/learner/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"learner",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/api/learner/get-all",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/learner/get-all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"learner",
+								"get-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/api/learner/delete/1",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/learner/delete/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"learner",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/api/learner/get-one/2",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/learner/get-one",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"learner",
+								"get-one"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/api/learner/update/2",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"contact\" : \"9877611111\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/learner/update/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"learner",
+								"update",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/api/learner/enroll/course/2/1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"couponCode\": \"DIWALI10\"   \r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/learner/enroll/course/3/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"learner",
+								"enroll",
+								"course",
+								"3",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "course",
+			"item": [
+				{
+					"name": "localhost:8080/api/course/add",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Core Java - Enterprise Development\", \r\n    \"credits\": 50\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/course/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"course",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "module",
+			"item": [
+				{
+					"name": "localhost:8080/api/module/add/1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"moduleTitle\": \"Creating Repository Layer\", \r\n    \"sequence\": 2\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/module/add/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"module",
+								"add",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/api/module/get?courseId=1",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/module/get?courseId=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"module",
+								"get"
+							],
+							"query": [
+								{
+									"key": "courseId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "review",
+			"item": [
+				{
+					"name": "localhost:8080/api/review/add/3/1",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comment\": \"I really understood Java Concepts and looking forward to spring boot and beyond\",\r\n    \"rating\":\"5\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/review/add/3/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"review",
+								"add",
+								"3",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "localhost:8080/api/review/rating?rating=4.5",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/review/rating?rating=4.5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"review",
+								"rating"
+							],
+							"query": [
+								{
+									"key": "rating",
+									"value": "4.5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "learner course",
+			"item": []
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "localhost:8080/api/user/signup",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"harry@gmail.com\",\r\n    \"password\" : \"harry@123\",\r\n    \"role\" : \"HR\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/user/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
