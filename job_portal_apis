@@ -1,0 +1,78 @@
+1. User APIs
+Handles authentication and basic user info.
+
+API Purpose                 	HTTP Method	Endpoint
+Register / SignUp          	POST	        /user/signup
+Get User by ID	                GET	        /user/{id}
+--------------------------------------------------------------------------
+2. HR APIs
+Manages HR profiles and CRUD operations.
+
+API Purpose	        HTTP Method	Endpoint
+Register HR            	POST       	/hr/register
+Get HR by ID	        GET       	/hr/{id}
+Update HR by ID 	PUT        	/hr/{id}
+Delete HR by ID	       DELETE          	/hr/{id}
+Get All HRs	       GET	         /hr
+--------------------------------------------------------------------------
+3. Job Seeker APIs
+Manages seeker profiles and CRUD operations.
+
+API Purpose	              HTTP Method	Endpoint
+Register Job Seeker	      POST         	/jobseeker/register
+Get Job Seeker by ID	       GET	       /jobseeker/{id}
+Update Job Seeker by ID	       PUT	       /jobseeker/{id}
+Delete Job Seeker by ID	       DELETE	       /jobseeker/{id}
+Get All Job Seekers	       GET	       /jobseeker
+--------------------------------------------------------------------------
+📌 Required API Endpoints for Job Posting
+-------------------------------------------------------------------------------------------------------------------------------------------
+| Operation              | Method   | Endpoint                                                  | Purpose                                |
+| ---------------------- | -------- | --------------------------------------------------------- | -------------------------------------- |
+| Create a job posting   | `POST`   | `/job-posting`                                            | HR posts a new job                     |
+| Get all job postings   | `GET`    | `/job-posting`                                            | Retrieve all jobs (open listings)      |
+| Get job by ID          | `GET`    | `/job-posting/{id}`                                       | View a specific job                    |
+| Update job by ID       | `PUT`    | `/job-posting/{id}`                                       | HR updates job details                 |
+| Delete job by ID       | `DELETE` | `/job-posting/{id}`                                       | HR deletes a job listing               |
+| Get jobs by HR ID      | `GET`    | `/job-posting/hr/{hrId}`                                  | View all jobs posted by a specific HR  |
+| Search jobs (optional) | `GET`    | `/job-posting/search?skills=...&location=...&company=...` | Filter by job title, location, company |
+------------------------------------------------------------------------------------------------------------------------------------------
+
+📌 Required API Endpoints for Application
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Operation                          | Method   | Endpoint                                | Role       | Purpose                                               |
+| ---------------------------------- | -------- | --------------------------------------- | ---------- | ----------------------------------------------------- |
+| Apply to a job                     | `POST`   | `/applications`                         | Job Seeker | Submit a job application                              |
+| View all applications (self)       | `GET`    | `/applications/jobseeker/{jobSeekerId}` | Job Seeker | View all applications submitted by a job seeker       |
+| Track application status           | `GET`    | `/applications/status/{applicationId}`  | Job Seeker | Track the status of a specific application            |
+| Update application details         | `PUT`    | `/applications/{applicationId}`         | Job Seeker | Update application (e.g., resume, cover letter)       |
+| Delete application                 | `DELETE` | `/applications/{applicationId}`         | Job Seeker | Withdraw the application                              |
+| View all applications (global)     | `GET`    | `/applications`                         | HR/Admin   | View all submitted applications (for admin/testing)   |
+| View applications by filters       | `GET`    | `/applications/filter?...`              | HR         | Search/filter applications by job, status, date, etc. |
+| View application by ID             | `GET`    | `/applications/{applicationId}`         | HR         | View a specific application                           |
+| View applications by Job ID        | `GET`    | `/applications/job/{jobId}`             | HR         | View applications for a specific job                  |
+| View applications by Job Seeker ID | `GET`    | `/applications/jobseeker/{jobSeekerId}` | HR         | View applications from a particular job seeker        |
+| Shortlist or Reject application    | `PATCH`  | `/applications/{applicationId}/status`  | HR         | Update application status to shortlisted/rejected     |
+| Update interview outcome           | `PATCH`  | `/applications/{applicationId}/outcome` | HR         | Record interview result for an application            |
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+📌 Required API Endpoints for Interview
+---------------------------------------------------------------------------------------------------------------------------------
+| Operation                                 | Method   | Endpoint                          | Purpose                          |
+| ----------------------------------------- | -------- | --------------------------------- | -------------------------------- |
+| Schedule interview                        | `POST`   | `/interviews`                     | HR schedules an interview        |
+| Get interview by ID                       | `GET`    | `/interviews/{id}`                | View specific interview details  |
+| Get interview by Application              | `GET`    | `/interviews/application/{appId}` | View interview by application    |
+| Update interview (status, time, feedback) | `PUT`    | `/interviews/{id}`                | Update interview outcome or time |
+| Delete interview (optional)               | `DELETE` | `/interviews/{id}`                | Cancel interview                 |
+| Get all interviews (optional)             | `GET`    | `/interviews`                     | Admin or analytics               |
+-------------------------------------------------------------------------------------------------------------------------------
+
+📌 Required API Endpoints for Resume History
+| Operation                   | Method   | Endpoint                         | Purpose                            |
+| --------------------------- | -------- | -------------------------------- | ---------------------------------- |
+| Upload new resume           | `POST`   | `/resume-history`                | Add new resume entry               |
+| Get resume history for user | `GET`    | `/resume-history/jobseeker/{id}` | List resume versions by job seeker |
+| Delete resume (optional)    | `DELETE` | `/resume-history/{id}`           | Delete a resume                    |
+-----------------------------------------------------------------------------------------------------------------------
