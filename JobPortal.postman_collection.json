@@ -1,0 +1,1062 @@
+{
+	"info": {
+		"_postman_id": "1a639b30-d998-419d-b92a-3b74bd2e63a6",
+		"name": "JobPortal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45311589",
+		"_collection_link": "https://samikshapatil-4081751.postman.co/workspace/Samiksha-Patil's-Workspace~7329192a-a3b8-46ef-8f7f-05f88cba4b2c/collection/45311589-1a639b30-d998-419d-b92a-3b74bd2e63a6?source=collection_link"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "SignUp",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"username\": \"user5@gmail.com\",\r\n  \"password\": \"user5@5\",\r\n  \"role\": \"JOB_SEEKER\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/users/signup",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user3@3",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user3@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/users/6",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users",
+								"6"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hr",
+			"item": [
+				{
+					"name": "Register HR",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Ronald HR\",\r\n  \"companyName\": \"TCS\",\r\n  \"user\": {\r\n    \"username\": \"user3@gmail.com\",\r\n    \"password\": \"user3@3\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/hr/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get HR by ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user4@4",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user4@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/hr/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update HR by ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user1@1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"John D\",\r\n  \"companyName\": \"Infosys\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/hr/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": " Delete HR by ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user4@4",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user4@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/hr/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All HRs",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user1@1",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user1@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/hr",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Job_Seeker",
+			"item": [
+				{
+					"name": "Register Job Seeker",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Harry Potter\",\r\n  \"education\": \"M.Tech in CSe\",\r\n  \"skills\": \"Py, R \",\r\n  \"experience\": \"2 years\",\r\n\"user\": {\r\n    \"username\": \"user5@gmail.com\",\r\n    \"password\": \"user5@5\"\r\n  }\r\n  }\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/jobseekers/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseekers",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Job Seeker by ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user4@4",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user4@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobseekers/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseekers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Job Seeker",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user5@5",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user5@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Alice Smith\",\r\n  \"education\": \"B.Tech in AI\",\r\n  \"skills\": \"Java, Spring\",\r\n  \"experience\": \"1 years\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/jobseekers/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseekers",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Job Seeker",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user4@4",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user4@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobseekers/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseekers",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Job Seekers",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user4@4",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user4@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobseekers",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseekers"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Job_Posting",
+			"item": [
+				{
+					"name": "Post a New Job",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"jobTitle\": \"Java Developer\",\r\n  \"description\": \"Looking for an java developer\",\r\n  \"skills\": \"Java, MySQL\",\r\n  \"location\": \"Pune\",\r\n  \"salary\": 960000.00,\r\n  \"department\": \"Development\",\r\n  \"company\": \"TCS\",\r\n  \"experience\": \"1-2 years\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/jobs/jobs/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"jobs",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Jobs",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobs",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Job by Job ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobs/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Job(title, location, company)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobs/search?jobTitle=Developer&location=Mumbai",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "jobTitle",
+									"value": "Developer"
+								},
+								{
+									"key": "location",
+									"value": "Mumbai"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Job Post",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobs/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a job posting by ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"jobTitle\": \"Senior Java Developer\",\r\n  \"description\": \"Looking for senior Java developer\",\r\n  \"skills\": \"Java, Spring Boot, Microservices\",\r\n  \"location\": \"Pune\",\r\n  \"salary\": 1200000.00,\r\n  \"department\": \"Development\",\r\n  \"company\": \"Infosys\",\r\n  \"experience\": \"5+ years\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/jobs/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Applications",
+			"item": [
+				{
+					"name": "JobSeeker",
+					"item": [
+						{
+							"name": "Apply to Job",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"jobSeekerId\": 1,\r\n  \"jobId\": 1,\r\n  \"resumePath\": \"path/to/resume.pdf\"\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/applications",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"applications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View all applications",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Harry Potter\",\r\n    \"contact\" : \"98667434344\"\r\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/applications/my",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"applications",
+										"my"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Track Application Status",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\":\"harry@gmail.com\",\r\n    \"password\" : \"harry@123\",\r\n    \"role\" : \"LEARNER\"\r\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/applications/status/{appId}",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"applications",
+										"status",
+										"{appId}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Application",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"updatedResumePath\": \"path/to/updated_resume.pdf\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/applications/{appId}/resume",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"applications",
+										"{appId}",
+										"resume"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Application",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Alice Smith\",\r\n  \"education\": \"M.Tech in AI\",\r\n  \"skills\": \"Python, ML\",\r\n  \"experience\": \"3 years\"\r\n}"
+								},
+								"url": {
+									"raw": "localhost:8080/api/jobseeker/applications/1",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"jobseeker",
+										"applications",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "HR",
+					"item": [
+						{
+							"name": "View All Applications",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "bbb9ad4b-f3a1-485b-964f-c6d9cebf043a",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/applications",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"applications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View Application by ID",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "bbb9ad4b-f3a1-485b-964f-c6d9cebf043a",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/applications",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"applications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "View Applications by Filters",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "bbb9ad4b-f3a1-485b-964f-c6d9cebf043a",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/applications/filter?location=Delhi&skill=Java&jobId=3",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"applications",
+										"filter"
+									],
+									"query": [
+										{
+											"key": "location",
+											"value": "Delhi"
+										},
+										{
+											"key": "skill",
+											"value": "Java"
+										},
+										{
+											"key": "jobId",
+											"value": "3"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Shortlist or Reject Application",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "user",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "bbb9ad4b-f3a1-485b-964f-c6d9cebf043a",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"status\": \"SHORTLISTED\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/applications/{appId}/status?status=SHORTLISTED or REJECTED",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"applications",
+										"{appId}",
+										"status"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "SHORTLISTED or REJECTED"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Interview Outcome(Offer or Reject )",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PATCH",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"outcome\": \"PASSED\",\r\n  \"feedback\": \"Strong communication and problem-solving skills\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/applications/{appId}/status?status=OFFERED or REJECTED",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"applications",
+										"{appId}",
+										"status"
+									],
+									"query": [
+										{
+											"key": "status",
+											"value": "OFFERED or REJECTED"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Interview",
+			"item": [
+				{
+					"name": "Schedule interview",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get interview by ID",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get interview by Application",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Update interview",
+					"request": {
+						"method": "PUT",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get all interviews",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete interview",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Resume History",
+			"item": [
+				{
+					"name": "Upload new resume",
+					"request": {
+						"method": "POST",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Get resume history for use",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "Delete resume",
+					"request": {
+						"method": "DELETE",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
