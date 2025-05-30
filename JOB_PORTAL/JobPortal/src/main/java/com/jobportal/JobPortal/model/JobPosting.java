@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "job_posting")
 public class JobPosting {
@@ -13,8 +15,8 @@ public class JobPosting {
     private Long jobId;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "posted_by", nullable = false)
-    
+    @JoinColumn(name = "posted_by")
+    @JsonIgnore
     private Hr hr;
 
     @Column(nullable = false)

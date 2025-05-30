@@ -2,8 +2,6 @@ package com.jobportal.JobPortal.repository;
 
 import com.jobportal.JobPortal.model.Hr;
 import com.jobportal.JobPortal.model.User;
-import com.springboot.lms.model.Learner;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 

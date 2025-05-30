@@ -2,6 +2,7 @@ package com.jobportal.JobPortal;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -23,7 +24,6 @@ public class SecurityConfig {
 					//-------------------- FOR USER ----------------------------------
 					.requestMatchers("/api/users/signup").permitAll() // reigister user
 					.requestMatchers("/api/users/{id}").permitAll()// get user by id
-					.requestMatchers("/api/users/**").permitAll() // put and delete by id
 					
 					//-------------------- FOR HR -------------------------------------
 					.requestMatchers("/api/hr/register").permitAll() // register hr
@@ -33,6 +33,13 @@ public class SecurityConfig {
 					.requestMatchers("/api/jobseekers/register").permitAll() // register job_seeker
         			.requestMatchers("/api/jobseekers/{jobSeekerId}").hasAuthority("JOB_SEEKER") // only jobseekers can update jobseekers details
 					
+        			// -------------------- FOR JOB POSTING  -------------------------------------
+        			.requestMatchers(HttpMethod.POST, "/api/jobs/**").hasAuthority("HR")
+        			.requestMatchers(HttpMethod.PUT, "/api/jobs/**").hasAuthority("HR")
+        			.requestMatchers(HttpMethod.DELETE, "/api/jobs/**").hasAuthority("HR")
+        			.requestMatchers(HttpMethod.GET, "/api/jobs/**").permitAll()
+
+
 					
 
 
