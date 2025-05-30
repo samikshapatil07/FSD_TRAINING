@@ -11,18 +11,22 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "learner_course")
+@Table(name = "learner_course") //lc
 public class LearnerCourse {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	
 	@Column(name = "enroll_date")
 	private LocalDate enrollDate;
+	
 	@Column(name = "coupon_code")
 	private String couponCode;
+	
 	@ManyToOne
 	private Learner learner;
+	
 	@ManyToOne
 	private Course course;
 

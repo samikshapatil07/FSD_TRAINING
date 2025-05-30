@@ -1,5 +1,7 @@
 package com.springboot.lms.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.springboot.lms.exception.ResourceNotFoundException;
@@ -30,6 +32,11 @@ public class ModuleService {
 		 
 		 //Save module in the DB
 		return moduleRepository.save(module);
+	}
+
+
+	public List<CModule> getModuleByCourseId(int courseId) {
+		return moduleRepository.getModuleByCourseId(courseId);
 	}
 
 }

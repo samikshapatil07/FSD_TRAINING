@@ -5,17 +5,33 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.springboot.lms.model.Learner;
+import com.springboot.lms.model.User;
 import com.springboot.lms.repository.LearnerRepository;
 @Service
 public class LearnerService {
 
 	private LearnerRepository learnerRepository;
-
-	public LearnerService(LearnerRepository learnerRepository) {
+	private UserService userService; 
+	
+	public LearnerService(LearnerRepository learnerRepository, UserService userService) {
 		this.learnerRepository = learnerRepository;
+		this.userService = userService;
 	}
 
 	public Learner insertLearner(Learner learner) { 
+		// Take user out of this learner object 
+		User user = learner.getUser();
+		
+		// Give role to this user 
+		user.setRole("LEARNER");
+		
+		// Save this User in the DB 
+		user = userService.signUp(user);
+		
+		// Attach this user back to learner
+		learner.setUser(user);
+		
+		// Save learner in DB
 		return learnerRepository.save(learner);
 	}
 
@@ -44,6 +60,10 @@ public class LearnerService {
 			dbLearner.setContact(updatedLearner.getContact());
 		
 		return learnerRepository.save(dbLearner);
+	}
+
+	public Learner getLearnerByUsername(String username) {
+		return learnerRepository.getLearnerByUsername(username);
 	}
 
 }

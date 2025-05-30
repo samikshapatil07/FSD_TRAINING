@@ -7,25 +7,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.lms.model.Course;
-import com.springboot.lms.model.Learner;
 import com.springboot.lms.service.CourseService;
+
 @RestController
 @RequestMapping("/api/course")
 public class CourseController {
-	
+
 	@Autowired
 	private CourseService courseService;
-	
-//------------------- add course-------------------------
-		/*AIM: To add course record <----- should be done only by author
-		 *PaTH: /api/course/add
-		 *Method: POST 
-		 *Response: course
-		 *Input: Course <---- request body
-		 **/
+	/*
+	 * AIM: Add course to DB <-- Should be done only by AUTHOR 
+	 * PATH: /api/course/add
+	 * METHOD: POST
+	 * Response: Course 		
+	 * Input: Course <-- request body
+	 * Access: AUTHOR or EXECUTIVE 
+	 * */
 	@PostMapping("/add") //<-- /api/course/add 
 	public Course postCourse(@RequestBody Course course) {
 		return courseService.postCourse(course); 
 	}
-
 }

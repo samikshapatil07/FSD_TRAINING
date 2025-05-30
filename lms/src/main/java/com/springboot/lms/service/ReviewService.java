@@ -1,6 +1,8 @@
 
 package com.springboot.lms.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.springboot.lms.exception.ResourceNotFoundException;
@@ -44,7 +46,9 @@ public class ReviewService {
 		return reviewRepository.save(review);
 	}
 	
-	
+	public List<Review> getReviewByRating(String rating) {
+		return reviewRepository.getByRating(rating);
+	}
 
 	
 }

@@ -1,6 +1,7 @@
 package com.springboot.lms.service;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,10 @@ public class LearnerCourseService {
 		
 		// Save learnerCourse in DB
 		return learnerCourseRepository.save(learnerCourse);
+	}
+
+	public List<Learner> getLearnerByCourseId(int courseId) {
+		return learnerCourseRepository.getLearnerByCourseId(courseId);
 	}
 	
 	
