@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.jobportal.JobPortal.model.Hr;
-
 import com.jobportal.JobPortal.service.HrService;
 
 @RestController
@@ -23,26 +22,27 @@ public class HrController {
 
     @Autowired
     private HrService hrService;
-        
- // ------------------- Register HR -------------------------
+
+    // ------------------------- Register HR ---------------------------------------------
     /*
-     * AIM    : To register a new HR having user role as HR
-     * PATH   : /api/hr/register
-     * METHOD : POST
-     * INPUT  : Hr (request body)
-     * RESPONSE: Hr (saved HR)
+     * AIM     : To register a new HR having user role as HR
+     * PATH    : /api/hr/register
+     * METHOD  : POST
+     * INPUT   : Hr (request body)
+     * RESPONSE: Hr (saved HR object)
      */
     @PostMapping("/register")
     public ResponseEntity<Hr> registerHr(@RequestBody Hr hr) {
         Hr savedHr = hrService.registerHr(hr);
         return ResponseEntity.ok(savedHr);
     }
- // ------------------- Get HR by ID -------------------------
+
+    // ------------------------- Get HR by ID ---------------------------------------------
     /*
-     * AIM    : To get HR details by HR ID
-     * PATH   : /api/hr/{hrId}
-     * METHOD : GET
-     * INPUT  : hrId (path variable)
+     * AIM     : To get HR details by ID
+     * PATH    : /api/hr/{hrId}
+     * METHOD  : GET
+     * INPUT   : hrId (path variable)
      * RESPONSE: Hr (HR object)
      */
     @GetMapping("/{hrId}")
@@ -50,27 +50,27 @@ public class HrController {
         Hr hr = hrService.getHrById(hrId);
         return ResponseEntity.ok(hr);
     }
-        
- // ------------------- Update HR -------------------------
+
+    // ------------------------- Update HR ---------------------------------------------
     /*
-     * AIM    : To update HR details
-     * PATH   : /api/hr/{hrId}
-     * METHOD : PUT
-     * INPUT  : hrId (path variable), Hr (request body)
-     * RESPONSE: Hr (updated HR object)
+     * AIM     : To update HR details
+     * PATH    : /api/hr/{hrId}
+     * METHOD  : PUT
+     * INPUT   : hrId (path variable), Hr (request body)
+     * RESPONSE: String (confirmation message)
      */
     @PutMapping("/{hrId}")
     public ResponseEntity<?> updateHr(@PathVariable Long hrId, @RequestBody Hr updatedHr) {
         Hr updated = hrService.updateHr(hrId, updatedHr);
         return ResponseEntity.ok("HR updated successfully");
     }
-    
- // ------------------- Delete HR -------------------------
+
+    // ------------------------- Delete HR ---------------------------------------------
     /*
-     * AIM    : To delete an HR by ID
-     * PATH   : /api/hr/{hrId}
-     * METHOD : DELETE
-     * INPUT  : hrId (path variable)
+     * AIM     : To delete an HR by ID
+     * PATH    : /api/hr/{hrId}
+     * METHOD  : DELETE
+     * INPUT   : hrId (path variable)
      * RESPONSE: String (confirmation message)
      */
     @DeleteMapping("/{hrId}")
@@ -79,12 +79,12 @@ public class HrController {
         return ResponseEntity.ok("HR with ID " + hrId + " has been deleted successfully.");
     }
 
- // ------------------- Get All HRs -------------------------
+    // ------------------------- Get All HRs ---------------------------------------------
     /*
-     * AIM    : To get all HRs
-     * PATH   : /api/hr
-     * METHOD : GET
-     * RESPONSE: List<Hr> (all HRs)
+     * AIM     : To get a list of all HRs
+     * PATH    : /api/hr
+     * METHOD  : GET
+     * RESPONSE: List<Hr> (all HR records)
      */
     @GetMapping
     public ResponseEntity<?> getAllHrs() {

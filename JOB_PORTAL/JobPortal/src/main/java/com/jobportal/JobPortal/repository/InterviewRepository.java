@@ -1,9 +1,13 @@
 package com.jobportal.JobPortal.repository;
 
-import com.jobportal.JobPortal.model.Interview;
-import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
-public interface InterviewRepository extends JpaRepository<Interview, Long> {
-    List<Interview> findByApplication_ApplicationId(Long applicationId);
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import com.jobportal.JobPortal.model.Interview;
+
+@Repository
+public interface InterviewRepository extends JpaRepository<Interview, Integer> {
+    List<Interview> findByApplicationApplicationId(Integer applicationId);
 }

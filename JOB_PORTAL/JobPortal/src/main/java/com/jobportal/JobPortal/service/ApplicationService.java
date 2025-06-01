@@ -1,83 +1,101 @@
 package com.jobportal.JobPortal.service;
 
-import java.util.List;
-import java.util.Optional;
-
+import com.jobportal.JobPortal.model.Application;
+import com.jobportal.JobPortal.model.JobSeeker;
+import com.jobportal.JobPortal.model.SeekerActivity.ActivityType;
+import com.jobportal.JobPortal.repository.ApplicationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jobportal.JobPortal.model.Application;
-import com.jobportal.JobPortal.repository.ApplicationRepository;
-import com.jobportal.JobPortal.repository.JobPostingRepository;
-import com.jobportal.JobPortal.repository.JobSeekerRepository;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ApplicationService {
 
-	@Autowired
-	private JobPostingRepository jobPostingRepository;
-
-	@Autowired
-	private JobSeekerRepository jobSeekerRepository;
-	
     @Autowired
     private ApplicationRepository applicationRepository;
 
+    @Autowired
+    private ApplicationUpdateService applicationUpdateService;
+
+    @Autowired
+    private SeekerActivityService seekerActivityService;
+
+ // ---------------- Save a new application -----------------------------------------------
     public Application saveApplication(Application application) {
-        return applicationRepository.save(application);
+        Application savedApp = applicationRepository.save(application);
+
+        // Log activity
+        JobSeeker seeker = savedApp.getJobSeeker();
+        if (seeker != null) {
+            seekerActivityService.logActivity(
+                seeker,
+                ActivityType.APPLIED_JOB,
+                "Applied to job ID: " + savedApp.getJobPosting().getJobId()
+            );
+        }
+
+        return savedApp;
     }
 
-    public List<Application> getAllApplications() {
-        return applicationRepository.findAll();
-    }
-
+ // ---------------- Get an application by its ID ------------------------------------
     public Optional<Application> getApplicationById(Long id) {
         return applicationRepository.findById(id);
     }
 
-    public void deleteApplication(Long id) {
-        applicationRepository.deleteById(id);
-    }
+    // ---------------- Get all applications submitted by a specific job seeker ----------------
 
     public List<Application> getApplicationsByJobSeekerId(Long jobSeekerId) {
         return applicationRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
     }
 
+    // ---------------- Get all applications for a specific job posting ----------------
     public List<Application> getApplicationsByJobId(Long jobId) {
         return applicationRepository.findByJobPosting_JobId(jobId);
     }
 
-    
-    public Application updateApplicationStatus(Long id, Application.Status newStatus) {
-        Optional<Application> applicationOpt = applicationRepository.findById(id);
-        if (applicationOpt.isPresent()) {
-            Application application = applicationOpt.get();
-            Application.Status currentStatus = application.getStatus();
+    // ---------------- Get all applications ----------------
+    public List<Application> getAllApplications() {
+        return applicationRepository.findAll();
+    }
 
-            if (isValidStatusTransition(currentStatus, newStatus)) {
-                application.setStatus(newStatus);
-                return applicationRepository.save(application);
-            } else {
-                throw new IllegalArgumentException("Invalid status transition from " + currentStatus + " to " + newStatus);
+    // ---------------- Update an existing application and log resume changes ----------------
+    public Application updateApplication(Long id, Application updatedApplication) {
+        return applicationRepository.findById(id).map(existingApp -> {
+            String oldResume = existingApp.getResumePath();
+            String newResume = updatedApplication.getResumePath();
+
+            if (newResume != null && !newResume.equals(oldResume)) {
+                existingApp.setResumePath(newResume);
+
+                JobSeeker jobSeeker = existingApp.getJobSeeker();
+                if (jobSeeker != null) {
+                    applicationUpdateService.recordResumeUpdate(existingApp, jobSeeker, newResume);
+
+                    // Log resume update activity
+                    seekerActivityService.logActivity(
+                        jobSeeker,
+                        ActivityType.RESUME_UPDATED,
+                        "Updated resume to: " + newResume
+                    );
+                }
             }
-        }
-        return null;
+
+            return applicationRepository.save(existingApp);
+        }).orElseThrow(() -> new RuntimeException("Application not found with ID: " + id));
     }
 
-    private boolean isValidStatusTransition(Application.Status current, Application.Status next) {
-        switch (current) {
-            case APPLIED:
-                return next == Application.Status.SHORTLISTED || next == Application.Status.REJECTED;
-            case SHORTLISTED:
-                return next == Application.Status.INTERVIEW_SCHEDULED;
-            case INTERVIEW_SCHEDULED:
-                return next == Application.Status.INTERVIEW_COMPLETED;
-            case INTERVIEW_COMPLETED:
-                return next == Application.Status.OFFERED || next == Application.Status.REJECTED;
-            
-            default:
-                return false;
-        }
+    // ---------------- Delete an application by its ID ----------------
+    public void deleteApplication(Long id) {
+        applicationRepository.deleteById(id);
     }
 
+    // ---------------- Update the status of an application ----------------
+    public Application updateApplicationStatus(Long id, Application.Status status) {
+        return applicationRepository.findById(id).map(application -> {
+            application.setStatus(status);
+            return applicationRepository.save(application);
+        }).orElseThrow(() -> new RuntimeException("Application not found with ID: " + id));
+    }
 }

@@ -37,7 +37,9 @@ public class JobPosting {
         this.createdAt = LocalDateTime.now();
     }
 
-    public JobPosting(String jobTitle, String description, String skills, String location, BigDecimal salary, String department, String company, String experience, Hr hr) {
+    public JobPosting(String jobTitle, String description, String skills, 
+    		String location, BigDecimal salary, String department, String company,
+    		String experience, Hr hr) {
         this.jobTitle = jobTitle;
         this.description = description;
         this.skills = skills;

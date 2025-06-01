@@ -23,8 +23,8 @@ public class Hr {  //h
     @JoinColumn(name = "user_id")
     private User user;
  
-//    @OneToMany(mappedBy = "hr", cascade = CascadeType.ALL)
-//    private List<JobPosting> jobPostings;
+    @OneToMany(mappedBy = "hr", cascade = CascadeType.ALL)
+    private List<JobPosting> jobPostings;
 
 	public Long getId() {
 		return id;
@@ -57,4 +57,13 @@ public class Hr {  //h
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	public List<JobPosting> getJobPostings() {
+		return jobPostings;
+	}
+
+	public void setJobPostings(List<JobPosting> jobPostings) {
+		this.jobPostings = jobPostings;
+	}
+
 }

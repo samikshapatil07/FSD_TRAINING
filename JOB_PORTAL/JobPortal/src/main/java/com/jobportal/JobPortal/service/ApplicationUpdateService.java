@@ -1,36 +1,39 @@
 package com.jobportal.JobPortal.service;
 
-import com.jobportal.JobPortal.model.ApplicationUpdate;
-import com.jobportal.JobPortal.repository.ApplicationUpdateRepository;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.Optional;
+import com.jobportal.JobPortal.model.Application;
+import com.jobportal.JobPortal.model.ApplicationUpdate;
+import com.jobportal.JobPortal.model.JobSeeker;
+import com.jobportal.JobPortal.repository.ApplicationUpdateRepository;
 
 @Service
 public class ApplicationUpdateService {
 
     @Autowired
-    private ApplicationUpdateRepository updateRepository;
-
-    public ApplicationUpdate saveUpdate(ApplicationUpdate update) {
-        return updateRepository.save(update);
+    private ApplicationUpdateRepository repository;
+    
+//---------------------- Saves a new application update ------------------------------------
+    public ApplicationUpdate createUpdate(ApplicationUpdate update) {
+        return repository.save(update);
     }
 
-    public List<ApplicationUpdate> getAllUpdates() {
-        return updateRepository.findAll();
+    public List<ApplicationUpdate> getUpdatesByApplicationId(Integer applicationId) {
+        return repository.findByApplicationApplicationId(applicationId);
     }
 
-    public Optional<ApplicationUpdate> getUpdateById(Long id) {
-        return updateRepository.findById(id);
+    public List<ApplicationUpdate> getUpdatesByJobSeekerId(Integer jobSeekerId) {
+        return repository.findByJobSeekerJobSeekerId(jobSeekerId);
     }
-
-    public List<ApplicationUpdate> getUpdatesByApplicationId(Long applicationId) {
-        return updateRepository.findByApplication_ApplicationId(applicationId);
-    }
-
-    public void deleteUpdate(Long id) {
-        updateRepository.deleteById(id);
+//----------------------------- Records a resume update made by a job seeker for a specific application ----------------
+    public void recordResumeUpdate(Application app, JobSeeker jobSeeker, String resumePath) {
+        ApplicationUpdate update = new ApplicationUpdate();
+        update.setApplication(app);
+        update.setJobSeeker(jobSeeker);
+        update.setUpdatedResumePath(resumePath);
+        repository.save(update);
     }
 }

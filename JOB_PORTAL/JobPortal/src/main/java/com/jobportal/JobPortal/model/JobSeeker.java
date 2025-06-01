@@ -1,8 +1,12 @@
 package com.jobportal.JobPortal.model;
 
-import jakarta.persistence.*;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.*;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "job_seeker")
 public class JobSeeker { //js
@@ -27,16 +31,9 @@ public class JobSeeker { //js
     @OneToOne(cascade = CascadeType.ALL) //'user_id' column is the foreign key in the job_seeker table.
     @JoinColumn(name = "user_id")
     private User user;
-//
-//    //one job seeker can have multiple applications
-//    @OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
-//    private List<Application> applications;
-//
-//    @OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
-//    private List<ResumeHistory> resumeHistory;
-//
-//    @OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
-//    private List<SeekerActivity> activities;
+
+    @OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
+    private List<SeekerActivity> activities;
 
 	@Override
 	public String toString() {

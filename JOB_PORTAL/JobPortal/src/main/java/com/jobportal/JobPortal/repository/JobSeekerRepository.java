@@ -17,9 +17,6 @@ public interface JobSeekerRepository extends JpaRepository<JobSeeker, Long> {
     // Find JobSeeker by associated User ID
 	Optional<JobSeeker> findByUser_Id(int id);  
 
-    // Optional: Find by name, if needed for business logic
-    Optional<JobSeeker> findByName(String name);
-
     Optional<JobSeeker> findByUser_Username(String username);
     
     

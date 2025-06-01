@@ -1,111 +1,99 @@
 package com.jobportal.JobPortal.model;
 
-import jakarta.persistence.*;
 import java.time.LocalDate;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
 @Entity
-@Table(name = "interview")
+@Table(name = "interviews")
 public class Interview {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long interviewId;
+    private Integer interviewId;
 
-    @ManyToOne
-    @JoinColumn(name = "application_id", nullable = false)
-    private Application application;
-
+    @Column(name = "interview_date", nullable = false)
     private LocalDate interviewDate;
+
+    @Column(name = "interview_location")
     private String interviewLocation;
 
     @Enumerated(EnumType.STRING)
-    private Mode interviewMode;
-
-    private String meetingLink;
-
+    @Column(name = "interview_mode", nullable = false)
+    private InterviewMode interviewMode; // onl, offline
     @Enumerated(EnumType.STRING)
-    private Outcome outcome;
+    @Column(name = "outcome", nullable = false)
+    private InterviewOutcome outcome; // interview scheduled, interview completed_offered, interview completeed_rejected
 
-    private String feedback;
-
-    public enum Mode { ONLINE, OFFLINE, PHONE }
-    public enum Outcome { PASSED, FAILED, PENDING }
-
-    // Constructors
-    public Interview() {
-        this.outcome = Outcome.PENDING;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "app_id", nullable = false)
+    private Application application;
+    
+    public enum InterviewMode {
+        ONLINE, OFFLINE
     }
 
-    public Interview(Application application, LocalDate interviewDate, String interviewLocation, Mode interviewMode, String meetingLink) {
-        this.application = application;
-        this.interviewDate = interviewDate;
-        this.interviewLocation = interviewLocation;
-        this.interviewMode = interviewMode;
-        this.meetingLink = meetingLink;
-        this.outcome = Outcome.PENDING;
+    public enum InterviewOutcome {
+    	INTERVIEW_COMPLETED_OFFERED,INTERVIEW_COMPLETED_REJECTED,PENDING
+  
     }
 
-    // Getters and Setters
-    public Long getInterviewId() {
-        return interviewId;
-    }
+	public Integer getInterviewId() {
+		return interviewId;
+	}
 
-    public void setInterviewId(Long interviewId) {
-        this.interviewId = interviewId;
-    }
+	public void setInterviewId(Integer interviewId) {
+		this.interviewId = interviewId;
+	}
 
-    public Application getApplication() {
-        return application;
-    }
+	public LocalDate getInterviewDate() {
+		return interviewDate;
+	}
 
-    public void setApplication(Application application) {
-        this.application = application;
-    }
+	public void setInterviewDate(LocalDate interviewDate) {
+		this.interviewDate = interviewDate;
+	}
 
-    public LocalDate getInterviewDate() {
-        return interviewDate;
-    }
+	public String getInterviewLocation() {
+		return interviewLocation;
+	}
 
-    public void setInterviewDate(LocalDate interviewDate) {
-        this.interviewDate = interviewDate;
-    }
+	public void setInterviewLocation(String interviewLocation) {
+		this.interviewLocation = interviewLocation;
+	}
 
-    public String getInterviewLocation() {
-        return interviewLocation;
-    }
+	public InterviewMode getInterviewMode() {
+		return interviewMode;
+	}
 
-    public void setInterviewLocation(String interviewLocation) {
-        this.interviewLocation = interviewLocation;
-    }
+	public void setInterviewMode(InterviewMode interviewMode) {
+		this.interviewMode = interviewMode;
+	}
 
-    public Mode getInterviewMode() {
-        return interviewMode;
-    }
+	public InterviewOutcome getOutcome() {
+		return outcome;
+	}
 
-    public void setInterviewMode(Mode interviewMode) {
-        this.interviewMode = interviewMode;
-    }
+	public void setOutcome(InterviewOutcome outcome) {
+		this.outcome = outcome;
+	}
 
-    public String getMeetingLink() {
-        return meetingLink;
-    }
+	public Application getApplication() {
+		return application;
+	}
 
-    public void setMeetingLink(String meetingLink) {
-        this.meetingLink = meetingLink;
-    }
-
-    public Outcome getOutcome() {
-        return outcome;
-    }
-
-    public void setOutcome(Outcome outcome) {
-        this.outcome = outcome;
-    }
-
-    public String getFeedback() {
-        return feedback;
-    }
-
-    public void setFeedback(String feedback) {
-        this.feedback = feedback;
-    }
+	public void setApplication(Application application) {
+		this.application = application;
+	}
+    
 }

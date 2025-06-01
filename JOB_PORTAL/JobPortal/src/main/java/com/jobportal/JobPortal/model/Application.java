@@ -2,11 +2,15 @@ package com.jobportal.JobPortal.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
-import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "application")
 public class Application {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long applicationId;
@@ -24,27 +28,16 @@ public class Application {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status;
+    private Status status; // applied  by default, hr can change status to rejected 
 
+    @Column(name = "applied_on")
     private LocalDateTime appliedOn;
 
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<ApplicationUpdate> updates;
-
-    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Interview> interviews;
-
+    //  to represent current application status we are using enum
     public enum Status {
-        APPLIED,
-        REJECTED,
-        SHORTLISTED,
-        INTERVIEW_SCHEDULED,
-        INTERVIEW_COMPLETED_OFFERED,
-        INTERVIEW_COMPLETED_REJECTED,
-        OFFERED,INTERVIEW_COMPLETED
+    	   APPLIED,REJECTED, INTERVIEW_SCHEDULED,INTERVIEW_COMPLETED_OFFERED,INTERVIEW_COMPLETED_REJECTED    
     }
 
-    // Constructors
     public Application() {
         this.appliedOn = LocalDateTime.now();
         this.status = Status.APPLIED;
@@ -58,7 +51,6 @@ public class Application {
         this.status = Status.APPLIED;
     }
 
-    // Getters and Setters
     public Long getApplicationId() {
         return applicationId;
     }
@@ -105,21 +97,5 @@ public class Application {
 
     public void setAppliedOn(LocalDateTime appliedOn) {
         this.appliedOn = appliedOn;
-    }
-
-    public List<ApplicationUpdate> getUpdates() {
-        return updates;
-    }
-
-    public void setUpdates(List<ApplicationUpdate> updates) {
-        this.updates = updates;
-    }
-
-    public List<Interview> getInterviews() {
-        return interviews;
-    }
-
-    public void setInterviews(List<Interview> interviews) {
-        this.interviews = interviews;
     }
 }

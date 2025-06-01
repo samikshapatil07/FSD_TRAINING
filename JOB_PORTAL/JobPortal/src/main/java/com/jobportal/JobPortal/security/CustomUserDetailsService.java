@@ -1,7 +1,6 @@
 package com.jobportal.JobPortal.security;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,8 +12,6 @@ import org.springframework.stereotype.Service;
 import com.jobportal.JobPortal.model.User;
 import com.jobportal.JobPortal.repository.UserRepository;
 
-
-
 @Service
 public class CustomUserDetailsService implements UserDetailsService{
 
@@ -25,6 +22,8 @@ public class CustomUserDetailsService implements UserDetailsService{
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		// Fetch User by given username 
 		User user = userRepository.getByUsername(username);
+		if(user == null)
+			throw new UsernameNotFoundException("Invalid Credentials");
 		
 		// Convert your Role into Authority as spring works with authority
 		SimpleGrantedAuthority sga = new SimpleGrantedAuthority(user.getRole()); 

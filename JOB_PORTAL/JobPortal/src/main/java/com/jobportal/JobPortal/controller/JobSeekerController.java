@@ -16,21 +16,21 @@ public class JobSeekerController {
     @Autowired
     private JobSeekerService jobSeekerService;
 
- // ----------------- Register Job Seeker -----------------
+    // ------------------------- Register Job Seeker ---------------------------------------------
     /*
      * AIM     : To register a new Job Seeker
      * PATH    : /api/jobseekers/register
      * METHOD  : POST
      * INPUT   : JobSeeker (request body)
-     * RESPONSE: JobSeeker (saved Job Seeker)
+     * RESPONSE: JobSeeker (saved Job Seeker object)
      */
     @PostMapping("/register")
     public ResponseEntity<JobSeeker> registerJobSeeker(@RequestBody JobSeeker jobSeeker) {
-        JobSeeker savedJob_seeker = jobSeekerService.registerjobSeeker(jobSeeker);
-        return ResponseEntity.ok(savedJob_seeker);
-        
+        JobSeeker savedJobSeeker = jobSeekerService.registerjobSeeker(jobSeeker);
+        return ResponseEntity.ok(savedJobSeeker);
     }
- // ----------------- Get Job Seeker by ID -----------------
+
+    // ------------------------- Get Job Seeker by ID ---------------------------------------------
     /*
      * AIM     : To get Job Seeker details by ID
      * PATH    : /api/jobseekers/{jobSeekerId}
@@ -43,9 +43,8 @@ public class JobSeekerController {
         JobSeeker js = jobSeekerService.getJobSeekerById(jobSeekerId);
         return ResponseEntity.ok(js);
     }
-    
-    
- // ----------------- Update Job Seeker -----------------------------
+
+    // ------------------------- Update Job Seeker ---------------------------------------------
     /*
      * AIM     : To update Job Seeker details
      * PATH    : /api/jobseekers/{jobSeekerId}
@@ -58,8 +57,8 @@ public class JobSeekerController {
         JobSeeker updated = jobSeekerService.updateJobSeeker(jobSeekerId, jobSeeker);
         return ResponseEntity.ok("Job Seeker updated successfully");
     }
-    
- // ----------------- Delete Job Seeker ----------------------------
+
+    // ------------------------- Delete Job Seeker ---------------------------------------------
     /*
      * AIM     : To delete a Job Seeker by ID
      * PATH    : /api/jobseekers/{jobSeekerId}
@@ -73,12 +72,12 @@ public class JobSeekerController {
         return ResponseEntity.ok("Job Seeker deleted successfully");
     }
 
- // ----------------- Get All Job Seekers -----------------
+    // ------------------------- Get All Job Seekers ---------------------------------------------
     /*
-     * AIM     : To get all registered Job Seekers
+     * AIM     : To get a list of all registered Job Seekers
      * PATH    : /api/jobseekers
      * METHOD  : GET
-     * RESPONSE: List<JobSeeker> (all job seekers)
+     * RESPONSE: List<JobSeeker> (all Job Seeker records)
      */
     @GetMapping
     public ResponseEntity<?> getAllJobSeekers() {

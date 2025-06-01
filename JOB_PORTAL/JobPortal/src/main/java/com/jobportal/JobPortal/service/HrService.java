@@ -13,6 +13,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**Service class to handle business logicc related to HR entities.*/
+
 @Service
 public class HrService {
 
@@ -20,40 +22,40 @@ public class HrService {
     private HrRepository hrRepository;
 
     @Autowired
-	private UserService userService;
-    
-    
- public HrService(HrRepository hrRepository, UserService userService) {
-		super();
-		this.hrRepository = hrRepository;
-		this.userService = userService;
-	}
+    private UserService userService;
 
-//------------------- Registers a new HR under an existing user having ROLE as HR -----------------------
+    public HrService(HrRepository hrRepository, UserService userService) {
+        super();
+        this.hrRepository = hrRepository;
+        this.userService = userService;
+    }
+
+    //------------------- Registers a new HR under an existing user having ROLE as HR -----------------------
+
     public Hr registerHr(Hr hr) {
-    	// Take user out of this learner object 
+        // Extract the user from the HR object
         User user = hr.getUser();
-        
-    	// Give role to this user 
-		user.setRole("HR");
 
-        // Save this user using userService
+        // Set the role to HR for this user
+        user.setRole("HR");
+
+        // Sign up the user (persist the user)
         user = userService.signUp(user);
 
-        // Attach user back to HR
+        // Attach the saved user back to HR entity
         hr.setUser(user);
 
-        // Save HR in the database
+        // Save the HR entity in the repository
         return hrRepository.save(hr);
     }
- 
-//--------------------------- Get HR by ID -------------------------
+
+    //--------------------------- Get HR by ID ----------------------------------------------------------------------------------
     public Hr getHrById(Long hrId) {
         return hrRepository.findById(hrId)
                 .orElseThrow(() -> new ResourceNotFoundException("HR not found with ID: " + hrId));
     }
 
-//-------------------------- Updates an existing HR's name and company -----------------
+    //-------------------------- Updates an existing HR's name and company ----------------------------------------------------
     public Hr updateHr(Long hrId, Hr updatedHr) {
         Hr existingHr = hrRepository.findById(hrId)
                 .orElseThrow(() -> new ResourceNotFoundException("HR not found with ID: " + hrId));
@@ -63,7 +65,8 @@ public class HrService {
 
         return hrRepository.save(existingHr);
     }
-//------------- Deletes an HR by ID -----------------
+
+    //------------- Deletes an HR by ID ---------------------------------------------------------------------------------
     @Transactional
     public void deleteHr(Long hrId) {
         if (!hrRepository.existsById(hrId)) {
@@ -71,7 +74,8 @@ public class HrService {
         }
         hrRepository.deleteById(hrId);
     }
-//------------- Get all HRs------------------
+
+    //------------- Get all HRs------------------
     public List<Hr> getAllHrs() {
         return hrRepository.findAll();
     }

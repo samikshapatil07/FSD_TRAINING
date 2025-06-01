@@ -1,51 +1,52 @@
 package com.jobportal.JobPortal.model;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
+import java.sql.Timestamp;
+
+import org.hibernate.annotations.CreationTimestamp;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
-@Table(name = "application_update")
+@Table(name = "application_updates")
 public class ApplicationUpdate {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long updateId;
+    private Integer updateId;
 
-    @ManyToOne
-    @JoinColumn(name = "application_id", nullable = false)
+    @Column(name = "updated_resume_path", nullable = false)
+    private String updatedResumePath;
+
+    @Column(name = "updated_on", nullable = false, updatable = false)
+    @CreationTimestamp
+    private Timestamp updatedOn;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "app_id", nullable = false)
     private Application application;
 
-    @Column(nullable = false)
-    private String updatedResumePath;
-    
-    @Column(unique = true)
-    private LocalDateTime updatedOn;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_seeker_id", nullable = false)
+    private JobSeeker jobSeeker;
 
-    // Constructors
-    public ApplicationUpdate() {
-        this.updatedOn = LocalDateTime.now();
-    }
-
-    public ApplicationUpdate(Application application, String updatedResumePath) {
-        this.application = application;
-        this.updatedResumePath = updatedResumePath;
-        this.updatedOn = LocalDateTime.now();
-    }
-
-    // Getters and Setters
-    public Long getUpdateId() {
+    public Integer getUpdateId() {
         return updateId;
     }
 
-    public void setUpdateId(Long updateId) {
+    public void setUpdateId(Integer updateId) {
         this.updateId = updateId;
-    }
-
-    public Application getApplication() {
-        return application;
-    }
-
-    public void setApplication(Application application) {
-        this.application = application;
     }
 
     public String getUpdatedResumePath() {
@@ -56,11 +57,27 @@ public class ApplicationUpdate {
         this.updatedResumePath = updatedResumePath;
     }
 
-    public LocalDateTime getUpdatedOn() {
+    public Timestamp getUpdatedOn() {
         return updatedOn;
     }
 
-    public void setUpdatedOn(LocalDateTime updatedOn) {
+    public void setUpdatedOn(Timestamp updatedOn) {
         this.updatedOn = updatedOn;
+    }
+
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+
+    public JobSeeker getJobSeeker() {
+        return jobSeeker;
+    }
+
+    public void setJobSeeker(JobSeeker jobSeeker) {
+        this.jobSeeker = jobSeeker;
     }
 }
