@@ -1,3 +1,4 @@
+
 package com.springboot.lms.service;
 
 import java.time.LocalDate;
@@ -5,6 +6,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.springboot.lms.exception.NotEnrolledInCourseException;
 import com.springboot.lms.exception.ResourceNotFoundException;
 import com.springboot.lms.model.Course;
 import com.springboot.lms.model.Learner;
@@ -16,9 +18,9 @@ import com.springboot.lms.repository.LearnerRepository;
 @Service
 public class LearnerCourseService {
 
-	private CourseRepository courseRepository;
-	private LearnerRepository learnerRepository;
-	private LearnerCourseRepository learnerCourseRepository;
+	private final CourseRepository courseRepository;
+	private final LearnerRepository learnerRepository;
+	private final LearnerCourseRepository learnerCourseRepository;
 
 	public LearnerCourseService(CourseRepository courseRepository, LearnerRepository learnerRepository,
 			LearnerCourseRepository learnerCourseRepository) {
@@ -50,6 +52,16 @@ public class LearnerCourseService {
 
 	public List<Learner> getLearnerByCourseId(int courseId) {
 		return learnerCourseRepository.getLearnerByCourseId(courseId);
+	}
+
+	public List<Course> getCoursesByLearnerId(int learnerId) {
+		learnerRepository.findById(learnerId)
+	 	.orElseThrow(()-> new ResourceNotFoundException("Learner ID Invalid"));
+		
+		 List<Course> list = learnerCourseRepository.getCourseByLearnerId();
+		 if(list != null && list.isEmpty())
+			 throw new NotEnrolledInCourseException("Learner not enrolled in any course!!");
+		return list;
 	}
 	
 	

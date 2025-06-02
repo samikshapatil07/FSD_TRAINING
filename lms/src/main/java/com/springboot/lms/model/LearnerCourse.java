@@ -11,22 +11,18 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "learner_course") //lc
-public class LearnerCourse {
+@Table(name = "learner_course")
+public class LearnerCourse { // lc
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
 	@Column(name = "enroll_date")
 	private LocalDate enrollDate;
-	
 	@Column(name = "coupon_code")
 	private String couponCode;
-	
-	@ManyToOne
+	@ManyToOne // (cascade = CascadeType.ALL)
 	private Learner learner;
-	
 	@ManyToOne
 	private Course course;
 

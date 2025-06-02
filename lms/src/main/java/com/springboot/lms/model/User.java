@@ -14,12 +14,12 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(nullable = false)
+	@Column(nullable = false) //find by username( String username)
 	private String username;
 	@Column(nullable = false)
-	private String password;
+	private String password; //find by password( String password)
 	@Column(nullable = false)
-	private String role;
+	private String role; //find by role( String role)
  
 	public int getId() {
 		return id;

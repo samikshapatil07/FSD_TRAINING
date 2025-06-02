@@ -1,3 +1,4 @@
+
 package com.springboot.lms.service;
 
 import java.util.List;
@@ -10,8 +11,8 @@ import com.springboot.lms.repository.LearnerRepository;
 @Service
 public class LearnerService {
 
-	private LearnerRepository learnerRepository;
-	private UserService userService; 
+	private final LearnerRepository learnerRepository;
+	private final UserService userService;
 	
 	public LearnerService(LearnerRepository learnerRepository, UserService userService) {
 		this.learnerRepository = learnerRepository;
