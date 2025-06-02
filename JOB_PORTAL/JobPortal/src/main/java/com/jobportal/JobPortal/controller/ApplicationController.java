@@ -22,11 +22,13 @@ public class ApplicationController {
      * INPUT   : Application object from request body
      * RESPONSE: Saved Application object
      */
-    @PostMapping
-    public Application createApplication(@RequestBody Application application) {
-        return applicationService.saveApplication(application);
+    @PostMapping("/{seekerId}/{jobId}")
+    public Application createApplication(@PathVariable int seekerId,
+                                         @PathVariable int jobId,
+                                         @RequestBody Application application) {
+        return applicationService.saveApplication(seekerId, jobId,application);
     }
-
+   
     // ------------------------- Get Application by ID ---------------------------------------------
     /*
      * AIM     : Retrieve a specific application by its ID

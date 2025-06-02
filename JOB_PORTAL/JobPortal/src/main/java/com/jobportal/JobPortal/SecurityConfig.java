@@ -29,7 +29,12 @@ public class SecurityConfig {
 					//-------------------- FOR USER ----------------------------------
 					.requestMatchers("/api/users/signup").permitAll() // allow all to reigister as user
 					.requestMatchers("/api/users/{id}").permitAll()// get user by id
+					.requestMatchers("/api/user/token").authenticated()
+					.requestMatchers("/api/user/details").authenticated()	
 					
+					//------------------- FOR ADMIN -------------------------
+					
+
 					//-------------------- FOR HR -------------------------------------
 					.requestMatchers("/api/hr/register").permitAll() // allow all to register as hr
         			.requestMatchers(HttpMethod.GET,"/api/hr/**").permitAll() // all get(GetById,GetAll) operations for hr are permit all
@@ -47,7 +52,7 @@ public class SecurityConfig {
         			.requestMatchers(HttpMethod.GET, "/api/jobs/**").permitAll() // all can view the jobs that hr has posted
         			
         			// -------------------- FOR  APPLICATIONS  -------------------------------------
-                    .requestMatchers(HttpMethod.POST, "/api/applications").hasAuthority("JOB_SEEKER") //only job seeker can apply for job
+                    .requestMatchers(HttpMethod.POST, "/api/applications/{seekerId}/{jobId}").hasAuthority("JOB_SEEKER") //only job seeker can apply for job
                     .requestMatchers(HttpMethod.PUT, "/api/applications/**").hasAuthority("JOB_SEEKER") // only job seeker can update the application
                     .requestMatchers(HttpMethod.GET, "/api/applications/job/**").hasAuthority("HR") //view  applications by job ID
                     .requestMatchers(HttpMethod.GET, "/api/applications").hasAuthority("HR") //see all applications
@@ -68,7 +73,7 @@ public class SecurityConfig {
                     .requestMatchers(HttpMethod.GET, "/api/updates/jobseeker/**").hasAuthority("JOB_SEEKER") // only job seeker can see the updates made by them
 
                  // -------------------- FOR INTERVIEW ----------------------------------
-                    .requestMatchers(HttpMethod.POST, "/api/interviews").hasAuthority("HR") // HR schedules
+                    .requestMatchers(HttpMethod.POST, "/api/interviews/application/{appId}").hasAuthority("HR") // HR schedules
                     .requestMatchers(HttpMethod.PUT, "/api/interviews").hasAuthority("HR") // HR updates
                     .requestMatchers(HttpMethod.DELETE, "/api/interviews/**").hasAuthority("HR") // HR deletes
                     .requestMatchers(HttpMethod.GET, "/api/interviews/application/**").hasAnyAuthority("HR", "JOB_SEEKER") // View interviews for an application

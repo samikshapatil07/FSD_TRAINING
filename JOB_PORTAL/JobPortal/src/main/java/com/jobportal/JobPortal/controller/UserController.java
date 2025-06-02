@@ -34,13 +34,7 @@ public class UserController {
 		
 	}
 	
-	@GetMapping("/token")
-	public String getToken(Principal principal) {
-		System.out.println("I am in the API method");
-		
-		JwtUtil jwtUtil = new JwtUtil();
-		return jwtUtil.createToken(principal.getName()); 
-	}
+
 //----------------------------- Get user by ID ---------------------------------------------------------
     /*
      * AIM     : To get user details by ID
@@ -57,5 +51,20 @@ public class UserController {
 	@GetMapping("/{id}")
 	public User getUserById(@PathVariable Long id) {
 	    return userService.getUserById(id);
+	}
+	
+	//----------------TOKEN API ----------------
+	  /*
+     * AIM     : To get token for valid users..
+     * PATH    : /api/users/token}
+     * METHOD  : GET
+     */
+	
+	@GetMapping("/token")
+	public String getToken(Principal principal) {
+		System.out.println("I am in the API method");
+		
+		JwtUtil jwtUtil = new JwtUtil();
+		return jwtUtil.createToken(principal.getName()); 
 	}
 }

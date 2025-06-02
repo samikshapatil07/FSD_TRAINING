@@ -25,9 +25,13 @@ public class InterviewController {
      * INPUT   : Interview object in request body
      * RESPONSE: Interview (saved interview with details)
      */
-    @PostMapping
-    public ResponseEntity<Interview> schedule(@RequestBody Interview interview) {
-        return new ResponseEntity<>(service.scheduleInterview(interview), HttpStatus.CREATED);
+    @PostMapping("/application/{appId}")
+    public ResponseEntity<Interview> schedule(
+            @PathVariable Long appId,
+            @RequestBody Interview interview) {
+
+        Interview savedInterview = service.scheduleInterview(appId, interview);
+        return new ResponseEntity<>(savedInterview, HttpStatus.CREATED);
     }
 
     // -------------- Get  Interviews by Application ID -------------

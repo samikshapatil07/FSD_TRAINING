@@ -20,13 +20,11 @@ public class InterviewService {
     private ApplicationRepository applicationRepository;
     
     //------------------------- schedule interview for application (HR)----------------------------------------
-    public Interview scheduleInterview(Interview interview) {
-        // Load the full application from DB
-        Long appId = interview.getApplication().getApplicationId();
+    public Interview scheduleInterview(Long appId, Interview interview) {
         Application application = applicationRepository.findById(appId)
                 .orElseThrow(() -> new RuntimeException("Application not found with ID: " + appId));
 
-        // Attach it
+        // Attach application to interview
         interview.setApplication(application);
 
         // Save interview

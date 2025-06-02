@@ -1,9 +1,13 @@
 package com.jobportal.JobPortal.service;
 
 import com.jobportal.JobPortal.model.Application;
+import com.jobportal.JobPortal.model.JobPosting;
 import com.jobportal.JobPortal.model.JobSeeker;
 import com.jobportal.JobPortal.model.SeekerActivity.ActivityType;
 import com.jobportal.JobPortal.repository.ApplicationRepository;
+import com.jobportal.JobPortal.repository.JobPostingRepository;
+import com.jobportal.JobPortal.repository.JobSeekerRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,25 +25,38 @@ public class ApplicationService {
 
     @Autowired
     private SeekerActivityService seekerActivityService;
+    @Autowired
+    private JobPostingRepository jobPostingRepository;
+    @Autowired
+    private JobSeekerRepository jobSeekerRepository;
 
- // ---------------- Save a new application -----------------------------------------------
-    public Application saveApplication(Application application) {
+ // ---------------- save application -----------------------------------------------
+    public Application saveApplication(int seekerId, int jobId, Application application) {
+        // Validate JobSeeker
+        JobSeeker jobSeeker = jobSeekerRepository.findById((long) seekerId)
+                .orElseThrow(() -> new RuntimeException("JobSeeker not found with ID: " + seekerId));
+
+        // Validate JobPosting
+        JobPosting jobPosting = jobPostingRepository.findById((long) jobId)
+                .orElseThrow(() -> new RuntimeException("JobPosting not found with ID: " + jobId));
+
+        // Attach to application 
+        application.setJobSeeker(jobSeeker);
+        application.setJobPosting(jobPosting);
+
+        // Save application
         Application savedApp = applicationRepository.save(application);
 
         // Log activity
-        JobSeeker seeker = savedApp.getJobSeeker();
-        if (seeker != null) {
-            seekerActivityService.logActivity(
-                seeker,
-                ActivityType.APPLIED_JOB,
-                "Applied to job ID: " + savedApp.getJobPosting().getJobId()
-            );
-        }
+        seekerActivityService.logActivity(
+            jobSeeker,
+            ActivityType.APPLIED_JOB,
+            "Applied to job ID: " + jobId
+        );
 
         return savedApp;
     }
-
- // ---------------- Get an application by its ID ------------------------------------
+ // ---------------- get application by ID ------------------------------------
     public Optional<Application> getApplicationById(Long id) {
         return applicationRepository.findById(id);
     }
@@ -50,7 +67,7 @@ public class ApplicationService {
         return applicationRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
     }
 
-    // ---------------- Get all applications for a specific job posting ----------------
+    // ---------------- Get all applications by job id ----------------
     public List<Application> getApplicationsByJobId(Long jobId) {
         return applicationRepository.findByJobPosting_JobId(jobId);
     }

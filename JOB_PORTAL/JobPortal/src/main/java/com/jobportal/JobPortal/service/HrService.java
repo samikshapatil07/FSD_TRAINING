@@ -39,7 +39,7 @@ public class HrService {
         // Set the role to HR for this user
         user.setRole("HR");
 
-        // Sign up the user (persist the user)
+        // Sign up the user 
         user = userService.signUp(user);
 
         // Attach the saved user back to HR entity
