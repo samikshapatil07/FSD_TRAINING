@@ -1,0 +1,89 @@
+📌 User APIs
+--------------------------------------------------------
+| API Purpose       | HTTP Method | Endpoint           |
+| ----------------- | ----------- | ------------------ |
+| Register / SignUp | POST        | `/user/signup`     |
+| Get User by ID    | GET         | `/user/{id}`       |
+| JWT token Auth    | GET         | `/user/auth/token` |
+--------------------------------------------------------
+
+📌 HR APIs
+--------------------------------------------------
+| API Purpose     | HTTP Method | Endpoint       |
+| --------------- | ----------- | -------------- |
+| Register HR     | POST        | `/hr/register` |
+| Get HR by ID    | GET         | `/hr/{id}`     |
+| Update HR by ID | PUT         | `/hr/{id}`     |
+| Delete HR by ID | DELETE      | `/hr/{id}`     |
+| Get All HRs     | GET         | `/hr`          |
+--------------------------------------------------
+
+📌Job Seeker APIs
+-----------------------------------------------------------------
+| API Purpose             | HTTP Method | Endpoint              |
+| ----------------------- | ----------- | --------------------- |
+| Register Job Seeker     | POST        | `/jobseeker/register` |
+| Get Job Seeker by ID    | GET         | `/jobseeker/{id}`     |
+| Update Job Seeker by ID | PUT         | `/jobseeker/{id}`     |
+| Delete Job Seeker by ID | DELETE      | `/jobseeker/{id}`     |
+| Get All Job Seekers     | GET         | `/jobseeker`          |
+-----------------------------------------------------------------
+
+📌 Job Posting APIs
+----------------------------------------------------------------------------------------------------------------------------------
+| Operation            | Method | Endpoint                                                  | Purpose                            |
+| -------------------- | ------ | --------------------------------------------------------- | ---------------------------------- |
+| Create a job posting | POST   | `/job-posting`                                            | HR posts a new job                 |
+| Get all job postings | GET    | `/job-posting`                                            | Retrieve all jobs                  |
+| Get job by ID        | GET    | `/job-posting/{id}`                                       | View a specific job                |
+| Update job by ID     | PUT    | `/job-posting/{id}`                                       | HR updates job details             |
+| Delete job by ID     | DELETE | `/job-posting/{id}`                                       | HR deletes a job listing           |
+| Get jobs by HR ID    | GET    | `/job-posting/hr/{hrId}`                                  | View all jobs posted by HR         |
+| Search jobs          | GET    | `/job-posting/search?skills=...&location=...&company=...` | Filter by title, location, company |
+----------------------------------------------------------------------------------------------------------------------------------
+
+📌 Application APIs
+----------------------------------------------------------------------------------
+| Method | Endpoint                           | Access                           |
+| ------ | ---------------------------------- | -------------------------------- |
+| POST   | `/api/applications`                | JOB\_SEEKER only                 |
+| PUT    | `/api/applications`                | JOB\_SEEKER (update application) |
+| DELETE | `/api/applications/{id}`           | JOB\_SEEKER only                 |
+| GET    | `/api/applications/jobseeker/{id}` | JOB\_SEEKER only                 |
+| GET    | `/api/applications`                | HR only                          |
+| GET    | `/api/applications/job/{jobId}`    | HR only                          |
+| PATCH  | `/api/applications/{id}`           | HR only (update status)          |
+| GET    | `/api/applications/track/{jsId}`   | JOB\_SEEKER (track app status)   |
+----------------------------------------------------------------------------------
+
+📌 Interview APIs
+------------------------------------------------------------------------------------------
+| Method | Endpoint                              | Purpose                               |
+| ------ | ------------------------------------- | ------------------------------------- |
+| POST   | `/api/interviews`                     | Schedule new interview                |
+| GET    | `/api/interviews/{id}`                | Get interview by ID                   |
+| GET    | `/api/interviews/application/{appId}` | Get all interviews for an application |
+| PUT    | `/api/interviews`                     | Update interview details/outcome      |
+| DELETE | `/api/interviews/{id}`                | Delete an interview                   |
+| PATCH  | `/api/interviews/{id}`                | Update interview status               |
+------------------------------------------------------------------------------------------
+
+📌 Application Update APIs
+------------------------------------------------------------------------------------------------
+| Method | Endpoint                               | Description                                |
+| ------ | -------------------------------------- | ------------------------------------------ |
+| POST   | `/api/updates`                         | Create a new application update            |
+| GET    | `/api/updates/application/{appId}`     | Get all updates for a specific application |
+| GET    | `/api/updates/jobseeker/{jobSeekerId}` | Get all updates by a specific job seeker   |
+------------------------------------------------------------------------------------------------
+
+📌 Seeker Activity APIs
+-----------------------------------------------------------------------------------------------------------------
+| # | Method | Endpoint                             | Description                                | Access       |
+| - | ------ | ------------------------------------ | ------------------------------------------ | ------------ |
+| 1 | POST   | `/api/seeker-activity`               | Log seeker activity (search, apply, view)  | Job Seeker   |
+| 2 | GET    | `/api/seeker-activity`               | Retrieve all activities (optional filters) | Admin        |
+| 3 | GET    | `/api/seeker-activity/{jobSeekerId}` | Get activities by job seeker ID            | Admin / Self |
+| 4 | DELETE | `/api/seeker-activity/{activityId}`  | Delete activity (audit or correction)      | Admin        |
+-----------------------------------------------------------------------------------------------------------------
+
