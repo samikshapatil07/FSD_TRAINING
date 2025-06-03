@@ -1,7 +1,7 @@
-
 package com.springboot.lms.controller;
 
 import java.security.Principal;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -77,7 +77,7 @@ public class LearnerController {
         String username = principal.getName();
         return learnerService.getLearnerByUsername(username);
     }
-//---------------------update learner (used logger) ---------------
+
     /*
      * AIM: Update Learner
      * PATH: /api/learner/update/{id}
@@ -87,10 +87,16 @@ public class LearnerController {
      * input: id as path variable , learner as request body
      */
     @PutMapping("/api/learner/update/{id}")
-    public Learner updateLearner(@PathVariable int id, @RequestBody Learner updatedLearner) {
+    public Learner updateLearner(@PathVariable("id") int id, @RequestBody Learner updatedLearner) {
         logger.info("ID given is : " + id);
         return learnerService.updateLearner(id, updatedLearner);
     }
+
+    @GetMapping("/api/learner/course/{courseId}")
+    public List<?> getLearnersByCourseId(@PathVariable("courseId") int courseId) {
+        return learnerService.getLearnersByCourseId(courseId);
+    }
+
 }
 /*
  * {
