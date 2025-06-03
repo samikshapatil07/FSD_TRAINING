@@ -1,4 +1,3 @@
-
 package com.springboot.lms.service;
 
 import java.time.LocalDate;
@@ -18,13 +17,12 @@ import com.springboot.lms.repository.LearnerRepository;
 @Service
 public class LearnerCourseService {
 
-	private final CourseRepository courseRepository;
-	private final LearnerRepository learnerRepository;
-	private final LearnerCourseRepository learnerCourseRepository;
+	private CourseRepository courseRepository;
+	private LearnerRepository learnerRepository;
+	private LearnerCourseRepository learnerCourseRepository;
 
 	public LearnerCourseService(CourseRepository courseRepository, LearnerRepository learnerRepository,
 			LearnerCourseRepository learnerCourseRepository) {
-		super();
 		this.courseRepository = courseRepository;
 		this.learnerRepository = learnerRepository;
 		this.learnerCourseRepository = learnerCourseRepository;
@@ -32,20 +30,20 @@ public class LearnerCourseService {
 
 	public LearnerCourse enrollLearnerInCourse(int learnerId, int courseId, LearnerCourse learnerCourse) {
 		// Fetch Learner by learnerId
-		 Learner learner = learnerRepository.findById(learnerId)
-		 	.orElseThrow(()-> new ResourceNotFoundException("Learner ID Invalid"));
-		 
-		// Fetch Course by courseId 
+		Learner learner = learnerRepository.findById(learnerId)
+				.orElseThrow(() -> new ResourceNotFoundException("Learner ID Invalid"));
+
+		// Fetch Course by courseId
 		Course course = courseRepository.findById(courseId)
-		.orElseThrow(()-> new ResourceNotFoundException("Course ID Invalid"));
-		
+				.orElseThrow(() -> new ResourceNotFoundException("Course ID Invalid"));
+
 		// Generate todays date and attach it to learnerCourse object
 		learnerCourse.setEnrollDate(LocalDate.now());
-		
-		// Attach Learner and Course to learnerCourse object 
+
+		// Attach Learner and Course to learnerCourse object
 		learnerCourse.setLearner(learner);
 		learnerCourse.setCourse(course);
-		
+
 		// Save learnerCourse in DB
 		return learnerCourseRepository.save(learnerCourse);
 	}
@@ -56,13 +54,12 @@ public class LearnerCourseService {
 
 	public List<Course> getCoursesByLearnerId(int learnerId) {
 		learnerRepository.findById(learnerId)
-	 	.orElseThrow(()-> new ResourceNotFoundException("Learner ID Invalid"));
-		
-		 List<Course> list = learnerCourseRepository.getCourseByLearnerId();
-		 if(list != null && list.isEmpty())
-			 throw new NotEnrolledInCourseException("Learner not enrolled in any course!!");
+				.orElseThrow(() -> new ResourceNotFoundException("Learner ID Invalid"));
+
+		List<Course> list = learnerCourseRepository.getCourseByLearnerId(learnerId);
+		if (list != null && list.isEmpty())
+			throw new NotEnrolledInCourseException("Learner not enrolled in any course!!");
 		return list;
 	}
-	
-	
+
 }

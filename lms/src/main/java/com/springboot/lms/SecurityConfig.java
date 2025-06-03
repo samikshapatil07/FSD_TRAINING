@@ -38,6 +38,10 @@ public class SecurityConfig {
 						//------------------- AUTHOR -------------------------
 						.requestMatchers("/api/author/add").permitAll()
 						
+						//------------------- MODULE -------------------------
+						.requestMatchers("/api/video/add/{moduleId}").hasAnyAuthority("AUTHOR")
+
+						
 						
 						
 						.anyRequest().authenticated())

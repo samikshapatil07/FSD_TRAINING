@@ -11,22 +11,25 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "video")
 public class Video {
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private  int id;
-	
+	private int id;
+
 	@Column(name = "video_title")
-	private String viodeoTitle;
-	
+	private String videoTitle;
+
 	@Column(name = "play_time")
-	private  float playTime;
-	
+	private float playTime;
+
 	@Column(name = "video_code")
 	private String videoCode;
 
+	private int sequence;
+
 	@ManyToOne
 	private CModule module;
-	
+
 	public int getId() {
 		return id;
 	}
@@ -35,12 +38,12 @@ public class Video {
 		this.id = id;
 	}
 
-	public String getViodeoTitle() {
-		return viodeoTitle;
+	public String getVideoTitle() {
+		return videoTitle;
 	}
 
-	public void setViodeoTitle(String viodeoTitle) {
-		this.viodeoTitle = viodeoTitle;
+	public void setVideoTitle(String videoTitle) {
+		this.videoTitle = videoTitle;
 	}
 
 	public float getPlayTime() {
@@ -58,7 +61,21 @@ public class Video {
 	public void setVideoCode(String videoCode) {
 		this.videoCode = videoCode;
 	}
-	
-	
+
+	public CModule getModule() {
+		return module;
+	}
+
+	public void setModule(CModule module) {
+		this.module = module;
+	}
+
+	public int getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(int sequence) {
+		this.sequence = sequence;
+	}
 
 }

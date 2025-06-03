@@ -35,7 +35,7 @@ public class CourseController {
 		String username = principal.getName(); // LoggedIn author
 		return courseService.postCourse(course, username);
 	}
-
+	//------------------------------- implemented paging concept in get all courses ------------------------
 	@GetMapping("/all")
 	public List<Course> getAllCourses(
 			@RequestParam(name = "page", required = false, defaultValue = "0") Integer page,

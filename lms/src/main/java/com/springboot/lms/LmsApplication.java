@@ -2,6 +2,7 @@ package com.springboot.lms;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @SpringBootApplication
 /*telling spring to exclude security 
@@ -9,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * we will activate it letter on
  * 
  * ctrl + shift + o = auto import*/
-
+@EnableTransactionManagement
 public class LmsApplication {
 
 	public static void main(String[] args) {
