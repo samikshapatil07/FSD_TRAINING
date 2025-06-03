@@ -8,7 +8,7 @@
 	},
 	"item": [
 		{
-			"name": "User",
+			"name": "Auth",
 			"item": [
 				{
 					"name": "SignUp",
@@ -43,7 +43,7 @@
 					"response": []
 				},
 				{
-					"name": "Get user by ID",
+					"name": "User Details",
 					"request": {
 						"auth": {
 							"type": "noauth"
@@ -66,7 +66,7 @@
 					"response": []
 				},
 				{
-					"name": "JWT token Auth",
+					"name": "User Token",
 					"request": {
 						"auth": {
 							"type": "basic",
@@ -666,7 +666,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"jobSeeker\": { \"jobSeekerId\": 1 },\r\n  \"jobPosting\": { \"jobId\": 4 },\r\n  \"resumePath\": \"alice_cloud_ibm/resume.pdf\"\r\n}\r\n",
+							"raw": "{\r\n  \"resumePath\": \"alice_cloud_ibm/resume.pdf\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -674,14 +674,16 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/applications",
+							"raw": "localhost:8080/api/applications/2/1",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"applications"
+								"applications",
+								"2",
+								"1"
 							]
 						}
 					},
@@ -982,7 +984,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"interviewDate\": \"2025-06-10\",\r\n  \"interviewLocation\": \"Google Meet\",\r\n  \"interviewMode\": \"ONLINE\",\r\n  \"outcome\": \"PENDING\",\r\n  \"application\": {\r\n    \"applicationId\": 3\r\n  }\r\n}",
+							"raw": "{\r\n  \"interviewDate\": \"2025-06-10\",\r\n  \"interviewLocation\": \"Zoom\",\r\n  \"interviewMode\": \"ONLINE\",\r\n  \"outcome\": \"PENDING\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -990,14 +992,16 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/interviews",
+							"raw": "localhost:8080/api/interviews/application/2",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"interviews"
+								"interviews",
+								"application",
+								"2"
 							]
 						}
 					},
@@ -1088,7 +1092,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"interviewId\": 5,\r\n  \"interviewDate\": \"2025-06-10\",\r\n  \"interviewLocation\": \"Google Meet\",\r\n  \"interviewMode\": \"ONLINE\",\r\n  \"application\": {\r\n    \"applicationId\": 101\r\n  },\r\n  \"outcome\": \"PENDING\"\r\n}",
+							"raw": "{\r\n  \"interviewId\": 1,\r\n  \"interviewDate\": \"2025-06-10\",\r\n  \"interviewLocation\": \"Zoom Meet\",\r\n  \"interviewMode\": \"ONLINE\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1096,14 +1100,15 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/interviews",
+							"raw": "localhost:8080/api/interviews/2",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"interviews"
+								"interviews",
+								"2"
 							]
 						}
 					},
