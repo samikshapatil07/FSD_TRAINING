@@ -1,11 +1,22 @@
 package com.jobportal.JobPortal.model;
 
-import jakarta.persistence.*;
-import java.math.BigDecimal;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "job_posting")
@@ -24,7 +35,7 @@ public class JobPosting {
     private String description;
     private String skills;
     private String location;
-    private BigDecimal salary;
+    private int salary;
     private String department;
     private String company;
     private String experience;
@@ -38,7 +49,7 @@ public class JobPosting {
     }
 
     public JobPosting(String jobTitle, String description, String skills, 
-    		String location, BigDecimal salary, String department, String company,
+    		String location, int salary, String department, String company,
     		String experience, Hr hr) {
         this.jobTitle = jobTitle;
         this.description = description;
@@ -101,11 +112,11 @@ public class JobPosting {
         this.location = location;
     }
 
-    public BigDecimal getSalary() {
+    public int getSalary() {
         return salary;
     }
 
-    public void setSalary(BigDecimal salary) {
+    public void setSalary(int salary) {
         this.salary = salary;
     }
 

@@ -38,14 +38,21 @@ public class InterviewService {
     }
     
     //----------------------------- Updates interview details(Hr) ------------------------------------------
-    public Interview updateInterview(Interview interview) {
+    public Interview updateInterview(Interview interview, Integer applicationId) {
         Interview existing = repository.findById(interview.getInterviewId())
-            .orElseThrow(() -> new RuntimeException("Interview not found"));
+                .orElseThrow(() -> new RuntimeException("Interview not found with ID: " + interview.getInterviewId()));
 
-        // Update only details, not outcome
+        Application application = applicationRepository.findById(Long.valueOf(applicationId))
+                .orElseThrow(() -> new RuntimeException("Application not found with ID: " + applicationId));
+
+        // Update interview details
         existing.setInterviewDate(interview.getInterviewDate());
         existing.setInterviewLocation(interview.getInterviewLocation());
         existing.setInterviewMode(interview.getInterviewMode());
+
+        // Attach application and set outcome to PENDING by default
+        existing.setApplication(application);
+        existing.setOutcome(Interview.InterviewOutcome.PENDING);
 
         return repository.save(existing);
     }

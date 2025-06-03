@@ -1,6 +1,9 @@
 package com.jobportal.JobPortal.controller;
 
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,9 @@ public class ApplicationUpdateController {
 
     @Autowired
     private ApplicationUpdateService updateService;
+    
+  //implementing logger
+    private Logger logger = LoggerFactory.getLogger("ApplicationUpdateController");
 
     // ------------------- Get all updates by Application ID -----------------
     /*
@@ -29,6 +35,7 @@ public class ApplicationUpdateController {
     @GetMapping("/application/{appId}")
     public ResponseEntity<List<ApplicationUpdate>> getByApplicationId(@PathVariable Integer appId) {
         List<ApplicationUpdate> updates = updateService.getUpdatesByApplicationId(appId);
+        logger.info(" Update for Application ID is : " + appId);
         return ResponseEntity.ok(updates);
     }
 
@@ -43,6 +50,7 @@ public class ApplicationUpdateController {
     @GetMapping("/jobseeker/{jobSeekerId}")
     public ResponseEntity<List<ApplicationUpdate>> getByJobSeekerId(@PathVariable Integer jobSeekerId) {
         List<ApplicationUpdate> updates = updateService.getUpdatesByJobSeekerId(jobSeekerId);
+        logger.info("Update for JobSeeker ID is : " + jobSeekerId);
         return ResponseEntity.ok(updates);
     }
 }

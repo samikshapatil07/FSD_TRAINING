@@ -2,6 +2,9 @@ package com.jobportal.JobPortal.controller;
 
 import com.jobportal.JobPortal.model.JobPosting;
 import com.jobportal.JobPortal.service.JobPostingService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,9 @@ public class JobPostingController {
     @Autowired
     private JobPostingService jobPostingService;
 
+  //implementing logger
+    private Logger logger = LoggerFactory.getLogger("JobPostingController");
+    
     // ----------------- Post a new Job (HR)----------------------
     /*
      * AIM     : Allows an HR to post a new job
@@ -28,6 +34,7 @@ public class JobPostingController {
     public ResponseEntity<JobPosting> postJob(@RequestBody JobPosting jobPosting,
                                               @PathVariable Long hrId) {
         JobPosting saved = jobPostingService.postJob(jobPosting, hrId);
+       logger.info("Posting a new job by " + hrId);
         return new ResponseEntity<>(saved, HttpStatus.CREATED);
     }
 
@@ -41,6 +48,7 @@ public class JobPostingController {
     @GetMapping
     public ResponseEntity<?> getAllJobs() {
         List<JobPosting> jobs = jobPostingService.getAllJobs();
+        logger.info("Retriving all jobs...");
         return ResponseEntity.ok(jobs);
     }
 
@@ -55,6 +63,7 @@ public class JobPostingController {
     @GetMapping("/{id}")
     public ResponseEntity<?> getJobById(@PathVariable Long id) {
         JobPosting job = jobPostingService.getJobById(id);
+        logger.info("Getting job with id:"+ id);
         return ResponseEntity.ok(job);
     }
 
@@ -86,6 +95,7 @@ public class JobPostingController {
     @PutMapping("/{id}")
     public ResponseEntity<?> updateJob(@PathVariable Long id, @RequestBody JobPosting updatedJob) {
         JobPosting job = jobPostingService.updateJob(id, updatedJob);
+        logger.info("Updating job with id:"+ id);
         return ResponseEntity.ok(job);
     }
 
@@ -100,6 +110,7 @@ public class JobPostingController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteJob(@PathVariable Long id) {
         jobPostingService.deleteJob(id);
+        logger.info("Deleting job with id:"+ id);
         return ResponseEntity.ok("Job with ID " + id + " has been deleted successfully.");
     }
 }

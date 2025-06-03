@@ -3,6 +3,8 @@ package com.jobportal.JobPortal.controller;
 
 import java.security.Principal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +23,10 @@ public class UserController {
     @Autowired
     private UserService userService;
     
+  //implementing logger
+    private Logger logger = LoggerFactory.getLogger("UserController");
+
+    
  //------------------------- Register user ---------------------------------------------
     /*
 	 * AIM : insert the user in the DB with password encryped
@@ -30,11 +36,11 @@ public class UserController {
 	 * METHOD: POST*/
 	@PostMapping("/signup")
 	public User SignUp(@RequestBody User user) {
+        logger.info("Registering User: " + user);
 		return userService.signUp(user);
 		
 	}
 	
-
 //----------------------------- Get user by ID ---------------------------------------------------------
     /*
      * AIM     : To get user details by ID
@@ -50,6 +56,7 @@ public class UserController {
     
 	@GetMapping("/{id}")
 	public User getUserById(@PathVariable Long id) {
+        logger.info("Getting user details with id: " + id);
 	    return userService.getUserById(id);
 	}
 	

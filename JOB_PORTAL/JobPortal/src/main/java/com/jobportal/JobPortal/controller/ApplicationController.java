@@ -2,8 +2,20 @@ package com.jobportal.JobPortal.controller;
 
 import com.jobportal.JobPortal.model.Application;
 import com.jobportal.JobPortal.service.ApplicationService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -13,6 +25,9 @@ public class ApplicationController {
 
     @Autowired
     private ApplicationService applicationService;
+    
+    //implementing logger
+    private Logger logger = LoggerFactory.getLogger("ApplicationController");
 
     // ------------------------- Apply to Job (Job Seeker) ---------------------------------------------
     /*
@@ -26,6 +41,7 @@ public class ApplicationController {
     public Application createApplication(@PathVariable int seekerId,
                                          @PathVariable int jobId,
                                          @RequestBody Application application) {
+        logger.info("Seeker ID given is : " + seekerId);
         return applicationService.saveApplication(seekerId, jobId,application);
     }
    
@@ -39,6 +55,7 @@ public class ApplicationController {
      */
     @GetMapping("/{id}")
     public Application getApplicationById(@PathVariable Long id) {
+        logger.info("Seeker ID given is : " + id);
         return applicationService.getApplicationById(id).orElse(null);
     }
 
@@ -52,6 +69,7 @@ public class ApplicationController {
      */
     @DeleteMapping("/{id}")
     public void deleteApplication(@PathVariable Long id) {
+        logger.info("Deleted Application with ID : " + id);
         applicationService.deleteApplication(id);
     }
 
@@ -65,6 +83,7 @@ public class ApplicationController {
      */
     @GetMapping("/job/{jobId}")
     public List<Application> getByJobId(@PathVariable Long jobId) {
+        logger.info("Application with Job ID : " + jobId);
         return applicationService.getApplicationsByJobId(jobId);
     }
 
@@ -77,6 +96,7 @@ public class ApplicationController {
      */
     @GetMapping
     public List<Application> getAllApplications() {
+        logger.info("Fetched all applications.. ");
         return applicationService.getAllApplications();
     }
 
@@ -90,6 +110,7 @@ public class ApplicationController {
      */
     @GetMapping("/jobseeker/{jobSeekerId}")
     public List<Application> getByJobSeekerId(@PathVariable Long jobSeekerId) {
+        logger.info("Application with Job Seeker ID : " + jobSeekerId);
         return applicationService.getApplicationsByJobSeekerId(jobSeekerId);
     }
 
@@ -103,6 +124,7 @@ public class ApplicationController {
      */
     @GetMapping("/status/{applicationId}")
     public String trackStatus(@PathVariable Long applicationId) {
+        logger.info("Application Status with app. ID : " + applicationId);
         return applicationService.getApplicationById(applicationId)
                 .map(app -> app.getStatus().toString())
                 .orElse("Application not found");
@@ -118,6 +140,7 @@ public class ApplicationController {
      */
     @PutMapping("/{id}")
     public Application updateApplication(@PathVariable Long id, @RequestBody Application updatedApp) {
+        logger.info("ID given to update is : " + id);
         return applicationService.updateApplication(id, updatedApp);
     }
 
@@ -131,6 +154,7 @@ public class ApplicationController {
      */
     @PatchMapping("/{id}/status")
     public Application updateStatus(@PathVariable Long id, @RequestParam Application.Status status) {
+        logger.info("Application Status for " + id);
         return applicationService.updateApplicationStatus(id, status);
     }
 }

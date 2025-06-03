@@ -2,6 +2,8 @@ package com.jobportal.JobPortal.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +24,9 @@ public class HrController {
 
     @Autowired
     private HrService hrService;
+    
+  //implementing logger
+    private Logger logger = LoggerFactory.getLogger("HrController");
 
     // ------------------------- Register HR ---------------------------------------------
     /*
@@ -34,6 +39,7 @@ public class HrController {
     @PostMapping("/register")
     public ResponseEntity<Hr> registerHr(@RequestBody Hr hr) {
         Hr savedHr = hrService.registerHr(hr);
+        logger.info("HR registered with ID : " + hr);
         return ResponseEntity.ok(savedHr);
     }
 
@@ -48,6 +54,7 @@ public class HrController {
     @GetMapping("/{hrId}")
     public ResponseEntity<?> getHrById(@PathVariable Long hrId) {
         Hr hr = hrService.getHrById(hrId);
+        logger.info("HR with ID : " + hrId);
         return ResponseEntity.ok(hr);
     }
 
@@ -62,6 +69,7 @@ public class HrController {
     @PutMapping("/{hrId}")
     public ResponseEntity<?> updateHr(@PathVariable Long hrId, @RequestBody Hr updatedHr) {
         Hr updated = hrService.updateHr(hrId, updatedHr);
+        logger.info("Updated HR with ID : " + hrId);
         return ResponseEntity.ok("HR updated successfully");
     }
 
@@ -76,6 +84,7 @@ public class HrController {
     @DeleteMapping("/{hrId}")
     public ResponseEntity<?> deleteHr(@PathVariable Long hrId) {
         hrService.deleteHr(hrId);
+        logger.info("Deleted HR with ID : " + hrId);
         return ResponseEntity.ok("HR with ID " + hrId + " has been deleted successfully.");
     }
 
@@ -89,6 +98,7 @@ public class HrController {
     @GetMapping
     public ResponseEntity<?> getAllHrs() {
         List<Hr> list = hrService.getAllHrs();
+        logger.info("List of all HR's");
         return ResponseEntity.ok(list);
     }
 }

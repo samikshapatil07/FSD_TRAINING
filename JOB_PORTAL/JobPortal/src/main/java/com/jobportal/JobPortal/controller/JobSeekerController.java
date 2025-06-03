@@ -3,6 +3,8 @@ package com.jobportal.JobPortal.controller;
 import com.jobportal.JobPortal.model.JobSeeker;
 import com.jobportal.JobPortal.service.JobSeekerService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,6 +17,9 @@ public class JobSeekerController {
 
     @Autowired
     private JobSeekerService jobSeekerService;
+    
+  //implementing logger
+    private Logger logger = LoggerFactory.getLogger("JobSeekerController");
 
     // ------------------------- Register Job Seeker ---------------------------------------------
     /*
@@ -27,6 +32,7 @@ public class JobSeekerController {
     @PostMapping("/register")
     public ResponseEntity<JobSeeker> registerJobSeeker(@RequestBody JobSeeker jobSeeker) {
         JobSeeker savedJobSeeker = jobSeekerService.registerjobSeeker(jobSeeker);
+        logger.info("Register JOb Seeker" + jobSeeker);
         return ResponseEntity.ok(savedJobSeeker);
     }
 
@@ -41,6 +47,7 @@ public class JobSeekerController {
     @GetMapping("/{jobSeekerId}")
     public ResponseEntity<?> getJobSeekerById(@PathVariable Long jobSeekerId) {
         JobSeeker js = jobSeekerService.getJobSeekerById(jobSeekerId);
+        logger.info("Job Seeker with ID" + jobSeekerId);
         return ResponseEntity.ok(js);
     }
 
@@ -55,6 +62,7 @@ public class JobSeekerController {
     @PutMapping("/{jobSeekerId}")
     public ResponseEntity<?> updateJobSeeker(@PathVariable Long jobSeekerId, @RequestBody JobSeeker jobSeeker) {
         JobSeeker updated = jobSeekerService.updateJobSeeker(jobSeekerId, jobSeeker);
+        logger.info("Updating job seeker with id:" + jobSeekerId);
         return ResponseEntity.ok("Job Seeker updated successfully");
     }
 
@@ -69,6 +77,7 @@ public class JobSeekerController {
     @DeleteMapping("/{jobSeekerId}")
     public ResponseEntity<?> deleteJobSeeker(@PathVariable Long jobSeekerId) {
         jobSeekerService.deleteJobSeeker(jobSeekerId);
+        logger.info("Deleting job seeker with id:" + jobSeekerId);
         return ResponseEntity.ok("Job Seeker deleted successfully");
     }
 

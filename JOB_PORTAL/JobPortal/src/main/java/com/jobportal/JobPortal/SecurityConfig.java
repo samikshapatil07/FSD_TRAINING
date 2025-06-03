@@ -26,14 +26,15 @@ public class SecurityConfig {
 		http
 		    .csrf((csrf) -> csrf.disable())
 			.authorizeHttpRequests(authorize -> authorize
+					
+					//------------------- FOR EXECUTIVE-------------------------
+
+					/////remove the  ********** thing from api
 					//-------------------- FOR USER ----------------------------------
 					.requestMatchers("/api/users/signup").permitAll() // allow all to reigister as user
 					.requestMatchers("/api/users/{id}").permitAll()// get user by id
 					.requestMatchers("/api/user/token").authenticated()
 					.requestMatchers("/api/user/details").authenticated()	
-					
-					//------------------- FOR ADMIN -------------------------
-					
 
 					//-------------------- FOR HR -------------------------------------
 					.requestMatchers("/api/hr/register").permitAll() // allow all to register as hr
@@ -74,7 +75,7 @@ public class SecurityConfig {
 
                  // -------------------- FOR INTERVIEW ----------------------------------
                     .requestMatchers(HttpMethod.POST, "/api/interviews/application/{appId}").hasAuthority("HR") // HR schedules
-                    .requestMatchers(HttpMethod.PUT, "/api/interviews").hasAuthority("HR") // HR updates
+                    .requestMatchers(HttpMethod.PUT, "/api/interviews/{appId}").hasAuthority("HR") // HR updates
                     .requestMatchers(HttpMethod.DELETE, "/api/interviews/**").hasAuthority("HR") // HR deletes
                     .requestMatchers(HttpMethod.GET, "/api/interviews/application/**").hasAnyAuthority("HR", "JOB_SEEKER") // View interviews for an application
                     .requestMatchers(HttpMethod.GET, "/api/interviews/**").hasAnyAuthority("HR", "JOB_SEEKER") // View specific interview

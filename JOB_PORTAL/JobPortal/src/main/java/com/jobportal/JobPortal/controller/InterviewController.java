@@ -2,6 +2,8 @@ package com.jobportal.JobPortal.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,10 @@ public class InterviewController {
 
     @Autowired
     private InterviewService service;
+    
+  //implementing logger
+    private Logger logger = LoggerFactory.getLogger("InterviewController");
+
 
     // ------------------ Schedule a new Interview -------------------
     /*
@@ -31,10 +37,11 @@ public class InterviewController {
             @RequestBody Interview interview) {
 
         Interview savedInterview = service.scheduleInterview(appId, interview);
+        logger.info("Scheduled Interview for" + appId + "with interview ID: " + interview);
         return new ResponseEntity<>(savedInterview, HttpStatus.CREATED);
     }
 
-    // -------------- Get  Interviews by Application ID -------------
+    // -------------- Get Interviews by Application ID -------------
     /*
      * AIM     : To get all interviews associated with a specific application
      * PATH    : /api/interviews/application/{appId}
@@ -44,6 +51,7 @@ public class InterviewController {
      */
     @GetMapping("/application/{appId}")
     public ResponseEntity<List<Interview>> getByAppId(@PathVariable Integer appId) {
+        logger.info("Interview with application id: " + appId);
         return ResponseEntity.ok(service.getInterviewsByApplicationId(appId));
     }
 
@@ -57,6 +65,7 @@ public class InterviewController {
      */
     @GetMapping("/{id}")
     public ResponseEntity<Interview> getById(@PathVariable Integer id) {
+        logger.info("Interview with Interview id: " + id);
         return ResponseEntity.ok(service.getInterviewById(id));
     }
 
@@ -68,9 +77,11 @@ public class InterviewController {
      * INPUT   : Interview object with updated details in request body
      * RESPONSE: Updated Interview object
      */
-    @PutMapping
-    public ResponseEntity<Interview> update(@RequestBody Interview interview) {
-        return ResponseEntity.ok(service.updateInterview(interview));
+    @PutMapping("/{applicationId}")
+    public ResponseEntity<Interview> update(@PathVariable Integer applicationId,
+                                            @RequestBody Interview interview) {
+        logger.info("Updating Interview ID: " + interview.getInterviewId() + " for application ID: " + applicationId);
+        return ResponseEntity.ok(service.updateInterview(interview, applicationId));
     }
 
     // ------------------ Delete an Interview ---------------------------
@@ -83,6 +94,7 @@ public class InterviewController {
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
+        logger.info("Deleting Interview with id: " + id);
         service.deleteInterview(id);
         return ResponseEntity.noContent().build();
     }
@@ -97,7 +109,7 @@ public class InterviewController {
      */
     @PatchMapping("/{id}/status")
     public ResponseEntity<Interview> updateOutcome(@PathVariable Integer id,
-                                                   @RequestParam("status") String status) {
+                                                   @RequestParam String status) {
         Interview.InterviewOutcome outcome;
         try {
             outcome = Interview.InterviewOutcome.valueOf(status.toUpperCase());
@@ -106,6 +118,7 @@ public class InterviewController {
         }
 
         Interview updated = service.updateInterviewStatus(id, outcome);
+        logger.info("Updating Interview outcome for id: " + id);
         return ResponseEntity.ok(updated);
     }
 }
