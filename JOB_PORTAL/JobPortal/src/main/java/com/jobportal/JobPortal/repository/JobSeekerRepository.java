@@ -8,16 +8,12 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface JobSeekerRepository extends JpaRepository<JobSeeker, Long> {
+public interface JobSeekerRepository extends JpaRepository<JobSeeker, Integer> {
 
 	
-    @Query("select js from Hr js where js.user.username=?1")
+    @Query("select js from JobSeeker js where js.user.username=?1")
     JobSeeker getJobSeekerByUsername(String username);
     
-    // Find JobSeeker by associated User ID
-	Optional<JobSeeker> findByUser_Id(int id);  
-
-    Optional<JobSeeker> findByUser_Username(String username);
     
     
 }

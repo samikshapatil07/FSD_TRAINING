@@ -31,7 +31,7 @@ public class JobPostingService {
     }
     
   //--------------------- update a Job by its ID --------------------------------------------------
-    public JobPosting updateJob(Long id, JobPosting updatedJob) {
+    public JobPosting updateJob(int id, JobPosting updatedJob) {
         JobPosting existingJob = jobPostingRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
 
@@ -48,7 +48,7 @@ public class JobPostingService {
     }
     
  //--------------------- Delete a Job by ID ------------------------------------------------
-    public void deleteJob(Long jobId) {
+    public void deleteJob(int jobId) {
         if (!jobPostingRepository.existsById(jobId)) {
             throw new ResourceNotFoundException("Job posting not found with ID: " + jobId);
         }
@@ -61,7 +61,7 @@ public class JobPostingService {
     }
 
   //--------------------- Get a Job by ID ------------------------------------------------------
-    public JobPosting getJobById(Long jobId) {
+    public JobPosting getJobById(int jobId) {
         return jobPostingRepository.findById(jobId)
                 .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
     }

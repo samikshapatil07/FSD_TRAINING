@@ -23,7 +23,7 @@ import jakarta.persistence.Table;
 public class JobPosting {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long jobId;
+    private int jobId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "posted_by")
@@ -64,12 +64,12 @@ public class JobPosting {
     }
 
     
-    public Long getJobId() {
+    public int getJobId() {
         return jobId;
     }
 
-    public void setJobId(Long jobId) {
-        this.jobId = jobId;
+    public void setJobId(int i) {
+        this.jobId = i;
     }
 
     public Hr getHr() {

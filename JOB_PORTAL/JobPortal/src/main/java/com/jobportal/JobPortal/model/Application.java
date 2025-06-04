@@ -23,7 +23,7 @@ public class Application {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long applicationId;
+    private int applicationId;
 
     @ManyToOne
     @JoinColumn(name = "job_seeker_id", nullable = false)
@@ -61,11 +61,11 @@ public class Application {
         this.status = Status.APPLIED;
     }
 
-    public Long getApplicationId() {
+    public int getApplicationId() {
         return applicationId;
     }
 
-    public void setApplicationId(Long applicationId) {
+    public void setApplicationId(int applicationId) {
         this.applicationId = applicationId;
     }
 

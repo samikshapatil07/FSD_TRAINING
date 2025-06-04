@@ -24,7 +24,7 @@ public class ApplicationUpdate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer updateId;
+    private int updateId;
 
     @Column(name = "updated_resume_path", nullable = false)
     private String updatedResumePath;

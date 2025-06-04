@@ -8,13 +8,13 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ApplicationRepository extends JpaRepository<Application, Long> {
+public interface ApplicationRepository extends JpaRepository<Application, Integer> {
 
     // get applications by JobSeeker ID
-    List<Application> findByJobSeeker_JobSeekerId(Long jobSeekerId);
+    List<Application> findByJobSeeker_JobSeekerId(int jobSeekerId);
 
     // get applications by JobPosting ID
-    List<Application> findByJobPosting_JobId(Long jobId);
+    List<Application> findByJobPosting_JobId(int jobId);
 
     // get applications by status
     List<Application> findByStatus(Status status);

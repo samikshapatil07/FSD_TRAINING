@@ -33,7 +33,7 @@ public class InterviewController {
      */
     @PostMapping("/application/{appId}")
     public ResponseEntity<Interview> schedule(
-            @PathVariable Long appId,
+            @PathVariable int appId,
             @RequestBody Interview interview) {
 
         Interview savedInterview = service.scheduleInterview(appId, interview);

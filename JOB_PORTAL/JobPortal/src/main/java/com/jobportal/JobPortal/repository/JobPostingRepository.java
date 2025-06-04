@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import com.jobportal.JobPortal.model.JobPosting;
 
 
-public interface JobPostingRepository extends JpaRepository<JobPosting, Long> {
+public interface JobPostingRepository extends JpaRepository<JobPosting, Integer> {
 	@Query("SELECT j FROM JobPosting j " +
 		       "WHERE (:jobTitle IS NULL OR j.jobTitle LIKE %:jobTitle%) " +
 		       "AND (:location IS NULL OR j.location LIKE %:location%) " +

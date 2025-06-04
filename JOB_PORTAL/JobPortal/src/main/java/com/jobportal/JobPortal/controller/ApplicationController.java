@@ -54,7 +54,7 @@ public class ApplicationController {
      * RESPONSE: Application object or null
      */
     @GetMapping("/{id}")
-    public Application getApplicationById(@PathVariable Long id) {
+    public Application getApplicationById(@PathVariable int id) {
         logger.info("Seeker ID given is : " + id);
         return applicationService.getApplicationById(id).orElse(null);
     }
@@ -68,7 +68,7 @@ public class ApplicationController {
      * RESPONSE: void
      */
     @DeleteMapping("/{id}")
-    public void deleteApplication(@PathVariable Long id) {
+    public void deleteApplication(@PathVariable int id) {
         logger.info("Deleted Application with ID : " + id);
         applicationService.deleteApplication(id);
     }
@@ -82,7 +82,7 @@ public class ApplicationController {
      * RESPONSE: List of Application objects
      */
     @GetMapping("/job/{jobId}")
-    public List<Application> getByJobId(@PathVariable Long jobId) {
+    public List<Application> getByJobId(@PathVariable int jobId) {
         logger.info("Application with Job ID : " + jobId);
         return applicationService.getApplicationsByJobId(jobId);
     }
@@ -109,7 +109,7 @@ public class ApplicationController {
      * RESPONSE: List of Application objects
      */
     @GetMapping("/jobseeker/{jobSeekerId}")
-    public List<Application> getByJobSeekerId(@PathVariable Long jobSeekerId) {
+    public List<Application> getByJobSeekerId(@PathVariable int jobSeekerId) {
         logger.info("Application with Job Seeker ID : " + jobSeekerId);
         return applicationService.getApplicationsByJobSeekerId(jobSeekerId);
     }
@@ -123,7 +123,7 @@ public class ApplicationController {
      * RESPONSE: Application status as String or "Application not found"
      */
     @GetMapping("/status/{applicationId}")
-    public String trackStatus(@PathVariable Long applicationId) {
+    public String trackStatus(@PathVariable int applicationId) {
         logger.info("Application Status with app. ID : " + applicationId);
         return applicationService.getApplicationById(applicationId)
                 .map(app -> app.getStatus().toString())
@@ -139,7 +139,7 @@ public class ApplicationController {
      * RESPONSE: Updated Application object
      */
     @PutMapping("/{id}")
-    public Application updateApplication(@PathVariable Long id, @RequestBody Application updatedApp) {
+    public Application updateApplication(@PathVariable int id, @RequestBody Application updatedApp) {
         logger.info("ID given to update is : " + id);
         return applicationService.updateApplication(id, updatedApp);
     }
@@ -153,7 +153,7 @@ public class ApplicationController {
      * RESPONSE: Updated Application object
      */
     @PatchMapping("/{id}/status")
-    public Application updateStatus(@PathVariable Long id, @RequestParam Application.Status status) {
+    public Application updateStatus(@PathVariable int id, @RequestParam Application.Status status) {
         logger.info("Application Status for " + id);
         return applicationService.updateApplicationStatus(id, status);
     }

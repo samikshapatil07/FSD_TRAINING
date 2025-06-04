@@ -38,13 +38,13 @@ public class JobSeekerService {
     }
 
     //---------------- Get a Job Seeker by ID -----------------------
-    public JobSeeker getJobSeekerById(Long jobSeekerId) {
+    public JobSeeker getJobSeekerById(int jobSeekerId) {
         return jobSeekerRepository.findById(jobSeekerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Job Seeker not found with ID: " + jobSeekerId));
     }
 
     //------------------------ Updates job seeker ----------------------
-    public JobSeeker updateJobSeeker(Long jobSeekerId, JobSeeker updated) {
+    public JobSeeker updateJobSeeker(int jobSeekerId, JobSeeker updated) {
         JobSeeker existing = jobSeekerRepository.findById(jobSeekerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Job Seeker not found with ID: " + jobSeekerId));
 
@@ -62,7 +62,7 @@ public class JobSeekerService {
     }
 
     //--------------------------- Deletes job seeker by ID ----------------  
-    public void deleteJobSeeker(Long jobSeekerId) {
+    public void deleteJobSeeker(int jobSeekerId) {
         if (!jobSeekerRepository.existsById(jobSeekerId)) {
             throw new ResourceNotFoundException("Job Seeker not found with ID: " + jobSeekerId);
         }

@@ -45,7 +45,7 @@ public class JobSeekerController {
      * RESPONSE: JobSeeker (Job Seeker object)
      */
     @GetMapping("/{jobSeekerId}")
-    public ResponseEntity<?> getJobSeekerById(@PathVariable Long jobSeekerId) {
+    public ResponseEntity<?> getJobSeekerById(@PathVariable int jobSeekerId) {
         JobSeeker js = jobSeekerService.getJobSeekerById(jobSeekerId);
         logger.info("Job Seeker with ID" + jobSeekerId);
         return ResponseEntity.ok(js);
@@ -60,7 +60,7 @@ public class JobSeekerController {
      * RESPONSE: String (confirmation message)
      */
     @PutMapping("/{jobSeekerId}")
-    public ResponseEntity<?> updateJobSeeker(@PathVariable Long jobSeekerId, @RequestBody JobSeeker jobSeeker) {
+    public ResponseEntity<?> updateJobSeeker(@PathVariable int jobSeekerId, @RequestBody JobSeeker jobSeeker) {
         JobSeeker updated = jobSeekerService.updateJobSeeker(jobSeekerId, jobSeeker);
         logger.info("Updating job seeker with id:" + jobSeekerId);
         return ResponseEntity.ok("Job Seeker updated successfully");
@@ -75,7 +75,7 @@ public class JobSeekerController {
      * RESPONSE: String (confirmation message)
      */
     @DeleteMapping("/{jobSeekerId}")
-    public ResponseEntity<?> deleteJobSeeker(@PathVariable Long jobSeekerId) {
+    public ResponseEntity<?> deleteJobSeeker(@PathVariable int jobSeekerId) {
         jobSeekerService.deleteJobSeeker(jobSeekerId);
         logger.info("Deleting job seeker with id:" + jobSeekerId);
         return ResponseEntity.ok("Job Seeker deleted successfully");

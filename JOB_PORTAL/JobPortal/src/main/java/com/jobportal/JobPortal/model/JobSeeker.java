@@ -24,7 +24,7 @@ public class JobSeeker { //js
     @Id //Primary key - auto-generated job seeker ID 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_seeker_id")
-    private Long jobSeekerId;
+    private int jobSeekerId;
     
     @Column(nullable = false)
     private String name;
@@ -51,12 +51,12 @@ public class JobSeeker { //js
 				+ skills + ", experience=" + experience + ", user=" + user + "]";
 	}
 
-	public Long getJobSeekerId() {
+	public int getJobSeekerId() {
 		return jobSeekerId;
 	}
 
-	public void setJobSeekerId(Long jobSeekerId) {
-		this.jobSeekerId = jobSeekerId;
+	public void setJobSeekerId(int i) {
+		this.jobSeekerId = i;
 	}
 
 	public String getName() {

@@ -20,7 +20,7 @@ public class InterviewService {
     private ApplicationRepository applicationRepository;
     
     //------------------------- schedule interview for application (HR)----------------------------------------
-    public Interview scheduleInterview(Long appId, Interview interview) {
+    public Interview scheduleInterview(int appId, Interview interview) {
         Application application = applicationRepository.findById(appId)
                 .orElseThrow(() -> new RuntimeException("Application not found with ID: " + appId));
 
@@ -42,7 +42,7 @@ public class InterviewService {
         Interview existing = repository.findById(interview.getInterviewId())
                 .orElseThrow(() -> new RuntimeException("Interview not found with ID: " + interview.getInterviewId()));
 
-        Application application = applicationRepository.findById(Long.valueOf(applicationId))
+        Application application = applicationRepository.findById(Integer.valueOf(applicationId))
                 .orElseThrow(() -> new RuntimeException("Application not found with ID: " + applicationId));
 
         // Update interview details

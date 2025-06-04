@@ -33,11 +33,11 @@ public class ApplicationService {
  // ---------------- save application -----------------------------------------------
     public Application saveApplication(int seekerId, int jobId, Application application) {
         // Validate JobSeeker
-        JobSeeker jobSeeker = jobSeekerRepository.findById((long) seekerId)
+        JobSeeker jobSeeker = jobSeekerRepository.findById((int) seekerId)
                 .orElseThrow(() -> new RuntimeException("JobSeeker not found with ID: " + seekerId));
 
         // Validate JobPosting
-        JobPosting jobPosting = jobPostingRepository.findById((long) jobId)
+        JobPosting jobPosting = jobPostingRepository.findById((int) jobId)
                 .orElseThrow(() -> new RuntimeException("JobPosting not found with ID: " + jobId));
 
         // Attach to application 
@@ -57,18 +57,18 @@ public class ApplicationService {
         return savedApp;
     }
  // ---------------- get application by ID ------------------------------------
-    public Optional<Application> getApplicationById(Long id) {
+    public Optional<Application> getApplicationById(int id) {
         return applicationRepository.findById(id);
     }
 
     // ---------------- Get all applications submitted by a specific job seeker ----------------
 
-    public List<Application> getApplicationsByJobSeekerId(Long jobSeekerId) {
+    public List<Application> getApplicationsByJobSeekerId(int jobSeekerId) {
         return applicationRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
     }
 
     // ---------------- Get all applications by job id ----------------
-    public List<Application> getApplicationsByJobId(Long jobId) {
+    public List<Application> getApplicationsByJobId(int jobId) {
         return applicationRepository.findByJobPosting_JobId(jobId);
     }
 
@@ -78,7 +78,7 @@ public class ApplicationService {
     }
 
     // ---------------- Update an existing application and log resume changes ----------------
-    public Application updateApplication(Long id, Application updatedApplication) {
+    public Application updateApplication(int id, Application updatedApplication) {
         return applicationRepository.findById(id).map(existingApp -> {
             String oldResume = existingApp.getResumePath();
             String newResume = updatedApplication.getResumePath();
@@ -104,12 +104,12 @@ public class ApplicationService {
     }
 
     // ---------------- Delete an application by its ID ----------------
-    public void deleteApplication(Long id) {
+    public void deleteApplication(int id) {
         applicationRepository.deleteById(id);
     }
 
     // ---------------- Update the status of an application ----------------
-    public Application updateApplicationStatus(Long id, Application.Status status) {
+    public Application updateApplicationStatus(int id, Application.Status status) {
         return applicationRepository.findById(id).map(application -> {
             application.setStatus(status);
             return applicationRepository.save(application);

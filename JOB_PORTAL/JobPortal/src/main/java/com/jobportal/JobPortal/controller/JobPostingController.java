@@ -61,7 +61,7 @@ public class JobPostingController {
      * RESPONSE: JobPosting object matching the ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getJobById(@PathVariable Long id) {
+    public ResponseEntity<?> getJobById(@PathVariable int id) {
         JobPosting job = jobPostingService.getJobById(id);
         logger.info("Getting job with id:"+ id);
         return ResponseEntity.ok(job);
@@ -93,7 +93,7 @@ public class JobPostingController {
      * RESPONSE: Updated JobPosting object
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateJob(@PathVariable Long id, @RequestBody JobPosting updatedJob) {
+    public ResponseEntity<?> updateJob(@PathVariable int id, @RequestBody JobPosting updatedJob) {
         JobPosting job = jobPostingService.updateJob(id, updatedJob);
         logger.info("Updating job with id:"+ id);
         return ResponseEntity.ok(job);
@@ -108,7 +108,7 @@ public class JobPostingController {
      * RESPONSE: Confirmation message on successful deletion
      */
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteJob(@PathVariable Long id) {
+    public ResponseEntity<?> deleteJob(@PathVariable int id) {
         jobPostingService.deleteJob(id);
         logger.info("Deleting job with id:"+ id);
         return ResponseEntity.ok("Job with ID " + id + " has been deleted successfully.");
