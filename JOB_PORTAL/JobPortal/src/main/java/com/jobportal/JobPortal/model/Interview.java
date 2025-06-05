@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "interviews")
-public class Interview {
+public class Interview {    //i in interview repository
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

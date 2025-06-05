@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "application_updates")
-public class ApplicationUpdate {
+public class ApplicationUpdate {  //au in repository for jpql
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

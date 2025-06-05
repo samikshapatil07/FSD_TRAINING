@@ -19,7 +19,7 @@ import jakarta.persistence.Table;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "job_seeker")
-public class JobSeeker { //js
+public class JobSeeker { //js in repository
 
     @Id //Primary key - auto-generated job seeker ID 
     @GeneratedValue(strategy = GenerationType.IDENTITY)

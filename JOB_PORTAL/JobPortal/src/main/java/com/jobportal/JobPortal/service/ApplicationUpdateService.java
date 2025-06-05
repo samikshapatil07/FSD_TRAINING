@@ -20,11 +20,13 @@ public class ApplicationUpdateService {
     public ApplicationUpdate createUpdate(ApplicationUpdate update) {
         return repository.save(update);
     }
-
+    
+//-------------------- get application update by app. id
     public List<ApplicationUpdate> getUpdatesByApplicationId(Integer applicationId) {
         return repository.findByApplicationApplicationId(applicationId);
     }
 
+//--------------------get application update by job seeker id
     public List<ApplicationUpdate> getUpdatesByJobSeekerId(Integer jobSeekerId) {
         return repository.findByJobSeekerJobSeekerId(jobSeekerId);
     }
