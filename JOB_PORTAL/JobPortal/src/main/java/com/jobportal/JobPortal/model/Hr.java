@@ -20,7 +20,7 @@ public class Hr {  //h
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "hr_id")
-    private Long id; // primary key, auto-increment
+    private int id; // primary key, auto-increment
 
     @Column(nullable = false)
     private String name;
@@ -36,11 +36,11 @@ public class Hr {  //h
     @OneToMany(mappedBy = "hr", cascade = CascadeType.ALL)
     private List<JobPosting> jobPostings;
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

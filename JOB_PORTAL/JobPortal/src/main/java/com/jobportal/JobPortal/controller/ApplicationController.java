@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import com.jobportal.JobPortal.dto.ApplicationDTO;
+
 @RestController
 @RequestMapping("/api/applications")
 public class ApplicationController {
@@ -38,9 +40,9 @@ public class ApplicationController {
      * RESPONSE: Saved Application object
      */
     @PostMapping("/{seekerId}/{jobId}")
-    public Application createApplication(@PathVariable int seekerId,
+    public ApplicationDTO  createApplication(@PathVariable int seekerId,
                                          @PathVariable int jobId,
-                                         @RequestBody Application application) {
+                                         @RequestBody ApplicationDTO  application) {
         logger.info("Seeker ID given is : " + seekerId);
         return applicationService.saveApplication(seekerId, jobId,application);
     }
@@ -54,9 +56,9 @@ public class ApplicationController {
      * RESPONSE: Application object or null
      */
     @GetMapping("/{id}")
-    public Application getApplicationById(@PathVariable int id) {
+    public ApplicationDTO getApplicationById(@PathVariable int id) {
         logger.info("Seeker ID given is : " + id);
-        return applicationService.getApplicationById(id).orElse(null);
+        return applicationService.getApplicationResponseById(id).orElse(null);
     }
 
     // ------------------------- Delete Application (Job Seeker) ---------------------------------------------
@@ -82,7 +84,7 @@ public class ApplicationController {
      * RESPONSE: List of Application objects
      */
     @GetMapping("/job/{jobId}")
-    public List<Application> getByJobId(@PathVariable int jobId) {
+    public List<ApplicationDTO> getByJobId(@PathVariable int jobId) {
         logger.info("Application with Job ID : " + jobId);
         return applicationService.getApplicationsByJobId(jobId);
     }
@@ -95,7 +97,7 @@ public class ApplicationController {
      * RESPONSE: List of all Application objects
      */
     @GetMapping
-    public List<Application> getAllApplications() {
+    public List<ApplicationDTO> getAllApplications() {
         logger.info("Fetched all applications.. ");
         return applicationService.getAllApplications();
     }
@@ -109,7 +111,7 @@ public class ApplicationController {
      * RESPONSE: List of Application objects
      */
     @GetMapping("/jobseeker/{jobSeekerId}")
-    public List<Application> getByJobSeekerId(@PathVariable int jobSeekerId) {
+    public List<ApplicationDTO> getByJobSeekerId(@PathVariable int jobSeekerId) {
         logger.info("Application with Job Seeker ID : " + jobSeekerId);
         return applicationService.getApplicationsByJobSeekerId(jobSeekerId);
     }
@@ -125,7 +127,7 @@ public class ApplicationController {
     @GetMapping("/status/{applicationId}")
     public String trackStatus(@PathVariable int applicationId) {
         logger.info("Application Status with app. ID : " + applicationId);
-        return applicationService.getApplicationById(applicationId)
+        return applicationService.getApplicationResponseById(applicationId)
                 .map(app -> app.getStatus().toString())
                 .orElse("Application not found");
     }
@@ -139,7 +141,7 @@ public class ApplicationController {
      * RESPONSE: Updated Application object
      */
     @PutMapping("/{id}")
-    public Application updateApplication(@PathVariable int id, @RequestBody Application updatedApp) {
+    public ApplicationDTO  updateApplication(@PathVariable int id, @RequestBody ApplicationDTO  updatedApp) {
         logger.info("ID given to update is : " + id);
         return applicationService.updateApplication(id, updatedApp);
     }
@@ -153,7 +155,7 @@ public class ApplicationController {
      * RESPONSE: Updated Application object
      */
     @PatchMapping("/{id}/status")
-    public Application updateStatus(@PathVariable int id, @RequestParam Application.Status status) {
+    public ApplicationDTO updateStatus(@PathVariable int id, @RequestParam Application.Status status) {
         logger.info("Application Status for " + id);
         return applicationService.updateApplicationStatus(id, status);
     }

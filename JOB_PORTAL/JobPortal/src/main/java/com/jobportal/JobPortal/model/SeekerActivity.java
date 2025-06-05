@@ -22,7 +22,7 @@ public class SeekerActivity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long activityId;
+    private int activityId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -43,11 +43,11 @@ public class SeekerActivity {
     }
 
 
-    public Long getActivityId() {
+    public int getActivityId() {
         return activityId;
     }
 
-    public void setActivityId(Long activityId) {
+    public void setActivityId(int activityId) {
         this.activityId = activityId;
     }
 

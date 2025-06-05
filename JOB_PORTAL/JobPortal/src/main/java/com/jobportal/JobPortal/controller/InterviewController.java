@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -9,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.jobportal.JobPortal.dto.InterviewDTO;
 import com.jobportal.JobPortal.model.Interview;
 import com.jobportal.JobPortal.service.InterviewService;
 
@@ -21,7 +23,18 @@ public class InterviewController {
     
   //implementing logger
     private Logger logger = LoggerFactory.getLogger("InterviewController");
-
+    
+  // implementing dto <<<< Convert Interview entity to InterviewDTO>>>>
+    private InterviewDTO convertToDTO(Interview interview) {
+        InterviewDTO dto = new InterviewDTO();
+        dto.setInterviewId(interview.getInterviewId());
+        dto.setInterviewDate(interview.getInterviewDate().toString());
+        dto.setInterviewLocation(interview.getInterviewLocation());
+        dto.setInterviewMode(interview.getInterviewMode().toString());
+        dto.setOutcome(interview.getOutcome().toString());
+        dto.setApplicationId(interview.getApplication().getApplicationId());
+        return dto;
+    }
 
     // ------------------ Schedule a new Interview -------------------
     /*
@@ -32,13 +45,15 @@ public class InterviewController {
      * RESPONSE: Interview (saved interview with details)
      */
     @PostMapping("/application/{appId}")
-    public ResponseEntity<Interview> schedule(
+    public ResponseEntity<InterviewDTO> schedule(
             @PathVariable int appId,
             @RequestBody Interview interview) {
-
         Interview savedInterview = service.scheduleInterview(appId, interview);
+        //dto
+        InterviewDTO dto = convertToDTO(savedInterview);
+        //logger
         logger.info("Scheduled Interview for" + appId + "with interview ID: " + interview);
-        return new ResponseEntity<>(savedInterview, HttpStatus.CREATED);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     // -------------- Get Interviews by Application ID -------------
@@ -50,11 +65,19 @@ public class InterviewController {
      * RESPONSE: List<Interview> (list of interviews)
      */
     @GetMapping("/application/{appId}")
-    public ResponseEntity<List<Interview>> getByAppId(@PathVariable Integer appId) {
-        logger.info("Interview with application id: " + appId);
-        return ResponseEntity.ok(service.getInterviewsByApplicationId(appId));
+    public ResponseEntity<List<InterviewDTO>> getByAppId(@PathVariable Integer appId) {
+        List<Interview> interviews = service.getInterviewsByApplicationId(appId);
+        
+        // Manually converting list of interviews to list of InterviewDTOs
+        List<InterviewDTO> dtoList = new ArrayList<>();
+        for (Interview interview : interviews) {
+            InterviewDTO dto = convertToDTO(interview);
+            dtoList.add(dto);
+        }
+        //logger
+        logger.info("Interviews with application id: " + appId);
+        return ResponseEntity.ok(dtoList);
     }
-
     // ------------------ Get Interview by Interview ID -----------------
     /*
      * AIM     : To retrieve a specific interview by its ID
@@ -64,9 +87,15 @@ public class InterviewController {
      * RESPONSE: Interview object
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Interview> getById(@PathVariable Integer id) {
-        logger.info("Interview with Interview id: " + id);
-        return ResponseEntity.ok(service.getInterviewById(id));
+    public ResponseEntity<InterviewDTO> getById(@PathVariable Integer id) {
+        Interview interview = service.getInterviewById(id);
+        if (interview != null) {
+            InterviewDTO dto = convertToDTO(interview);
+            //logger
+            logger.info("Interview with Interview id: " + id);
+            return ResponseEntity.ok(dto);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     // ------------------ Update Interview Details (HR)----------------------
@@ -108,8 +137,8 @@ public class InterviewController {
      * RESPONSE: Updated Interview object
      */
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Interview> updateOutcome(@PathVariable Integer id,
-                                                   @RequestParam String status) {
+    public ResponseEntity<InterviewDTO> updateOutcome(@PathVariable Integer id,
+                                                      @RequestParam String status) {
         Interview.InterviewOutcome outcome;
         try {
             outcome = Interview.InterviewOutcome.valueOf(status.toUpperCase());
@@ -118,7 +147,10 @@ public class InterviewController {
         }
 
         Interview updated = service.updateInterviewStatus(id, outcome);
+        //dto
+        InterviewDTO dto = convertToDTO(updated);
+        //logger
         logger.info("Updating Interview outcome for id: " + id);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(dto);
     }
 }

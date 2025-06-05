@@ -24,7 +24,7 @@ public class SeekerActivityService {
         repository.save(activity);
     }
 //---------------Retrieves all activities performed by a specific js by id ---------------------
-    public List<SeekerActivity> getActivitiesByJobSeekerId(Long jobSeekerId) {
+    public List<SeekerActivity> getActivitiesByJobSeekerId(int jobSeekerId) {
         return repository.findByJobSeeker_JobSeekerId(jobSeekerId);
     }
 //-------------------------Retrieves all seeker activities---------------------

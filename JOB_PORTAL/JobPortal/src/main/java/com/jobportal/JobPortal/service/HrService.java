@@ -50,13 +50,13 @@ public class HrService {
     }
 
     //--------------------------- Get HR by ID ----------------------------------------------------------------------------------
-    public Hr getHrById(Long hrId) {
+    public Hr getHrById(int hrId) {
         return hrRepository.findById(hrId)
                 .orElseThrow(() -> new ResourceNotFoundException("HR not found with ID: " + hrId));
     }
 
     //-------------------------- Updates an existing HR's name and company ----------------------------------------------------
-    public Hr updateHr(Long hrId, Hr updatedHr) {
+    public Hr updateHr(int hrId, Hr updatedHr) {
         Hr existingHr = hrRepository.findById(hrId)
                 .orElseThrow(() -> new ResourceNotFoundException("HR not found with ID: " + hrId));
 
@@ -68,7 +68,7 @@ public class HrService {
 
     //------------- Deletes an HR by ID ---------------------------------------------------------------------------------
     @Transactional
-    public void deleteHr(Long hrId) {
+    public void deleteHr(int hrId) {
         if (!hrRepository.existsById(hrId)) {
             throw new ResourceNotFoundException("HR not found with ID: " + hrId);
         }

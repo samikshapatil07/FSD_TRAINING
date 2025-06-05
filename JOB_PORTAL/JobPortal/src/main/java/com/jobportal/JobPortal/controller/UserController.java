@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.jobportal.JobPortal.dto.UserDTO;
 import com.jobportal.JobPortal.model.User;
 import com.jobportal.JobPortal.service.UserService;
 import com.jobportal.JobPortal.util.JwtUtil;
@@ -53,11 +55,12 @@ public class UserController {
 //    public ResponseEntity<User> getUserById(@PathVariable Long id) {
 //        return ResponseEntity.ok(userService.getUserById(id));
 //    }
-    
+	
 	@GetMapping("/{id}")
-	public User getUserById(@PathVariable Long id) {
-        logger.info("Getting user details with id: " + id);
-	    return userService.getUserById(id);
+	public UserDTO getUserById(@PathVariable int id) {
+	    logger.info("Getting user details with id: " + id);
+	    User user = userService.getUserById(id);
+	    return new UserDTO(user.getId(), user.getUsername(), user.getRole());
 	}
 	
 	//----------------TOKEN API ----------------

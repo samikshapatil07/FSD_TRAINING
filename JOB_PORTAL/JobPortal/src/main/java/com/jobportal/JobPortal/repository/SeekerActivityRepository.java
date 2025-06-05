@@ -7,6 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface SeekerActivityRepository extends JpaRepository<SeekerActivity, Long> {
-    List<SeekerActivity> findByJobSeeker_JobSeekerId(Long jobSeekerId);
+public interface SeekerActivityRepository extends JpaRepository<SeekerActivity, Integer> {
+    List<SeekerActivity> findByJobSeeker_JobSeekerId(int jobSeekerId);
 }

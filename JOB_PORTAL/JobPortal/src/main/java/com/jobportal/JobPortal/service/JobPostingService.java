@@ -22,7 +22,7 @@ public class JobPostingService {
 
     
   //--------------------- Posts a new Job -------------------------------------------------------
-    public JobPosting postJob(JobPosting jobPosting, Long hrId) {
+    public JobPosting postJob(JobPosting jobPosting, int hrId) {
         Hr hr = hrRepository.findById(hrId)
                 .orElseThrow(() -> new ResourceNotFoundException("HR not found with ID: " + hrId));
         jobPosting.setHr(hr);

@@ -14,9 +14,9 @@ public interface HrRepository extends JpaRepository<Hr, Integer> {
     
     Optional<Hr> findByUser(User user);
 
-	Optional<Hr> findById(Long Id);
+	Optional<Hr> findById(int Id);
 
-	boolean existsById(Long Id);
+	boolean existsById(int Id);
 
-	void deleteById(Long Id);
+	void deleteById(int Id);
 }

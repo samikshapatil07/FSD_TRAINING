@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal.service;
 
+import com.jobportal.JobPortal.dto.ApplicationDTO;
 import com.jobportal.JobPortal.model.Application;
 import com.jobportal.JobPortal.model.JobPosting;
 import com.jobportal.JobPortal.model.JobSeeker;
@@ -11,6 +12,7 @@ import com.jobportal.JobPortal.repository.JobSeekerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,58 +32,122 @@ public class ApplicationService {
     @Autowired
     private JobSeekerRepository jobSeekerRepository;
 
- // ---------------- save application -----------------------------------------------
-    public Application saveApplication(int seekerId, int jobId, Application application) {
-        // Validate JobSeeker
-        JobSeeker jobSeeker = jobSeekerRepository.findById((int) seekerId)
+ // ---------------- Save Application -----------------------------------------------
+    public ApplicationDTO  saveApplication(int seekerId, int jobId, ApplicationDTO applicationDTO) {
+        JobSeeker jobSeeker = jobSeekerRepository.findById(seekerId)
                 .orElseThrow(() -> new RuntimeException("JobSeeker not found with ID: " + seekerId));
 
-        // Validate JobPosting
-        JobPosting jobPosting = jobPostingRepository.findById((int) jobId)
+        JobPosting jobPosting = jobPostingRepository.findById(jobId)
                 .orElseThrow(() -> new RuntimeException("JobPosting not found with ID: " + jobId));
 
-        // Attach to application 
+        Application application = new Application();
         application.setJobSeeker(jobSeeker);
         application.setJobPosting(jobPosting);
+        application.setResumePath(applicationDTO.getResumePath());
 
-        // Save application
         Application savedApp = applicationRepository.save(application);
 
-        // Log activity
         seekerActivityService.logActivity(
-            jobSeeker,
-            ActivityType.APPLIED_JOB,
-            "Applied to job ID: " + jobId
+                jobSeeker,
+                ActivityType.APPLIED_JOB,
+                "Applied to job ID: " + jobId
         );
 
-        return savedApp;
+        ApplicationDTO  dto = new ApplicationDTO ();
+        dto.setApplicationId(savedApp.getApplicationId());
+        dto.setJobSeekerId(seekerId);
+        dto.setJobId(jobId);
+        dto.setResumePath(savedApp.getResumePath());
+        dto.setStatus(savedApp.getStatus().toString());
+        dto.setAppliedOn(savedApp.getAppliedOn());
+
+        return dto;
     }
+
  // ---------------- get application by ID ------------------------------------
-    public Optional<Application> getApplicationById(int id) {
-        return applicationRepository.findById(id);
+    public Optional<ApplicationDTO> getApplicationResponseById(int id) {
+        Optional<Application> optionalApp = applicationRepository.findById(id);
+        if (optionalApp.isPresent()) {
+            Application app = optionalApp.get();
+            ApplicationDTO dto = new ApplicationDTO();
+            dto.setApplicationId(app.getApplicationId());
+            dto.setJobSeekerId(app.getJobSeeker().getJobSeekerId());
+            dto.setJobId(app.getJobPosting().getJobId());
+            dto.setResumePath(app.getResumePath());
+            dto.setStatus(app.getStatus().toString());
+            dto.setAppliedOn(app.getAppliedOn());
+            return Optional.of(dto);
+        } else {
+            return Optional.empty();
+        }
     }
 
     // ---------------- Get all applications submitted by a specific job seeker ----------------
 
-    public List<Application> getApplicationsByJobSeekerId(int jobSeekerId) {
-        return applicationRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
+    public List<ApplicationDTO> getApplicationsByJobSeekerId(int jobSeekerId) {
+        List<Application> applications = applicationRepository.findByJobSeeker_JobSeekerId(jobSeekerId);
+        List<ApplicationDTO> dtoList = new ArrayList<>();
+
+        for (Application app : applications) {
+        	ApplicationDTO dto = new ApplicationDTO();
+            dto.setApplicationId(app.getApplicationId());
+            dto.setJobSeekerId(app.getJobSeeker().getJobSeekerId());
+            dto.setJobId(app.getJobPosting().getJobId());
+            dto.setResumePath(app.getResumePath());
+            dto.setStatus(app.getStatus().toString());
+            dto.setAppliedOn(app.getAppliedOn());
+            dtoList.add(dto);
+        }
+
+        return dtoList;
     }
 
     // ---------------- Get all applications by job id ----------------
-    public List<Application> getApplicationsByJobId(int jobId) {
-        return applicationRepository.findByJobPosting_JobId(jobId);
+    public List<ApplicationDTO> getApplicationsByJobId(int jobId) {
+        List<Application> applications = applicationRepository.findByJobPosting_JobId(jobId);
+        List<ApplicationDTO> dtoList = new ArrayList<>();
+
+        for (Application app : applications) {
+        	ApplicationDTO dto = new ApplicationDTO();
+            dto.setApplicationId(app.getApplicationId());
+            dto.setJobSeekerId(app.getJobSeeker().getJobSeekerId());
+            dto.setJobId(app.getJobPosting().getJobId());
+            dto.setResumePath(app.getResumePath());
+            dto.setStatus(app.getStatus().toString());
+            dto.setAppliedOn(app.getAppliedOn());
+            dtoList.add(dto);
+        }
+
+        return dtoList;
     }
 
     // ---------------- Get all applications ----------------
-    public List<Application> getAllApplications() {
-        return applicationRepository.findAll();
-    }
+    public List<ApplicationDTO> getAllApplications() {
+        List<Application> applications = applicationRepository.findAll();
+        List<ApplicationDTO> dtoList = new ArrayList<>();
 
+        for (Application app : applications) {
+        	ApplicationDTO dto = new ApplicationDTO();
+            dto.setApplicationId(app.getApplicationId());
+            dto.setJobSeekerId(app.getJobSeeker().getJobSeekerId());
+            dto.setJobId(app.getJobPosting().getJobId());
+            dto.setResumePath(app.getResumePath());
+            dto.setStatus(app.getStatus().toString());
+            dto.setAppliedOn(app.getAppliedOn());
+            dtoList.add(dto);
+        }
+
+        return dtoList;
+    }
     // ---------------- Update an existing application and log resume changes ----------------
-    public Application updateApplication(int id, Application updatedApplication) {
-        return applicationRepository.findById(id).map(existingApp -> {
+    public ApplicationDTO updateApplication(int id, ApplicationDTO updatedDTO) {
+        Optional<Application> optionalApp = applicationRepository.findById(id);
+
+        if (optionalApp.isPresent()) {
+            Application existingApp = optionalApp.get();
+
             String oldResume = existingApp.getResumePath();
-            String newResume = updatedApplication.getResumePath();
+            String newResume = updatedDTO.getResumePath();
 
             if (newResume != null && !newResume.equals(oldResume)) {
                 existingApp.setResumePath(newResume);
@@ -90,17 +156,28 @@ public class ApplicationService {
                 if (jobSeeker != null) {
                     applicationUpdateService.recordResumeUpdate(existingApp, jobSeeker, newResume);
 
-                    // Log resume update activity
                     seekerActivityService.logActivity(
-                        jobSeeker,
-                        ActivityType.RESUME_UPDATED,
-                        "Updated resume to: " + newResume
+                            jobSeeker,
+                            ActivityType.RESUME_UPDATED,
+                            "Updated resume to: " + newResume
                     );
                 }
             }
 
-            return applicationRepository.save(existingApp);
-        }).orElseThrow(() -> new RuntimeException("Application not found with ID: " + id));
+            Application updatedApp = applicationRepository.save(existingApp);
+
+            ApplicationDTO dto = new ApplicationDTO();
+            dto.setApplicationId(updatedApp.getApplicationId());
+            dto.setJobSeekerId(updatedApp.getJobSeeker().getJobSeekerId());
+            dto.setJobId(updatedApp.getJobPosting().getJobId());
+            dto.setResumePath(updatedApp.getResumePath());
+            dto.setStatus(updatedApp.getStatus().toString());
+            dto.setAppliedOn(updatedApp.getAppliedOn());
+
+            return dto;
+        } else {
+            throw new RuntimeException("Application not found with ID: " + id);
+        }
     }
 
     // ---------------- Delete an application by its ID ----------------
@@ -109,10 +186,25 @@ public class ApplicationService {
     }
 
     // ---------------- Update the status of an application ----------------
-    public Application updateApplicationStatus(int id, Application.Status status) {
-        return applicationRepository.findById(id).map(application -> {
+    public ApplicationDTO updateApplicationStatus(int id, Application.Status status) {
+        Optional<Application> optionalApp = applicationRepository.findById(id);
+
+        if (optionalApp.isPresent()) {
+            Application application = optionalApp.get();
             application.setStatus(status);
-            return applicationRepository.save(application);
-        }).orElseThrow(() -> new RuntimeException("Application not found with ID: " + id));
+            Application updatedApp = applicationRepository.save(application);
+
+            ApplicationDTO dto = new ApplicationDTO();
+            dto.setApplicationId(updatedApp.getApplicationId());
+            dto.setJobSeekerId(updatedApp.getJobSeeker().getJobSeekerId());
+            dto.setJobId(updatedApp.getJobPosting().getJobId());
+            dto.setResumePath(updatedApp.getResumePath());
+            dto.setStatus(updatedApp.getStatus().toString());
+            dto.setAppliedOn(updatedApp.getAppliedOn());
+
+            return dto;
+        } else {
+            throw new RuntimeException("Application not found with ID: " + id);
+        }
     }
 }

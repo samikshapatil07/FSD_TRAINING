@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal.controller;
 
+import com.jobportal.JobPortal.dto.JobPostingDTO;
 import com.jobportal.JobPortal.model.JobPosting;
 import com.jobportal.JobPortal.service.JobPostingService;
 
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -22,6 +24,29 @@ public class JobPostingController {
   //implementing logger
     private Logger logger = LoggerFactory.getLogger("JobPostingController");
     
+    //implementing dto (convert JobPosting to JobPostingDTO)
+    private JobPostingDTO convertToDTO(JobPosting job) {
+        return new JobPostingDTO(
+            job.getJobId(),
+            job.getJobTitle(),
+            job.getDescription(),
+            job.getSkills(),
+            job.getLocation(),
+            job.getSalary(),
+            job.getDepartment(),
+            job.getCompany(),
+            job.getExperience(),
+            job.getCreatedAt()
+        );
+    }
+    
+    private List<JobPostingDTO> convertListToDTO(List<JobPosting> jobList) {
+        List<JobPostingDTO> dtoList = new ArrayList<>();
+        for (JobPosting job : jobList) {
+            dtoList.add(convertToDTO(job));
+        }
+        return dtoList;
+    }
     // ----------------- Post a new Job (HR)----------------------
     /*
      * AIM     : Allows an HR to post a new job
@@ -31,11 +56,14 @@ public class JobPostingController {
      * RESPONSE: Returns the saved JobPosting with generated ID and details
      */
     @PostMapping("/{hrId}")
-    public ResponseEntity<JobPosting> postJob(@RequestBody JobPosting jobPosting,
-                                              @PathVariable Long hrId) {
+    public ResponseEntity<JobPostingDTO> postJob(@RequestBody JobPosting jobPosting,
+                                              @PathVariable int hrId) {
         JobPosting saved = jobPostingService.postJob(jobPosting, hrId);
+        //dto
+        JobPostingDTO dto = convertToDTO(saved);
+        //logger
        logger.info("Posting a new job by " + hrId);
-        return new ResponseEntity<>(saved, HttpStatus.CREATED);
+        return new ResponseEntity<>(dto, HttpStatus.CREATED);
     }
 
     // ----------------- Get All Jobs -------------------------
@@ -46,10 +74,13 @@ public class JobPostingController {
      * RESPONSE: List of all JobPosting objects
      */
     @GetMapping
-    public ResponseEntity<?> getAllJobs() {
+    public ResponseEntity<List<JobPostingDTO>> getAllJobs() {
         List<JobPosting> jobs = jobPostingService.getAllJobs();
-        logger.info("Retriving all jobs...");
-        return ResponseEntity.ok(jobs);
+        //logger
+        logger.info("Retrieving all jobs...");
+        //dto
+        List<JobPostingDTO> dtoList = convertListToDTO(jobs);
+        return ResponseEntity.ok(dtoList);
     }
 
     // ----------------- Get Job by ID ------------------------
@@ -61,10 +92,13 @@ public class JobPostingController {
      * RESPONSE: JobPosting object matching the ID
      */
     @GetMapping("/{id}")
-    public ResponseEntity<?> getJobById(@PathVariable int id) {
+    public ResponseEntity<JobPostingDTO> getJobById(@PathVariable int id) {
         JobPosting job = jobPostingService.getJobById(id);
-        logger.info("Getting job with id:"+ id);
-        return ResponseEntity.ok(job);
+        //logger
+        logger.info("Getting job with id: " + id);
+        //dto
+        JobPostingDTO dto = convertToDTO(job);
+        return ResponseEntity.ok(dto);
     }
 
     // -------------- Search Jobs by Criteria -------------------
@@ -76,14 +110,17 @@ public class JobPostingController {
      * RESPONSE: List of JobPosting objects matching search criteria
      */
     @GetMapping("/search")
-    public ResponseEntity<List<JobPosting>> searchJobs(
+    public ResponseEntity<List<JobPostingDTO>> searchJobs(
             @RequestParam(required = false) String job_title,
             @RequestParam(required = false) String location,
             @RequestParam(required = false) String company) {
         List<JobPosting> jobs = jobPostingService.searchJobs(job_title, location, company);
-        return ResponseEntity.ok(jobs);
+        //logger
+        logger.info("Searching jobs...");
+        //dto
+        List<JobPostingDTO> dtoList = convertListToDTO(jobs);
+        return ResponseEntity.ok(dtoList);
     }
-
     // --------------- Update Job by ID ------------------------
     /*
      * AIM     : Update an existing job posting's details
@@ -93,10 +130,13 @@ public class JobPostingController {
      * RESPONSE: Updated JobPosting object
      */
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateJob(@PathVariable int id, @RequestBody JobPosting updatedJob) {
+    public ResponseEntity<JobPostingDTO> updateJob(@PathVariable int id, @RequestBody JobPosting updatedJob) {
         JobPosting job = jobPostingService.updateJob(id, updatedJob);
-        logger.info("Updating job with id:"+ id);
-        return ResponseEntity.ok(job);
+        //logger
+        logger.info("Updating job with id: " + id);
+        //dto
+        JobPostingDTO dto = convertToDTO(job);
+        return ResponseEntity.ok(dto);
     }
 
     // --------------- Delete Job by ID ------------------------
@@ -110,6 +150,7 @@ public class JobPostingController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteJob(@PathVariable int id) {
         jobPostingService.deleteJob(id);
+        //logger
         logger.info("Deleting job with id:"+ id);
         return ResponseEntity.ok("Job with ID " + id + " has been deleted successfully.");
     }

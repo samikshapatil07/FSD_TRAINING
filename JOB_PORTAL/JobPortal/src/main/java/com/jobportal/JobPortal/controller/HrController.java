@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jobportal.JobPortal.dto.HrDTO;
 import com.jobportal.JobPortal.model.Hr;
 import com.jobportal.JobPortal.service.HrService;
 
@@ -27,6 +29,24 @@ public class HrController {
     
   //implementing logger
     private Logger logger = LoggerFactory.getLogger("HrController");
+    
+   //implementing dto here and then using it in every method
+    private HrDTO convertToDTO(Hr hr) {
+        HrDTO dto = new HrDTO();
+        dto.setId(hr.getId());
+        dto.setName(hr.getName());
+        dto.setCompanyName(hr.getCompanyName());
+        dto.setUsername(hr.getUser() != null ? hr.getUser().getUsername() : null);
+        return dto;
+    }
+
+    private List<HrDTO> convertToDTOList(List<Hr> hrList) {
+        List<HrDTO> dtoList = new ArrayList<>();
+        for (Hr hr : hrList) {
+            dtoList.add(convertToDTO(hr));
+        }
+        return dtoList;
+    }
 
     // ------------------------- Register HR ---------------------------------------------
     /*
@@ -37,12 +57,14 @@ public class HrController {
      * RESPONSE: Hr (saved HR object)
      */
     @PostMapping("/register")
-    public ResponseEntity<Hr> registerHr(@RequestBody Hr hr) {
+    public ResponseEntity<HrDTO> registerHr(@RequestBody Hr hr) {
+    	//logger
+        logger.info("Registering new HR...");
         Hr savedHr = hrService.registerHr(hr);
-        logger.info("HR registered with ID : " + hr);
-        return ResponseEntity.ok(savedHr);
+        //dto
+        HrDTO dto = convertToDTO(savedHr);
+        return ResponseEntity.ok(dto);
     }
-
     // ------------------------- Get HR by ID ---------------------------------------------
     /*
      * AIM     : To get HR details by ID
@@ -52,10 +74,30 @@ public class HrController {
      * RESPONSE: Hr (HR object)
      */
     @GetMapping("/{hrId}")
-    public ResponseEntity<?> getHrById(@PathVariable Long hrId) {
+    public ResponseEntity<HrDTO> getHrById(@PathVariable int hrId) {
+    	//logger
+        logger.info("Fetching HR by ID: " + hrId);
         Hr hr = hrService.getHrById(hrId);
-        logger.info("HR with ID : " + hrId);
-        return ResponseEntity.ok(hr);
+        //dto
+        HrDTO dto = convertToDTO(hr);
+        return ResponseEntity.ok(dto);
+    }
+    
+    // ------------------------- Get All HRs ---------------------------------------------
+    /*
+     * AIM     : To get a list of all HRs
+     * PATH    : /api/hr
+     * METHOD  : GET
+     * RESPONSE: List<Hr> (all HR records)
+     */
+    @GetMapping
+    public ResponseEntity<List<HrDTO>> getAllHrs() {
+    	//logger
+        logger.info("Fetching all HRs...");
+        List<Hr> hrList = hrService.getAllHrs();
+        //dto
+        List<HrDTO> dtoList = convertToDTOList(hrList);
+        return ResponseEntity.ok(dtoList);
     }
 
     // ------------------------- Update HR ---------------------------------------------
@@ -67,12 +109,12 @@ public class HrController {
      * RESPONSE: String (confirmation message)
      */
     @PutMapping("/{hrId}")
-    public ResponseEntity<?> updateHr(@PathVariable Long hrId, @RequestBody Hr updatedHr) {
-        Hr updated = hrService.updateHr(hrId, updatedHr);
-        logger.info("Updated HR with ID : " + hrId);
-        return ResponseEntity.ok("HR updated successfully");
+    public ResponseEntity<String> updateHr(@PathVariable int hrId, @RequestBody Hr updatedHr) {
+        //logger
+    	logger.info("Updating HR with ID: " + hrId);
+        hrService.updateHr(hrId, updatedHr);
+        return ResponseEntity.ok("HR with ID " + hrId + " updated successfully.");
     }
-
     // ------------------------- Delete HR ---------------------------------------------
     /*
      * AIM     : To delete an HR by ID
@@ -82,23 +124,11 @@ public class HrController {
      * RESPONSE: String (confirmation message)
      */
     @DeleteMapping("/{hrId}")
-    public ResponseEntity<?> deleteHr(@PathVariable Long hrId) {
+    public ResponseEntity<?> deleteHr(@PathVariable int hrId) {
         hrService.deleteHr(hrId);
+        //logger
         logger.info("Deleted HR with ID : " + hrId);
         return ResponseEntity.ok("HR with ID " + hrId + " has been deleted successfully.");
     }
 
-    // ------------------------- Get All HRs ---------------------------------------------
-    /*
-     * AIM     : To get a list of all HRs
-     * PATH    : /api/hr
-     * METHOD  : GET
-     * RESPONSE: List<Hr> (all HR records)
-     */
-    @GetMapping
-    public ResponseEntity<?> getAllHrs() {
-        List<Hr> list = hrService.getAllHrs();
-        logger.info("List of all HR's");
-        return ResponseEntity.ok(list);
-    }
 }
