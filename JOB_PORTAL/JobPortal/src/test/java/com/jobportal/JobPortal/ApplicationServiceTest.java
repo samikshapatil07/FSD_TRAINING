@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-
+import com.jobportal.JobPortal.dto.ApplicationDTO;
 import com.jobportal.JobPortal.model.Application;
 import com.jobportal.JobPortal.model.JobPosting;
 import com.jobportal.JobPortal.model.JobSeeker;
@@ -44,56 +44,51 @@ public class ApplicationServiceTest {
     private SeekerActivityService seekerActivityService;
 
 
+    private ApplicationDTO applicationDTO;
     private JobSeeker jobSeeker;
     private JobPosting jobPosting;
     private Application application;
-    private Application updatedApp;
 
 	@BeforeEach  // <-- before every test these objects will be created at locations in HEAP
-	public void init() {
-		jobSeeker = new JobSeeker();
-		jobSeeker.setJobSeekerId(1);
-		jobSeeker.setName("John Doe");
-		
-		
-		jobPosting = new JobPosting();
-		jobPosting.setJobId(1);
-		jobPosting.setJobTitle("Java Developer");
-		
-		
-		application = new Application();
-		application.setApplicationId(1);
-		application.setJobSeeker(jobSeeker);
-		application.setJobPosting(jobPosting);
-		application.setResumePath("resume.pdf");
-		
-		updatedApp = new Application();
-		updatedApp.setResumePath("resume2.pdf");
-	}
+    public void init() {
+        jobSeeker = new JobSeeker();
+        jobSeeker.setJobSeekerId(1);
+
+        jobPosting = new JobPosting();
+        jobPosting.setJobId(1);
+
+        application = new Application();
+        application.setApplicationId(1);
+        application.setJobSeeker(jobSeeker);
+        application.setJobPosting(jobPosting);
+        application.setResumePath("path/to/resume.pdf");
+
+        applicationDTO = new ApplicationDTO();
+        applicationDTO.setResumePath("path/to/resume.pdf");
+        applicationDTO.setJobSeekerId(1);
+        applicationDTO.setJobId(1);
+    }
 	
-	@Test  //<----------------- for save application /*>>>>(here i have written test for only save application but the saveApplication
-	                             //method in application service has the seekerActivityService method which i have implemented in this thes..
-	                              //.so the test cases runs but we get null pointer exception)
+	@Test  //<----------------- 
 	public void saveApplicationTest() {
-		/*prepare the expected output*/
+		// Prepare the expected output
 		when(jobSeekerRepository.findById(1)).thenReturn(Optional.of(jobSeeker));
 	    when(jobPostingRepository.findById(1)).thenReturn(Optional.of(jobPosting));
-	    when(applicationRepository.save(application)).thenReturn(application);	
-	    
-		/*actual output*/
-		Application actual = applicationService.saveApplication(1, 1, application);
+	    when(applicationRepository.save(application)).thenReturn(application);
+		// Actual output
+		ApplicationDTO actual = applicationService.saveApplication(1, 1, applicationDTO);
 		
-		assertEquals(application, actual);		
+		assertEquals(application.getResumePath(), actual.getResumePath());		
 	}
+
 
 	@Test  //<<------------------------------getApplicationById (application id)
 	public void getApplicationByIdTest() {
-		/*prepare the expected output*/
-		Optional<Application> expected= Optional.of(application);
+		// Prepare the expected output
+		Optional<Application> expected = Optional.of(application);
 		when(applicationRepository.findById(1)).thenReturn(Optional.of(application));
-		/*actual output*/
-		Optional<Application> actual = applicationService.getApplicationById(1);
-
+		// Actual output
+		Optional<ApplicationDTO> actual = applicationService.getApplicationResponseById(1);
         assertEquals(expected, actual);
 	}
 	
@@ -104,7 +99,7 @@ public class ApplicationServiceTest {
 		when(applicationRepository.findByJobSeeker_JobSeekerId(1)).thenReturn(expected);
 		
 		/*actual output*/
-		List<Application> actual = applicationService.getApplicationsByJobSeekerId(1);
+		List<ApplicationDTO> actual = applicationService.getApplicationsByJobSeekerId(1);
         assertEquals(expected, actual);
 	}
 	
@@ -115,7 +110,7 @@ public class ApplicationServiceTest {
 		when(applicationRepository.findByJobPosting_JobId(1)).thenReturn(expected);
 		
 		/*actual output*/
-		List<Application> actual = applicationService.getApplicationsByJobId(1);
+		List<ApplicationDTO> actual = applicationService.getApplicationsByJobId(1);
         assertEquals(expected, actual);
 	}
 	
@@ -128,7 +123,7 @@ public class ApplicationServiceTest {
         when(applicationRepository.save(application)).thenReturn(application);
 
 		/*actual output*/
-        Application actual = applicationService.updateApplication(1, updatedApp);
+        ApplicationDTO actual = applicationService.updateApplication(1, applicationDTO);
 
         assertEquals("resume2.pdf", actual.getResumePath());
         assertEquals(application, actual);

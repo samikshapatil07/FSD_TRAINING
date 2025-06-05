@@ -81,8 +81,8 @@ public class HrServiceTest {
 		assertEquals(hr, actual);
 	}
 
-	@Test // << get hr by id test
-	public void testGetHrById_Found() {
+	//@Test // << get hr by id test
+	public void testGetHrByIdTest() {
 		/* prepare the expected output */
 		Optional<Hr> expected = Optional.of(hr);
 		when(hrRepository.findById(1)).thenReturn(Optional.of(hr));

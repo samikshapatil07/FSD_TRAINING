@@ -78,7 +78,7 @@ public class UserServiceTest {
 
         // actual output
         assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(99));
-        verify(userRepository).findById(9);
+        verify(userRepository).findById(99);
     }
     
     // After each test case, the objects used in them will get nullified and HEAP
