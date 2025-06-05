@@ -53,11 +53,11 @@ public class SecurityConfig {
         			.requestMatchers(HttpMethod.POST, "/api/jobs/{hrId}").hasAuthority("HR") // only hr can post jobs
         			.requestMatchers(HttpMethod.PUT, "/api/jobs/{JobId}").hasAuthority("HR") //only hr can update the jobs by job id
         			.requestMatchers(HttpMethod.DELETE, "/api/jobs/{JobId}").hasAuthority("HR") //only hr can delete the jobs
-        			.requestMatchers(HttpMethod.GET, "/api/jobs/").permitAll() // all can view the jobs that hr has posted
+        			.requestMatchers(HttpMethod.GET, "/api/jobs?page=0&size=5").permitAll() // all can view the jobs that hr has posted
         			.requestMatchers(HttpMethod.GET, "/api/jobs/{JobId}").permitAll() // get job by job id
         			.requestMatchers(HttpMethod.GET, "/api/jobs//api/jobs/search?jobTitle={job title}&location={location}&company={company}").permitAll() // search jobs by title, location, and company name
 
-        			//----------------<<<<<<<<<<<<<<<updtae this application apis ade permission remaining<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+        			//----------------<<<<<<<<<<<<<<<updtae this application apis add permission remaining<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
         			// -------------------- FOR  APPLICATIONS  -------------------------------------
                     .requestMatchers(HttpMethod.POST, "/api/applications/{seekerId}/{jobId}").hasAuthority("JOB_SEEKER") //only job seeker can apply for job
                     .requestMatchers(HttpMethod.PUT, "/api/applications/{AppId}").hasAuthority("JOB_SEEKER") // only job seeker can update the application

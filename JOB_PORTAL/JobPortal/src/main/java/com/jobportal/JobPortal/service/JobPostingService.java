@@ -6,10 +6,14 @@ import com.jobportal.JobPortal.model.JobPosting;
 import com.jobportal.JobPortal.repository.HrRepository;
 import com.jobportal.JobPortal.repository.JobPostingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
+//implemented paging for get all jobs
 
 @Service
 public class JobPostingService {
@@ -56,8 +60,11 @@ public class JobPostingService {
     }
     
   //--------------------- Get all Job Postings --------------------------------------------
-    public List<JobPosting> getAllJobs() {
-        return jobPostingRepository.findAll();
+    //implemeting paging
+    public Page<JobPosting> getAllJobs(int page, int size) {
+    	//paging
+        PageRequest pageable = PageRequest.of(page, size);
+        return jobPostingRepository.findAll(pageable);
     }
 
   //--------------------- Get a Job by ID ------------------------------------------------------

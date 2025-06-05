@@ -7,6 +7,7 @@ import com.jobportal.JobPortal.service.JobPostingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,9 +41,9 @@ public class JobPostingController {
         );
     }
     
-    private List<JobPostingDTO> convertListToDTO(List<JobPosting> jobList) {
+    private List<JobPostingDTO> convertListToDTO(List<JobPosting> jobs) {
         List<JobPostingDTO> dtoList = new ArrayList<>();
-        for (JobPosting job : jobList) {
+        for (JobPosting job : jobs) {
             dtoList.add(convertToDTO(job));
         }
         return dtoList;
@@ -73,9 +74,10 @@ public class JobPostingController {
      * METHOD  : GET
      * RESPONSE: List of all JobPosting objects
      */
-    @GetMapping
-    public ResponseEntity<List<JobPostingDTO>> getAllJobs() {
-        List<JobPosting> jobs = jobPostingService.getAllJobs();
+    @GetMapping("/api/jobs?page=0&size=5")
+    public ResponseEntity<List<JobPostingDTO>> getAllJobs(@RequestParam(defaultValue = "0") int page,
+                                                          @RequestParam(defaultValue = "5") int size){ //implementing paging
+        List<JobPosting> jobs = jobPostingService.getAllJobs(page, size).getContent();
         //logger
         logger.info("Retrieving all jobs...");
         //dto
