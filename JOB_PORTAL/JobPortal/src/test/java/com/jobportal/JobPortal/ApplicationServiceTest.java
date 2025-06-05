@@ -1,3 +1,4 @@
+
 package com.jobportal.JobPortal;
 
 import static org.mockito.Mockito.when;
@@ -5,6 +6,7 @@ import static org.mockito.Mockito.when;
 import java.util.List;
 import java.util.Optional;
 
+import com.jobportal.JobPortal.service.SeekerActivityService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,6 +40,9 @@ public class ApplicationServiceTest {
     private JobSeekerRepository jobSeekerRepository;
     @Mock
     private JobPostingRepository jobPostingRepository;
+    @Mock
+    private SeekerActivityService seekerActivityService;
+
 
     private JobSeeker jobSeeker;
     private JobPosting jobPosting;
@@ -66,7 +71,7 @@ public class ApplicationServiceTest {
 		updatedApp.setResumePath("resume2.pdf");
 	}
 	
-	//@Test  //<----------------- for save application /*>>>>(here i have written test for only save application but the saveApplication 
+	@Test  //<----------------- for save application /*>>>>(here i have written test for only save application but the saveApplication
 	                             //method in application service has the seekerActivityService method which i have implemented in this thes..
 	                              //.so the test cases runs but we get null pointer exception)
 	public void saveApplicationTest() {
@@ -114,7 +119,7 @@ public class ApplicationServiceTest {
         assertEquals(expected, actual);
 	}
 	
-	 //@Test //<<---------------updateApplication   // in this test we get error because test , 
+	 @Test //<<---------------updateApplication   // in this test we get error because test ,
 	                                            //seekerActivityService means seeker log is never initialized — it is null, which causes the NullPointerException.
 	                                           //I have written test case only for the update application logic not for seeker activity
 	public void updateApplicationTest() {
@@ -131,7 +136,8 @@ public class ApplicationServiceTest {
 	
 	@Test //<<---------------deleteApplication 
 	public void deleteApplicationTest() {
-		//nothing to assert, method should execute without exception
+        when(applicationRepository.existsById(1)).thenReturn(true);
+        //nothing to assert, method should execute without exception
 		/*actual output*/
         applicationService.deleteApplication(1);
         assertEquals(1, 1); //dummy assertion to make test pass
