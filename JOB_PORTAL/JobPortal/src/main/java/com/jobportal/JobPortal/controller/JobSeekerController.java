@@ -10,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+//implemented principle interface for js 
 @RestController
 @RequestMapping("/api/jobseekers")
 public class JobSeekerController {
@@ -63,7 +65,17 @@ public class JobSeekerController {
         return ResponseEntity.ok(dto);
     }
 
-    // ------------------------- Get Job Seeker by ID ---------------------------------------------
+    
+    // ------------------- Get Logged-in Job Seeker (Self) -------------------
+    @GetMapping("/me")
+    public ResponseEntity<JobSeekerDTO> getMyProfile(Principal principal) {
+        logger.info("Fetching logged-in Job Seeker details...");
+        JobSeeker js = jobSeekerService.getJobSeekerByUsername(principal.getName());
+        return ResponseEntity.ok(convertToDTO(js));
+    }
+
+    
+    // ------------------------- Get Job Seeker by ID(admin) ---------------------------------------------
     /*
      * AIM     : To get Job Seeker details by ID
      * PATH    : /api/jobseekers/{jobSeekerId}
@@ -72,10 +84,10 @@ public class JobSeekerController {
      * RESPONSE: JobSeeker (Job Seeker object)
      */
     @GetMapping("/{jobSeekerId}")
-    public ResponseEntity<JobSeekerDTO> getJobSeekerById(@PathVariable int jobSeekerId) {
+    public ResponseEntity<JobSeekerDTO> getJobSeekerById(Principal principal) {
         //logger
-    	logger.info("Fetching Job Seeker with ID: " + jobSeekerId);
-        JobSeeker js = jobSeekerService.getJobSeekerById(jobSeekerId);
+    	logger.info("Fetching Job Seeker with ID: ");
+        JobSeeker js = jobSeekerService.getJobSeekerByUsername(principal.getName());
         //dto
         JobSeekerDTO dto = convertToDTO(js);
         return ResponseEntity.ok(dto);
@@ -89,28 +101,33 @@ public class JobSeekerController {
      * INPUT   : jobSeekerId (path variable), JobSeeker (request body)
      * RESPONSE: String (confirmation message)
      */
-    @PutMapping("/{jobSeekerId}")
-    public ResponseEntity<String> updateJobSeeker(@PathVariable int jobSeekerId, @RequestBody JobSeeker jobSeeker) {
+    @PutMapping("/me")
+    public ResponseEntity<String> updateMyProfile(@RequestBody JobSeeker jobSeeker, Principal principal) {
         //logger
-    	logger.info("Updating Job Seeker with ID: " + jobSeekerId);
-        jobSeekerService.updateJobSeeker(jobSeekerId, jobSeeker);
-        return ResponseEntity.ok("Job Seeker updated successfully.");
+    	logger.info("Updating profile of logged-in Job Seeker...");
+        JobSeeker existing = jobSeekerService.getJobSeekerByUsername(principal.getName());
+        jobSeekerService.updateJobSeeker(existing.getJobSeekerId(), jobSeeker);
+        return ResponseEntity.ok("Profile updated successfully.");
     }
+
 
     // ------------------------- Delete Job Seeker ---------------------------------------------
     /*
-     * AIM     : To delete a Job Seeker by ID
+     * AIM     : To delete a Job Seeker by ID (admin)
      * PATH    : /api/jobseekers/{jobSeekerId}
      * METHOD  : DELETE
      * INPUT   : jobSeekerId (path variable)
      * RESPONSE: String (confirmation message)
      */
     @DeleteMapping("/{jobSeekerId}")
-    public ResponseEntity<String> deleteJobSeeker(@PathVariable int jobSeekerId) {
-        jobSeekerService.deleteJobSeeker(jobSeekerId);
-        logger.info("Deleting job seeker with id:" + jobSeekerId);
-        return ResponseEntity.ok("Job Seeker deleted successfully");
+    public ResponseEntity<String> deleteMyProfile(Principal principal) {
+       //logger
+    	logger.info("Deleting profile of logged-in Job Seeker...");
+        JobSeeker existing = jobSeekerService.getJobSeekerByUsername(principal.getName());
+        jobSeekerService.deleteJobSeeker(existing.getJobSeekerId());
+        return ResponseEntity.ok("Account deleted successfully.");
     }
+
 
     // ------------------------- Get All Job Seekers ---------------------------------------------
     /*

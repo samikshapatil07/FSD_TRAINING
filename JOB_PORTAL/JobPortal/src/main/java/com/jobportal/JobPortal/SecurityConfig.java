@@ -50,7 +50,7 @@ public class SecurityConfig {
         			.requestMatchers(HttpMethod.PUT,"/api/jobseekers/{jobSeekerId}").hasAuthority("JOB_SEEKER") // only jobseekers can update  details
 					
         			// -------------------- FOR JOB POSTING  -------------------------------------
-        			.requestMatchers(HttpMethod.POST, "/api/jobs/{hrId}").hasAuthority("HR") // only hr can post jobs
+        			.requestMatchers(HttpMethod.POST, "/api/jobs/batch").hasAuthority("HR") // only hr can post jobs(principle interface implemented)
         			.requestMatchers(HttpMethod.PUT, "/api/jobs/{JobId}").hasAuthority("HR") //only hr can update the jobs by job id
         			.requestMatchers(HttpMethod.DELETE, "/api/jobs/{JobId}").hasAuthority("HR") //only hr can delete the jobs
         			.requestMatchers(HttpMethod.GET, "/api/jobs?page=0&size=5").permitAll() // all can view the jobs that hr has posted

@@ -73,4 +73,12 @@ public class JobSeekerService {
     public List<JobSeeker> getAllJobSeekers() {
         return jobSeekerRepository.findAll();
     }
+    
+    //--------------------------- Get  job seekers ----------------  
+
+    public JobSeeker getJobSeekerByUsername(String username) {
+        return jobSeekerRepository.findByUserUsername(username)
+            .orElseThrow(() -> new ResourceNotFoundException("Job Seeker not found with username: " + username));
+    }
+
 }

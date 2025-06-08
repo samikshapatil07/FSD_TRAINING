@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 //implemented paging for get all jobs
-
+//implemented batch insert for posting job  
 @Service
 public class JobPostingService {
 
@@ -24,14 +24,21 @@ public class JobPostingService {
     @Autowired
     private HrRepository hrRepository;
 
+    //implemented batch insert for posting job   
+    /* we use batch insert when HR wants to post multiple job listings at once
+     * used when we want to save multiple records at once */
     
   //--------------------- Posts a new Job -------------------------------------------------------
-    public JobPosting postJob(JobPosting jobPosting, int hrId) {
+    public List<JobPosting> batchPostJobs(List<JobPosting> jobList, int hrId) {
         Hr hr = hrRepository.findById(hrId)
                 .orElseThrow(() -> new ResourceNotFoundException("HR not found with ID: " + hrId));
-        jobPosting.setHr(hr);
-        jobPosting.setCreatedAt(LocalDateTime.now());
-        return jobPostingRepository.save(jobPosting);
+
+        for (JobPosting job : jobList) {
+            job.setHr(hr);
+            job.setCreatedAt(LocalDateTime.now());
+        }
+
+        return jobPostingRepository.saveAll(jobList);
     }
     
   //--------------------- update a Job by its ID --------------------------------------------------
@@ -61,12 +68,13 @@ public class JobPostingService {
     
   //--------------------- Get all Job Postings --------------------------------------------
     //implemeting paging
-    public Page<JobPosting> getAllJobs(int page, int size) {
-    	//paging
+
+	public Page<JobPosting> getAllJobs(int page, int size) {
+		//paging
         PageRequest pageable = PageRequest.of(page, size);
         return jobPostingRepository.findAll(pageable);
     }
-
+	
   //--------------------- Get a Job by ID ------------------------------------------------------
     public JobPosting getJobById(int jobId) {
         return jobPostingRepository.findById(jobId)

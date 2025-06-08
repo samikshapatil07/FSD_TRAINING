@@ -7,14 +7,17 @@ import com.jobportal.JobPortal.service.JobPostingService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 
+
+/*implemented logger, dto, batch insert for job posting, paging for get all jobs*/
+//implementd principle interface
 @RestController
 @RequestMapping("/api/jobs")
 public class JobPostingController {
@@ -48,6 +51,9 @@ public class JobPostingController {
         }
         return dtoList;
     }
+    
+    //implemented batch insert for job posting and 
+    //use the Principal interface instead of passing the hrId as a path variable
     // ----------------- Post a new Job (HR)----------------------
     /*
      * AIM     : Allows an HR to post a new job
@@ -56,17 +62,19 @@ public class JobPostingController {
      * INPUT   : JobPosting object in request body, HR id as path variable
      * RESPONSE: Returns the saved JobPosting with generated ID and details
      */
-    @PostMapping("/{hrId}")
-    public ResponseEntity<JobPostingDTO> postJob(@RequestBody JobPosting jobPosting,
-                                              @PathVariable int hrId) {
-        JobPosting saved = jobPostingService.postJob(jobPosting, hrId);
-        //dto
-        JobPostingDTO dto = convertToDTO(saved);
-        //logger
-       logger.info("Posting a new job by " + hrId);
-        return new ResponseEntity<>(dto, HttpStatus.CREATED);
-    }
+    @PostMapping("/batch/{hrId}")
+    public ResponseEntity<List<JobPostingDTO>> batchPostJobs(
+            @PathVariable int hrId,
+            @RequestBody List<JobPosting> jobPostings) {
 
+        List<JobPosting> savedJobs = jobPostingService.batchPostJobs(jobPostings, hrId);
+
+        logger.info("Batch posting {} jobs by HR with ID {}", savedJobs.size(), hrId);
+        List<JobPostingDTO> dtoList = convertListToDTO(savedJobs);
+        return new ResponseEntity<>(dtoList, HttpStatus.CREATED);
+    }
+    
+//implemented paging
     // ----------------- Get All Jobs -------------------------
     /*
      * AIM     : Retrieve all job postings
@@ -113,9 +121,9 @@ public class JobPostingController {
      */
     @GetMapping("/search")
     public ResponseEntity<List<JobPostingDTO>> searchJobs(
-            @RequestParam(required = false) String job_title,
+              @RequestParam(required = false) String job_title,
             @RequestParam(required = false) String location,
-            @RequestParam(required = false) String company) {
+             @RequestParam(required = false) String company) {
         List<JobPosting> jobs = jobPostingService.searchJobs(job_title, location, company);
         //logger
         logger.info("Searching jobs...");
