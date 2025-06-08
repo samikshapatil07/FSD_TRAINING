@@ -20,7 +20,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"user3@gmail.com\",\r\n  \"password\": \"user3@3\",\r\n  \"role\": \"JOB_SEEKER\"\r\n}\r\n",
+							"raw": "{\r\n  \"username\": \"user5@gmail.com\",\r\n  \"password\": \"user5@5\",\r\n  \"role\": \"EXECUTIVE\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -28,14 +28,14 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/users/signup",
+							"raw": "localhost:8080/api/user/signup",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"users",
+								"user",
 								"signup"
 							]
 						}
@@ -46,20 +46,28 @@
 					"name": "User Details",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMUBnbWFpbC5jb20iLCJpYXQiOjE3NDkzNzAyNDMsImV4cCI6MTc0OTQxMzQ0M30.MNlDZG8VF0jW9HXQBYkSuhJR34wam-ozJOJZt-zCoJo",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/users/1",
+							"raw": "localhost:8080/api/user/details/4",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"users",
-								"1"
+								"user",
+								"details",
+								"4"
 							]
 						}
 					},
@@ -86,14 +94,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/users/token",
+							"raw": "localhost:8080/api/user/token",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"users",
+								"user",
 								"token"
 							]
 						}
@@ -141,7 +149,19 @@
 					"name": "Get HR by ID",
 					"request": {
 						"auth": {
-							"type": "noauth"
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "merry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "merry@gmail.com",
+									"type": "string"
+								}
+							]
 						},
 						"method": "GET",
 						"header": [],
@@ -264,7 +284,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"name\": \"Nova JS\",\r\n  \"education\": \"B.Tech in AIDS\",\r\n  \"skills\": \"Java,MySQL,Py,R \",\r\n  \"experience\": \"4 years\",\r\n\"user\": {\r\n    \"username\": \"user4@gmail.com\",\r\n    \"password\": \"user4@4\"\r\n  }\r\n  }\r\n",
+							"raw": "{\r\n  \"name\": \"Alice JS\",\r\n  \"education\": \"B.Tech in CSE\",\r\n  \"skills\": \"Java,MySQL,Py,R \",\r\n  \"experience\": \"5 years\",\r\n\"user\": {\r\n    \"username\": \"user4@gmail.com\",\r\n    \"password\": \"user4@4\"\r\n  }\r\n  }\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -449,7 +469,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"jobTitle\": \"Cloud Engineer\",\r\n  \"description\": \"Looking fot Cloud Engineer\",\r\n  \"skills\": \"GCP,AWS\",\r\n  \"location\": \"Nagpur\",\r\n  \"salary\": 900000.00,\r\n  \"department\": \"Development\",\r\n  \"company\": \"IBM\",\r\n  \"experience\": \"1-2 years\"\r\n}\r\n",
+							"raw": "[\r\n  {\r\n    \"jobTitle\": \"Backend Developer\",\r\n    \"description\": \"Develop and maintain APIs\",\r\n    \"skills\": \"Java, Spring Boot\",\r\n    \"location\": \"Bangalore\",\r\n    \"salary\": 80000,\r\n    \"department\": \"Engineering\",\r\n    \"company\": \"TechCorp\",\r\n    \"experience\": \"2+ years\"\r\n  },\r\n  {\r\n    \"jobTitle\": \"Frontend Developer\",\r\n    \"description\": \"Work on UI components\",\r\n    \"skills\": \"React, TypeScript\",\r\n    \"location\": \"Remote\",\r\n    \"salary\": 75000,\r\n    \"department\": \"Design\",\r\n    \"company\": \"TechCorp\",\r\n    \"experience\": \"1+ years\"\r\n  }\r\n]\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -457,7 +477,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8080/api/jobs/1",
+							"raw": "localhost:8080/api/jobs/batch",
 							"host": [
 								"localhost"
 							],
@@ -465,7 +485,7 @@
 							"path": [
 								"api",
 								"jobs",
-								"1"
+								"batch"
 							]
 						}
 					},
@@ -480,7 +500,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/jobs",
+							"raw": "localhost:8080/api/jobs?page=0&size=5",
 							"host": [
 								"localhost"
 							],
@@ -488,6 +508,16 @@
 							"path": [
 								"api",
 								"jobs"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "5"
+								}
 							]
 						}
 					},
