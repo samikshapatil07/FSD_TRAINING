@@ -30,7 +30,7 @@ public class Application {
     private JobSeeker jobSeeker;
 
     @ManyToOne
-    @JoinColumn(name = "job_id", nullable = false)
+    @JoinColumn(name = "job_posting_id", nullable = false)
     private JobPosting jobPosting;
 
     @Column(nullable = false)

@@ -12,20 +12,18 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ApplicationRepository extends JpaRepository<Application, Integer> {
 	
-	//jpql to get applications by JobSeeker ID
-	@Query
-	("SELECT a FROM Application a where a.application.jobSeekerId =?1")
-	List<Application> findByJobSeeker_JobSeekerId(int jobSeekerId);
-	
-	//jpql to get applications by job ID
-	@Query
-	("SELECT a FROM Appliation a WHERE a.application.jobId =?1")
-	List<Application> findByJobPosting_JobId(int jobId);
-	
-	//jpql to get status
-	@Query
-	("select a from application a where a.application.ststus =?1")
-	Application findByStatus(Status status);
+    // Get applications by JobSeeker ID
+    @Query("SELECT a FROM Application a WHERE a.jobSeeker.jobSeekerId = ?1")
+    List<Application> findByJobSeeker_JobSeekerId(int jobSeekerId);
+
+    // Get applications by JobPosting ID
+    @Query("SELECT a FROM Application a WHERE a.jobPosting.jobId = ?1")
+    List<Application> findByJobPosting_JobId(Integer jobId);
+
+    // Get applications by Status
+    @Query("SELECT a FROM Application a WHERE a.status = ?1")
+    List<Application> findByStatus(Status status);
+}
 	
 	
     // get applications by JobSeeker ID
@@ -37,4 +35,4 @@ public interface ApplicationRepository extends JpaRepository<Application, Intege
     // get applications by status
     //List<Application> findByStatus(Status status);
 
-}
+

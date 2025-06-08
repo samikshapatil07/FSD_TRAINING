@@ -14,11 +14,11 @@ public interface HrRepository extends JpaRepository<Hr, Integer> {
     
     Optional<Hr> findByUser(User user);
 
-	Optional<Hr> findById(String username);
+	Optional<Hr> findById(int   id);
 
 	boolean existsById(int Id);
 
 	void deleteById(int Id);
 
-	Optional<Hr> findByUserUsername(int i);
+	Optional<Hr> findByUserUsername(String username);
 }

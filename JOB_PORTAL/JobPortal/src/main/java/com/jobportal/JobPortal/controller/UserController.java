@@ -19,9 +19,10 @@ import com.jobportal.JobPortal.service.UserService;
 import com.jobportal.JobPortal.util.JwtUtil;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/user")
 public class UserController {
 
+	
     @Autowired
     private UserService userService;
     
@@ -56,7 +57,7 @@ public class UserController {
 //        return ResponseEntity.ok(userService.getUserById(id));
 //    }
 	
-	@GetMapping("/{id}")
+	@GetMapping("/details/{id}")
 	public UserDTO getUserById(@PathVariable int id) {
 	    logger.info("Getting user details with id: " + id);
 	    User user = userService.getUserById(id);
@@ -77,4 +78,5 @@ public class UserController {
 		JwtUtil jwtUtil = new JwtUtil();
 		return jwtUtil.createToken(principal.getName()); 
 	}
+	
 }

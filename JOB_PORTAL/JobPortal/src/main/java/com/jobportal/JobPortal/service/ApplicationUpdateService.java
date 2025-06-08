@@ -23,12 +23,12 @@ public class ApplicationUpdateService {
     
 //-------------------- get application update by app. id
     public List<ApplicationUpdate> getUpdatesByApplicationId(Integer applicationId) {
-        return repository.findByApplicationApplicationId(applicationId);
+        return repository.findByApplication_ApplicationId(applicationId);
     }
 
 //--------------------get application update by job seeker id
     public List<ApplicationUpdate> getUpdatesByJobSeekerId(Integer jobSeekerId) {
-        return repository.findByJobSeekerJobSeekerId(jobSeekerId);
+        return repository.findByJobSeeker_JobSeekerId(jobSeekerId);
     }
 //----------------------------- Records a resume update made by a job seeker for a specific application ----------------
     public void recordResumeUpdate(Application app, JobSeeker jobSeeker, String resumePath) {
