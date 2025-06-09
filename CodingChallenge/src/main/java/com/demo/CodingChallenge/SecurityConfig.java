@@ -28,25 +28,12 @@ public class SecurityConfig {
 						.requestMatchers("/api/user/token").authenticated()
 						.requestMatchers("/api/user/details").authenticated()
 						
+            			//------------------- PATIENT -------------------------
+						.requestMatchers("/api/patient/add").hasAuthority("PATIENT")
+
 						
-//						//------------------- LEARNER -------------------------
-//						.requestMatchers("/api/learner/get-all").permitAll()
-//						.requestMatchers("/api/learner/add").permitAll()
-//						.requestMatchers("/api/learner/get-one").hasAuthority("LEARNER")
-//
-//						
-//						//----------------------COURSE ---------------
-//						.requestMatchers("/api/course/add").hasAnyAuthority("AUTHOR")
-//						.requestMatchers("/api/course/all").permitAll()
-//						
-//						//------------------- AUTHOR -------------------------
-//						.requestMatchers("/api/author/add").permitAll()
-//						
-//						//------------------- MODULE -------------------------
-//						.requestMatchers("/api/video/add/{moduleId}").hasAnyAuthority("AUTHOR")
-//
-//						
-//						
+						
+						
 						
 						.anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
