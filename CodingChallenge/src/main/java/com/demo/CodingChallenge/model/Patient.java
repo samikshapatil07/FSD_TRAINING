@@ -65,7 +65,24 @@ public class Patient { //p in repo
 
 	public void setUser(User user) {
 		this.user = user;
-	} 
+	}
+
+	public List<Doctor> getDoctors() {
+		return doctors;
+	}
+
+	public void setDoctors(List<Doctor> doctors) {
+		this.doctors = doctors;
+	}
+
+	public List<MedicalHistory> getMedicalHistories() {
+		return medicalHistories;
+	}
+
+	public void setMedicalHistories(List<MedicalHistory> medicalHistories) {
+		this.medicalHistories = medicalHistories;
+	}
+
 
 	
 }

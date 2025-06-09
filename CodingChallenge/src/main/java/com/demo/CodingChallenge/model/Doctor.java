@@ -7,7 +7,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -28,7 +28,7 @@ public class Doctor { //d in repo.
     private User user; 
     
     //doctor : patient =M:N
-    @ManyToMany
+    @JoinTable(name = "patient_doctor")
     private List<Patient> patients;
     
     

@@ -3,6 +3,7 @@ package com.demo.CodingChallenge;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -28,12 +29,20 @@ public class SecurityConfig {
 						.requestMatchers("/api/user/token").authenticated()
 						.requestMatchers("/api/user/details").authenticated()
 						
-            			//------------------- PATIENT -------------------------
-						.requestMatchers("/api/patient/add").hasAuthority("PATIENT")
+            			//------------------- API 1: PATIENT -------------------------
+						.requestMatchers("/api/patient/add").permitAll()
+						
+            			//-------------------API 2:  APPOINTMENT -------------------------
 
-						
-						
-						
+						.requestMatchers("/api/appointment").permitAll()
+
+            			//-------------------API 3:  get patient with dr ID -------------------------
+
+						.requestMatchers(HttpMethod.GET, "/api/doctor/**").hasRole("DOCTOR")
+
+            			//-------------------API 4:  get patient with medical hostory -------------------------
+
+						  .requestMatchers("/api/patient/{id}").permitAll() 		
 						
 						.anyRequest().authenticated())
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
