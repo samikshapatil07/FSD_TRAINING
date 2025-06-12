@@ -1,73 +1,105 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 function Example2() {
-    let [firstName, setfirstName] = useState();
-    let [lastName, setlastName] = useState();
-    let [age, setage] = useState();
-    let [userArry, setUserArry] = useState([]);
 
-    const addToUser = async () => {
-        // try{
-        // const response = await axios.get(`https://dummyjson.com/c/4e67-0b66-4c8f-833a`);
-        // setuserArry(response.data);
-        // }
-        // catch(err){
-        //     console.log(err);
-        // }
-         const newUser = {
-        firstName: firstName,
-        lastName: lastName,
-        age: age
-    };
-    setUserArry([...userArry, newUser]);
+    let[fname, setFname] = useState("");
+    let[lname, setLname] = useState("");
+    let[age, setAge] = useState("");
+    let[msg, setMsg] = useState("");
+    let[postArray ,setPostArray] = useState([]);
+
+    useEffect(()=>{
+        const getPosts = async ()=>{
+            try {
+                const response = await axios.get('https://dummyjson.com/c/4e67-0b66-4c8f-833a');
+                //console.log(response)  <-- i get response structure 
+                setPostArray(response.data)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        getPosts();  //<-- calling function
+    },[]);
+
+    const addUser = async()=>{
+        try {
+            await axios.post('https://dummyjson.com/c/490a-b0c3-484d-ba0d',
+                {
+                    'fname': fname,
+                    'lname': lname,
+                    'age': age,
+                }
+            )
+            setMsg("Post created successfully!!!!")
+        }
+        catch (err) {
+            setMsg("Operation Failed, Try again")
+        }
     }
 
-return (
-        <div className="container">
+    return(
+        <div className="container-fluid">
             <h2 className="text-center mt-4">Example 2</h2>
             <div className="row">
-                <div className="col-md-4 mb-4">
-                    <div className="card p-3 shadow-sm">
+
+                <div className="col-md-6 mb-4">
+                    <div>
+                        <h3>Enter the Deatils</h3>
+                        {
+                            msg != "" ? <div className="mb-4">
+                                <div className="alert alert-primary">
+                                    {msg}
+                                </div>
+                            </div> : ""
+                        }
+                    </div>
+                    <div  className="card p-3 shadow-sm">
                         <label>First Name:</label>
-                        <input type="text" value={firstName} onChange={$e => setfirstName($e.target.value)} className="form-control mb-2" />
-
+                        <input type="text" onChange={$e => setFname($e.target.value)} className="form-control mb-2" ></input>
+                    </div>
+                    <div>
                         <label>Last Name:</label>
-                        <input type="text" value={lastName} onChange={$e => setlastName($e.target.value)} className="form-control mb-2" />
-
+                        <input type="text" onChange={$e => setLname($e.target.value)} className="form-control mb-2" ></input>
+                    </div>
+                    <div className="mb-4">
                         <label>Age:</label>
-                        <input type="text" value={age} onChange={$e => setage($e.target.value)} className="form-control mb-2" />
-
-                        <button className="btn btn-primary" onClick={addToUser}>Add User</button>
+                        <input type="text" onChange={$e => setAge($e.target.value)} className="form-control mb-2" ></input>
+                    </div>
+                    <div >
+                        <button className="btn btn-primary" onClick={() => addUser()}>Add User</button>
                     </div>
                 </div>
 
-                <div className="col-md-8">
-                    <h4>User Details</h4>
-                    <table className="table table-bordered">
-                        <thead className="table-light">
+
+                <div className="col-md-6">
+                    <table className="table">
+                        <thead>
                             <tr>
-                                <th>Sr.no</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Age</th>
+                                <th scope="col">ID</th>
+                                <th scope="col">First Name</th>
+                                <th scope="col">Last Name</th>
+                                <th scope="col">Age</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {userArry.map((user, index) => (
-                                <tr key={index}>
-                                    <td>{index + 1}</td>
-                                    <td>{user.firstName}</td>
-                                    <td>{user.lastName}</td>
-                                    <td>{user.age}</td>
-                                </tr>
-                            ))}
+                            {
+                                postArray.map((post) => (
+                                    <tr key={post.id}>
+                                        <td>{post.id}</td>
+                                        <td>{post.fname}</td>
+                                        <td>{post.lname}</td>
+                                        <td>{post.age}</td>
+                                    </tr>
+                                ))
+                            }
                         </tbody>
                     </table>
                 </div>
+
             </div>
         </div>
     )
-
 }
 
 export default Example2;
