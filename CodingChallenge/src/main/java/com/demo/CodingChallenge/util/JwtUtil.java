@@ -1,65 +1,74 @@
-
 package com.demo.CodingChallenge.util;
-
-import java.security.Key;
-import java.util.Date;
-
-import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.stereotype.Component;
 
- @Component
+import java.security.Key;
+import java.util.Date;
+
+@Component
 public class JwtUtil {
-/*
- * In this class we need to create following methods 
- * 1. Method to Create JWT Token 
- * 2. Method to verify the Token 
- * */
-	
-	private static final String secretKey = "LMS_HEX_MAY_78674867909090909090909";
-	private static final long expirationTimeInMills=43200000; //12 hrs 
-	
-	private Key getSigningKey(){
-		return Keys.hmacShaKeyFor(secretKey.getBytes());
-	}
-	/* Method to Generate JWT Token*/
-	public String createToken(String email){
-		 
-		return Jwts.builder()
-	                .setSubject(email)
-	                .setIssuedAt(new Date(System.currentTimeMillis()))
-	                .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMills)) 
-	                .signWith(getSigningKey(),SignatureAlgorithm.HS256)
-	                .compact();
-		}
-	
-	 
-	public boolean verifyToken(String token, String email) {
-		String extractedEmail = Jwts.parserBuilder()
-									.setSigningKey(getSigningKey())
-									 .build()
-									 .parseClaimsJws(token)
-									 .getBody()
-									 .getSubject(); 
-		Date expirationDate = Jwts.parserBuilder()
-									.setSigningKey(getSigningKey())
-									 .build()
-									 .parseClaimsJws(token)
-									 .getBody()
-									 .getExpiration(); 
-		 
-		return extractedEmail.equals(email) && new Date().before(expirationDate); 			
-	}
-	public String extractUsername(String token) {
-		 
-		return  Jwts.parserBuilder()
-				.setSigningKey(getSigningKey())
-				 .build()
-				 .parseClaimsJws(token)
-				 .getBody()
-				 .getSubject(); 
-	}
-	   
+    //Secret Key
+    private static final String secretKey = "Coding_Challenge_2972003P20O2K2O9e2973M00N";
+    //Expiration time in milliseconds
+    private static final long expirationTimeInMills = 43200000;
+
+    //Building Signing key from secret key
+    private Key getSigningKey(){
+        return Keys.hmacShaKeyFor(secretKey.getBytes());
+    }
+
+    /*
+    Create a JWT Token with:
+    1. Subject = username/email
+    2. Creation time: new Date().now()
+    3. Expiration time: now + expirationTimeInMills
+     */
+    public String createToken(String username){
+        return Jwts.builder().setSubject(username) //setting username
+                .setIssuedAt(new Date(System.currentTimeMillis())) //setting current time
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTimeInMills)) //setting Expiration time
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256) //signing the token with HMCA256 Algorithm and secret key
+                .compact();
+    }
+
+    /*
+    Extract the username from the token's subject
+     */
+    public String extractUsername(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())    // use the same key that signed it
+                .build()
+                .parseClaimsJws(token)             // parse & verify signature
+                .getBody()
+                .getSubject();                     // return the “sub” claim
+    }
+
+    /*
+    Verify that token matches the username and the token is not expired
+     */
+    public boolean verifyToken(String token, String email){
+        //Extracting the subject
+        String extractedEmail = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getSubject();
+
+        // b) Extract “exp” from token
+        Date expirationDate = Jwts.parserBuilder()
+                .setSigningKey(getSigningKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration();
+
+        // c) Check that the extracted subject equals the email we expect, and token is still valid
+        return extractedEmail.equals(email)
+                && new Date().before(expirationDate);
+    }
+
 }

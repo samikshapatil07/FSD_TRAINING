@@ -1,6 +1,7 @@
 package com.demo.CodingChallenge.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,9 @@ public class PatientController {
 	@Autowired
 	private PatientService patientService;
 	
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
+    }
 //---------------- API 1: add patient--------------------------------
 	/*
      * PATH: /api/patient/add
@@ -26,9 +30,9 @@ public class PatientController {
      * AIM: I want to add patient in Db along with its user credentails
      * so that patient can login later.
      */
-	@PostMapping("/patient/add")
-	public ResponseEntity<Patient> insertPatient(@RequestBody Patient patient) {
-        Patient savedPatient = patientService.insertPatient(patient);
-        return ResponseEntity.ok(savedPatient);
+    @PostMapping("/api/patient/add")
+    public ResponseEntity<?> addPatient(@RequestBody Patient patient){
+        return ResponseEntity.status(HttpStatus.CREATED).body(patientService.addPatient(patient));
     }
+
 }

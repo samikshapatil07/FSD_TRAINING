@@ -1,11 +1,14 @@
 package com.demo.CodingChallenge.dto;
 
+import org.springframework.stereotype.Component;
+
+@Component
 public class MedicalHistoryDto {
     private String illness;
-    private int numOfYears;
-    private String current_medication;
+    private int noOfYears;
+    private String currentMedication;
+    private String patientName;
 
-    // Getters and setters
     public String getIllness() {
         return illness;
     }
@@ -14,19 +17,27 @@ public class MedicalHistoryDto {
         this.illness = illness;
     }
 
-    public int getNumOfYears() {
-        return numOfYears;
+    public int getNoOfYears() {
+        return noOfYears;
     }
 
-    public void setNumOfYears(int numOfYears) {
-        this.numOfYears = numOfYears;
+    public void setNoOfYears(int noOfYears) {
+        this.noOfYears = noOfYears;
     }
 
-    public String getCurrent_medication() {
-        return current_medication;
+    public String getCurrentMedication() {
+        return currentMedication;
     }
 
-    public void setCurrent_medication(String current_medication) {
-        this.current_medication = current_medication;
+    public void setCurrentMedication(String currentMedication) {
+        this.currentMedication = currentMedication;
+    }
+
+    public String getPatientName() {
+        return patientName;
+    }
+
+    public void setPatientName(String patientName) {
+        this.patientName = patientName;
     }
 }

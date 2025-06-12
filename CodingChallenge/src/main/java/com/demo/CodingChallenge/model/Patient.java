@@ -1,14 +1,11 @@
 package com.demo.CodingChallenge.model;
 
-import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
@@ -27,13 +24,6 @@ public class Patient { //p in repo
 	@OneToOne
 	@JoinColumn(name = "user_id")
     private User user;
-	
-   //doctor : patient = M:N
-	@ManyToMany
-	private List<Doctor> doctors;
-	
-	@OneToMany
-	private List<MedicalHistory> medicalHistories;
 
 	public int getId() {
 		return id;
@@ -66,24 +56,7 @@ public class Patient { //p in repo
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	public List<Doctor> getDoctors() {
-		return doctors;
-	}
-
-	public void setDoctors(List<Doctor> doctors) {
-		this.doctors = doctors;
-	}
-
-	public List<MedicalHistory> getMedicalHistories() {
-		return medicalHistories;
-	}
-
-	public void setMedicalHistories(List<MedicalHistory> medicalHistories) {
-		this.medicalHistories = medicalHistories;
-	}
-
-
 	
+
 }
 

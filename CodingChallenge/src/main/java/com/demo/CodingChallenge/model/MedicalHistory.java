@@ -19,7 +19,7 @@ public class MedicalHistory { //ml in repo.
      
 	private String illness;
     private int numOfYears;
-    private String current_medication;
+    private String currentMedication;
     
   // medical_history: patient = M:1
     @ManyToOne
@@ -42,20 +42,20 @@ public class MedicalHistory { //ml in repo.
 		this.illness = illness;
 	}
 
-	public int getNum_of_years() {
+	public int getNumOfYears() {
 		return numOfYears;
 	}
 
-	public void setNum_of_years(int numOfYears) {
+	public void setNumOfYears(int numOfYears) {
 		this.numOfYears = numOfYears;
 	}
 
-	public String getCurrent_medication() {
-		return current_medication;
+	public String getCurrentMedication() {
+		return currentMedication;
 	}
 
-	public void setCurrent_medication(String current_medication) {
-		this.current_medication = current_medication;
+	public void setCurrentMedication(String currentMedication) {
+		this.currentMedication = currentMedication;
 	}
 
 	public Patient getPatient() {
@@ -65,5 +65,7 @@ public class MedicalHistory { //ml in repo.
 	public void setPatient(Patient patient) {
 		this.patient = patient;
 	}
+
+
     
 }

@@ -16,32 +16,19 @@ import com.demo.CodingChallenge.repository.UserRepository;
 
 
 @Service
-public class CustomUserDetailsService implements UserDetailsService{
+public class CustomUserDetailsService implements UserDetailsService {
+    @Autowired
+    private UserRepository userRepository;
 
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		// Fetch User by given username 
-		User user = userRepository.findByUsername(username);
-		if(user == null)
-			throw new UsernameNotFoundException("Invalid Credentials");
-		
-		// Convert your Role into Authority as spring works with authority
-		SimpleGrantedAuthority sga = new SimpleGrantedAuthority(user.getRole()); 
-		
-		// Add this SimpleGrantedAuthority object into the List now 
-		List<GrantedAuthority> list = List.of(sga);
-		
-		// Convert our User to Spring's User that is UserDetails
-		org.springframework.security.core.userdetails.User springuser = 
-				new org.springframework.security.core.userdetails.User
-						(user.getUsername(), 
-						 user.getPassword(), 
-						 list);
-		
-		return springuser;
-	}
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.getByUsername(username);
+        SimpleGrantedAuthority sga =  new SimpleGrantedAuthority(user.getRole().toString());
+        List<GrantedAuthority> list = List.of(sga);
+
+        org.springframework.security.core.userdetails.User springUser = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), list);
+
+        return springUser;
+    }
 
 }

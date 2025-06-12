@@ -34,7 +34,7 @@ public class SecurityConfig {
 						
             			//-------------------API 2:  APPOINTMENT -------------------------
 
-						.requestMatchers("/api/appointment").permitAll()
+						//.requestMatchers("/api/appointment").permitAll()
 
             			//-------------------API 3:  get patient with dr ID -------------------------
 

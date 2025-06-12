@@ -22,7 +22,7 @@ public class User {
 	private String password; 
 	
 	@Column(nullable = false)
-	private String role; 
+	private Role role; 
  
 	public int getId() {
 		return id;
@@ -48,12 +48,12 @@ public class User {
 		this.password = password;
 	}
 
-	public String getRole() {
+	public Role getRole() {
 		return role;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setRole(Role doctor) {
+		this.role = doctor;
 	}
 
 }

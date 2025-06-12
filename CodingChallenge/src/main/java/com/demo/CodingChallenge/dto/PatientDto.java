@@ -1,20 +1,22 @@
 package com.demo.CodingChallenge.dto;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
+@Component
 public class PatientDto {
-    private int id;
+
     private String name;
     private int age;
-    private List<MedicalHistoryDto> medicalHistories;
+    private List<MedicalHistoryDto> medicalHistoryDtos;
 
-    // Getters and setters
-    public int getId() {
-        return id;
+    public List<MedicalHistoryDto> getMedicalHistoryDtos() {
+        return medicalHistoryDtos;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setMedicalHistoryDtos(List<MedicalHistoryDto> medicalHistoryDtos) {
+        this.medicalHistoryDtos = medicalHistoryDtos;
     }
 
     public String getName() {
@@ -31,13 +33,5 @@ public class PatientDto {
 
     public void setAge(int age) {
         this.age = age;
-    }
-
-    public List<MedicalHistoryDto> getMedicalHistories() {
-        return medicalHistories;
-    }
-
-    public void setMedicalHistories(List<MedicalHistoryDto> medicalHistories) {
-        this.medicalHistories = medicalHistories;
     }
 }

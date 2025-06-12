@@ -1,25 +1,43 @@
 package com.demo.CodingChallenge.exception;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<String> handleResourceNotFound(ResourceNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    /*
+    This class is there to handle the all the exceptions, 
+    whenever a exception is thrown whether it is Runtime or any custom exception that we have 
+    defined this handler will help us throw the correct message instead of the status 501.
+     */
+
+    @ExceptionHandler(exception = RuntimeException.class)
+    public ResponseEntity<?> handleRuntime(RuntimeException e) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
 
-    @ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<String> handleRuntimeException(RuntimeException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+    @ExceptionHandler(exception = ResourceNotFoundException.class)
+    public ResponseEntity<?> handleResourceNotFound(ResourceNotFoundException e) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
-    
-    @ExceptionHandler(InvalidInputException.class)
-    public ResponseEntity<String> handleInvalidUserRoleException(InvalidInputException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+
+    @ExceptionHandler(exception = InvalidIdException.class)
+    public ResponseEntity<?> handleInvalidId(InvalidIdException e) {
+        Map<String, String> map = new HashMap<>();
+        map.put("message", e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(map);
     }
+
+
+
 }
-
