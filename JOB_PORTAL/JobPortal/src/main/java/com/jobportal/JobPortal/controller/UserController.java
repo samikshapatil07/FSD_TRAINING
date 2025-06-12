@@ -1,11 +1,15 @@
 package com.jobportal.JobPortal.controller;
 
-
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,11 +24,14 @@ import com.jobportal.JobPortal.util.JwtUtil;
 
 @RestController
 @RequestMapping("/api/user")
+@CrossOrigin(origins = "http://localhost:5173")
 public class UserController {
 
 	
     @Autowired
     private UserService userService;
+    @Autowired
+	private JwtUtil jwtUtil;
     
   //implementing logger
     private Logger logger = LoggerFactory.getLogger("UserController");
@@ -44,6 +51,38 @@ public class UserController {
 		
 	}
 	
+	//----------------TOKEN API ----------------
+	  /*
+   * AIM     : To get token for valid users..
+   * PATH    : /api/users/token}
+   * METHOD  : GET
+   */
+	
+	@GetMapping("/token")
+	public ResponseEntity<?> getToken(Principal principal) {
+		try {
+		String token =jwtUtil.createToken(principal.getName()); 
+		Map<String, Object> map = new HashMap<>();
+		map.put("token",token );
+		return ResponseEntity.status(HttpStatus.OK).body(map);
+		}
+		catch(Exception e){
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+		}
+	}
+	
+	//--------------------- login api -------------
+		@GetMapping("/details")
+		public Object getLoggedInUserDetails(Principal principal) {
+			String username = principal.getName(); // loggedIn username
+			/**
+			 * Lets get the Role info of this User
+			 * As we dont know who the user really is? Learner? Author?
+			 */
+			Object object = userService.getUserInfo(username);
+			return object;
+		}
+		
 //----------------------------- Get user by ID ---------------------------------------------------------
     /*
      * AIM     : To get user details by ID
@@ -64,19 +103,5 @@ public class UserController {
 	    return new UserDTO(user.getId(), user.getUsername(), user.getRole());
 	}
 	
-	//----------------TOKEN API ----------------
-	  /*
-     * AIM     : To get token for valid users..
-     * PATH    : /api/users/token}
-     * METHOD  : GET
-     */
-	
-	@GetMapping("/token")
-	public String getToken(Principal principal) {
-		System.out.println("I am in the API method");
-		
-		JwtUtil jwtUtil = new JwtUtil();
-		return jwtUtil.createToken(principal.getName()); 
-	}
-	
+
 }

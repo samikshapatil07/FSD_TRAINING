@@ -2,6 +2,7 @@ package com.jobportal.JobPortal;
 
 import com.jobportal.JobPortal.model.Hr;
 import com.jobportal.JobPortal.model.JobPosting;
+import com.jobportal.JobPortal.repository.ApplicationRepository;
 import com.jobportal.JobPortal.repository.HrRepository;
 import com.jobportal.JobPortal.repository.JobPostingRepository;
 import com.jobportal.JobPortal.service.JobPostingService;
@@ -9,9 +10,13 @@ import com.jobportal.JobPortal.service.JobPostingService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,7 +28,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+//@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 public class JobPostingServiceTest {
 
     @InjectMocks
@@ -34,6 +40,10 @@ public class JobPostingServiceTest {
 
     @Mock
     private HrRepository hrRepository;
+    
+    @Mock
+    private ApplicationRepository applicationRepository;
+
 
     private Hr hr;
     private JobPosting job;
@@ -65,19 +75,24 @@ public class JobPostingServiceTest {
         updatedJob.setDepartment("Engineering");
         updatedJob.setSalary(1200000);
     }
+    
     @Test // <<<< post job test
     public void postJobTest() {
+        List<JobPosting> jobList = List.of(job); // single job into a List
+
     	/*prepare the expected output*/
-    	when(hrRepository.findById(1)).thenReturn(Optional.of(hr));
-        when(jobPostingRepository.save(any(JobPosting.class))).thenReturn(job);
+        when(hrRepository.findById(1)).thenReturn(Optional.of(hr));
+        when(jobPostingRepository.saveAll(any())).thenReturn(jobList);
+
+        //Call the method
+        List<JobPosting> savedJobs = jobPostingService.batchPostJobs(jobList, 1);
 
 		/*actual output*/
-        JobPosting savedJob = jobPostingService.postJob(job, 1);
-
-        assertEquals(hr, savedJob.getHr());
-        assertNotNull(savedJob.getCreatedAt());
+        assertEquals(1, savedJobs.size());
+        assertEquals(hr, savedJobs.get(0).getHr());
+        assertNotNull(savedJobs.get(0).getCreatedAt());
         verify(hrRepository).findById(1);
-        verify(jobPostingRepository).save(job);
+        verify(jobPostingRepository).saveAll(any());
     }
 
     @Test // <<<< update job test
@@ -93,6 +108,7 @@ public class JobPostingServiceTest {
         assertEquals("Remote", result.getLocation());
         assertEquals("XYZ Ltd", result.getCompany());
     }
+    
     @Test // <<<< delete job test
     public void deleteJobTest() {
     	/*prepare the expected output*/
@@ -102,19 +118,20 @@ public class JobPostingServiceTest {
         jobPostingService.deleteJob(1);
         verify(jobPostingRepository).deleteById(1);
     }
+    
     @Test // <<<< get all jobs test
     public void getAllJobsTest() {
-    	/*prepare the expected output*/
-    	List<JobPosting> expected = List.of(job);
-        when(jobPostingRepository.findAll()).thenReturn(expected);
+        List<JobPosting> jobList = List.of(job);
+        Page<JobPosting> expectedPage = new PageImpl<>(jobList);
 
-		/*actual output*/
-        List<JobPosting> actual = jobPostingService.getAllJobs();
+        when(jobPostingRepository.findAll(PageRequest.of(0, 5))).thenReturn(expectedPage);
 
-        assertEquals(expected, actual);
-        verify(jobPostingRepository).findAll();
+        Page<JobPosting> actualPage = jobPostingService.getAllJobs(0, 5);
+
+        assertEquals(expectedPage, actualPage);
+        verify(jobPostingRepository).findAll(PageRequest.of(0, 5));
     }
-
+    
     @Test // <<<< get job by id test
     public void getJobByIdTest() {
     	/*prepare the expected output*/

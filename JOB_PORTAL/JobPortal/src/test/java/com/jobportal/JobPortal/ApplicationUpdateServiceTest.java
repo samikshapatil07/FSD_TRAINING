@@ -63,26 +63,26 @@ public class ApplicationUpdateServiceTest {
     public void testGetUpdatesByApplicationId() {
 		/*prepare the expected output*/
         List<ApplicationUpdate> expectedUpdates = Arrays.asList(update);
-        when(repository.findByApplicationApplicationId(1)).thenReturn(expectedUpdates);
+        when(repository.findByApplication_ApplicationId(1)).thenReturn(expectedUpdates);
 
 		/*actual output*/
         List<ApplicationUpdate> actualUpdates = service.getUpdatesByApplicationId(1);
 
         assertEquals(expectedUpdates, actualUpdates);
-        verify(repository).findByApplicationApplicationId(1);
+        verify(repository).findByApplication_ApplicationId(1);
     }
 
     @Test //<<<<< get updates by jobSeekerId
     public void testGetUpdatesByJobSeekerId() {
 		/*prepare the expected output*/
         List<ApplicationUpdate> expectedUpdates = Arrays.asList(update);
-        when(repository.findByJobSeekerJobSeekerId(1)).thenReturn(expectedUpdates);
+        when(repository.findByJobSeeker_JobSeekerId(1)).thenReturn(expectedUpdates);
 
 		/*actual output*/
         List<ApplicationUpdate> actualUpdates = service.getUpdatesByJobSeekerId(1);
 
         assertEquals(expectedUpdates, actualUpdates);
-        verify(repository).findByJobSeekerJobSeekerId(1);
+        verify(repository).findByJobSeeker_JobSeekerId(1);
     }
 
     @Test //<<<<< record resume update test

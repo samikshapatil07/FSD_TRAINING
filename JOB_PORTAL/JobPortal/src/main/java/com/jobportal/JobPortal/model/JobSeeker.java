@@ -45,6 +45,8 @@ public class JobSeeker { //js in repository
     @OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
     private List<SeekerActivity> activities;
 
+	private boolean isActive;
+
 	@Override
 	public String toString() {
 		return "JobSeeker [jobSeekerId=" + jobSeekerId + ", name=" + name + ", education=" + education + ", skills="
@@ -97,5 +99,12 @@ public class JobSeeker { //js in repository
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+	public boolean isActive() {
+		return isActive;
+	}
+
+	public void setActive(boolean isActive) {
+		this.isActive = isActive;
 	}
 }

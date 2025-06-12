@@ -23,12 +23,17 @@ public class SecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception { 
 		http
+		
 		    .csrf((csrf) -> csrf.disable())
 			.authorizeHttpRequests(authorize -> authorize
+					.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 					
 					//-------------------- FOR USER ----------------------------------
 					.requestMatchers("/api/user/signup").permitAll() // allow all to register as user
-					.requestMatchers("/api/user/token").authenticated()
+					.requestMatchers("/api/user/token").permitAll()
+					.requestMatchers("/api/user/details").permitAll()
+					
+					
 					.requestMatchers("/api/user/details/{id}").hasAuthority("EXECUTIVE")	//only executive can get all users
 
 					//-------------------- FOR HR -------------------------------------
