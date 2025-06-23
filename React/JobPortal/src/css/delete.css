@@ -1,0 +1,10 @@
+.confirm-popup {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 15px;
+  z-index: 10;
+  top: 50px; /* adjust as needed */
+  right: 20px; /* adjust as needed */
+  width: 250px;
+}
