@@ -1,4 +1,3 @@
-// src/components/Home.jsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -6,15 +5,21 @@ import { useNavigate } from "react-router-dom";
 function Home() {
     const navigate = useNavigate();
 
-    return (
-        <div className="container">
-            <div className="col-lg-6"></div>
-            <h4 className="mb-4">User Management Home</h4>
-            <button className="btn btn-primary mx-2 btn-lg" onClick={() => navigate("/userlist")}>UserList  </button>
+ return (
+        <div className="container mt-5">
+            <div className="row justify-content-center">
+                <div className="col-md-6">
+                    <h1 className="mb-4">User Management Home</h1>
+                          <button className="btn btn-primary  mx-2" onClick={() => navigate("/userlist")}>UserList  </button>
+                    <button className="btn btn-primary mx-2" onClick={() => navigate("/adduser")}>Add User</button>
+                    {/* <button className="btn btn-primary mx-2" onClick={() => navigate("/edituser")}>EditUser</button> */}
 
+
+                </div>
+            </div>
         </div>
     );
 }
 
-export default Home
 
+export default Home

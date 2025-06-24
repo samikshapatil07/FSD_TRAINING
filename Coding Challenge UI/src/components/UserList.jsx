@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react"
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+
 
 function UserList() {
     const [msg, setMsg] = useState("")
     const [user, setUser] = useState([])
+
+    const navigate = useNavigate();
 
     //api call for
     useEffect(() => {
@@ -46,11 +50,12 @@ function UserList() {
                 <thead className="table">
                     <tr>
                         <th>Id</th>
-                        <th>Name</th>
-                        <th>Email</th>
-                        <th>Gender</th>
-                        <th>Status</th>
-                        <th>Action</th>
+                        <th>name</th>
+                        <th>email</th>
+                        <th>gender</th>
+                        <th>status</th>
+                        <th>delete</th>
+                        <th>edit</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -64,6 +69,9 @@ function UserList() {
                                 <td>{user.status}</td>
                                 <td>
                                     < button className="btn btn-danger" onClick={() => OnDelete(user.id)}> Delete</button>
+                                </td>
+                                <td>
+                                    < button className="btn btn-primary" onClick={() => navigate("/edituser")}> Edit</button>
                                 </td>
                             </tr>
                         ))
