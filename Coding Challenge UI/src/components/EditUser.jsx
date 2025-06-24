@@ -14,7 +14,6 @@ function EditUser() {
 
 
 
-    //to get the existing data in the form of the user
     
         //to edit the data
         const editUser = async () => {
