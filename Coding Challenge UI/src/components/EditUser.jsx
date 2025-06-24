@@ -1,5 +1,7 @@
 import axios from "axios";
 import { useState, useEffect } from "react"
+import { useNavigate, useParams } from "react-router-dom";
+
 
 
 function EditUser() {
@@ -8,36 +10,33 @@ function EditUser() {
     const [email, setEmail] = useState("");
     const [gender, setGender] = useState("");
     const [status, setStatus] = useState("");
-    const [user, setUser] = useState("");
 
     const [msg, setMsg] = useState("");
 
 
-
-    
-        //to edit the data
-        const editUser = async () => {
-            try {
-                await axios.put( `https://gorest.co.in/public/v2/users/${user.id}`,{
-                        'name': name,
-                        'email': email,
-                        'gender': gender,
-                        'status':status
+    const editUser = async (userId) => {
+        try {
+            await axios.put(
+                `https://gorest.co.in/public/v2/users/${userId}`,
+                {
+                   'name': name,
+                    'email':email,
+                    'gender':gender,
+                    'status':status,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer a7e8a77501b2dfd9deced04fd01adac1de039af7918884ec035d783ce2758051`,
                     },
-                    {
-                        headers: {
-                            Authorization: `Bearer a7e8a77501b2dfd9deced04fd01adac1de039af7918884ec035d783ce2758051`,
-                        }
-                    }
-                )
-                setMsg("Post edited successfully!!!!")
-            }
-            catch (err)
-             {
-                console.log(err)
-            }
+                }
+            );
+            setMsg("User updated successfully!");
+
+        } catch (err) 
+        {
+            console.log(err)
         }
-        editUser()
+    };
 
     return (
         <div className="container-fluid">
@@ -57,12 +56,12 @@ function EditUser() {
 
                     <div>
                         <label>Name:</label>
-                        <input type="text" required onChange={$e => setName(e.target.value)} className="form-control mb-2" ></input>
+                        <input type="text" required onChange={e => setName(e.target.value)} className="form-control mb-2" ></input>
                     </div>
 
                     <div>
                         <label>Email:</label>
-                        <input type="text" required onChange={$e => setEmail(e.target.value)} className="form-control mb-2" ></input>
+                        <input type="text" required onChange={e => setEmail(e.target.value)} className="form-control mb-2" ></input>
                     </div>
 
                     <div className="mb-4">

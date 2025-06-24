@@ -71,7 +71,7 @@ function UserList() {
                                     < button className="btn btn-danger" onClick={() => OnDelete(user.id)}> Delete</button>
                                 </td>
                                 <td>
-                                    < button className="btn btn-primary" onClick={() => navigate("/edituser/${user.id}")}> Edit</button>
+                                    < button className="btn btn-primary" onClick={() => navigate("/edituser/${id}")}> Edit</button>
                                 </td>
                             </tr>
                         ))
