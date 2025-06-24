@@ -1,13 +1,44 @@
+import axios from "axios";
 import { useState, useEffect } from "react"
 
 
 function EditUser() {
 
-    let [name, setName] = useState("");
-    let [email, setEmail] = useState("");
-    let [gender, setGender] = useState("");
-    let [status, setStatus] = useState("");
-    let [msg, setMsg] = useState("");
+    const [name, setName] = useState("");
+    const [email, setEmail] = useState("");
+    const [gender, setGender] = useState("");
+    const [status, setStatus] = useState("");
+    const [user, setUser] = useState("");
+
+    const [msg, setMsg] = useState("");
+
+
+
+    //to get the existing data in the form of the user
+    
+        //to edit the data
+        const editUser = async () => {
+            try {
+                await axios.put( `https://gorest.co.in/public/v2/users/${user.id}`,{
+                        'name': name,
+                        'email': email,
+                        'gender': gender,
+                        'status':status
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer a7e8a77501b2dfd9deced04fd01adac1de039af7918884ec035d783ce2758051`,
+                        }
+                    }
+                )
+                setMsg("Post edited successfully!!!!")
+            }
+            catch (err)
+             {
+                console.log(err)
+            }
+        }
+        editUser()
 
     return (
         <div className="container-fluid">
@@ -39,18 +70,18 @@ function EditUser() {
                         <label>Gender:</label>
                         <select className="form-control mb-2" onChange={e => setGender(e.target.value)} required>
                             <option value="">Select Gender</option>
-                            <option value="male">Male</option>
-                            <option value="female">Female</option>
+                            <option value="male">male</option>
+                            <option value="female">female</option>
                         </select>
                     </div>
 
                     <div className="mb-4">
                         <label>Staus:</label>
-                        <input type="text" required onChange={$e => setStatus(e.target.value)} className="form-control mb-2" ></input>
+                        <input type="text" required onChange={e => setStatus(e.target.value)} className="form-control mb-2" ></input>
                     </div>
 
                     <div >
-                        <button className="btn btn-primary" onClick={() => addUser()} >Edit</button>
+                        <button className="btn btn-primary" onClick={() => editUser()} >Edit</button>
                     </div>
                 </div>
 

@@ -13,29 +13,24 @@ function AddUser() {
 
     const navigate = useNavigate();
 
-//api for add user
+    //api for add user
     const addUser = async () => {
         try {
-            await axios.post(
-                'https://gorest.co.in/public/v2/users',{
-                    'name': name,
-                    'email': email,
-                    'gender': gender,
-                    'status': status
-                },{
-                    headers: {
-                        Authorization: `Bearer a7e8a77501b2dfd9deced04fd01adac1de039af7918884ec035d783ce2758051`,
-                    }
+            await axios.post('https://gorest.co.in/public/v2/users', {
+                'name': name,
+                'email': email,
+                'gender': gender,
+                'status': status
+            }, {
+                headers: {
+                    Authorization: `Bearer a7e8a77501b2dfd9deced04fd01adac1de039af7918884ec035d783ce2758051`,
                 }
+            }
             )
             setMsg("Post created successfully!!!!")
-                        
-                // navigate('/');
-        
 
         }
-        catch (err) 
-        {
+        catch (err) {
             console.log(err)
         }
     }
@@ -68,12 +63,12 @@ function AddUser() {
 
                     <div className="mb-4">
                         <label>Gender:</label>
-<select className="form-control mb-2" onChange={e => setGender(e.target.value)} required>
-    <option value="">Select Gender</option>
-    <option value="male">Male</option>
-    <option value="female">Female</option>
-  </select>                
-      </div>
+                        <select className="form-control mb-2" onChange={e => setGender(e.target.value)} required>
+                            <option value="">Select Gender</option>
+                            <option value="male">male</option>
+                            <option value="female">female</option>
+                        </select>
+                    </div>
 
                     <div className="mb-4">
                         <label>Status:</label>

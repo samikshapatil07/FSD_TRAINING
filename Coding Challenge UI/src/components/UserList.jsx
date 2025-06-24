@@ -27,11 +27,11 @@ function UserList() {
     const OnDelete = async (id) => {
         try {
             await axios.delete(`https://gorest.co.in/public/v2/users/${id}`, {
-                     headers: {
-             Authorization: `Bearer a7e8a77501b2dfd9deced04fd01adac1de039af7918884ec035d783ce2758051`
-        }
-    })
-            
+                headers: {
+                    Authorization: `Bearer a7e8a77501b2dfd9deced04fd01adac1de039af7918884ec035d783ce2758051`
+                }
+            })
+
             let temp = [...user]
             temp = temp.filter(u => u.id !== id)
             setUser(temp)
@@ -71,7 +71,7 @@ function UserList() {
                                     < button className="btn btn-danger" onClick={() => OnDelete(user.id)}> Delete</button>
                                 </td>
                                 <td>
-                                    < button className="btn btn-primary" onClick={() => navigate("/edituser")}> Edit</button>
+                                    < button className="btn btn-primary" onClick={() => navigate("/edituser/${user.id}")}> Edit</button>
                                 </td>
                             </tr>
                         ))
