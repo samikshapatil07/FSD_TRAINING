@@ -12,14 +12,11 @@ import com.jobportal.JobPortal.model.ApplicationUpdate;
 public interface ApplicationUpdateRepository extends JpaRepository<ApplicationUpdate, Integer> {
 	
 	//implementing jpql
-	// Correct JPQL: Get updates by application ID
-    @Query("SELECT au FROM ApplicationUpdate au WHERE au.application.applicationId = ?1")
-    List<ApplicationUpdate> findByApplication_ApplicationId(Integer applicationId);
+	//Get updates by application ID
+    @Query("select au from ApplicationUpdate au where au.application.applicationId = ?1")
+    List<ApplicationUpdate> get_updates_by_app(int applicationId);
 
-    // Correct JPQL: Get updates by job seeker ID
-    @Query("SELECT au FROM ApplicationUpdate au WHERE au.jobSeeker.jobSeekerId = ?1")
-    List<ApplicationUpdate> findByJobSeeker_JobSeekerId(Integer jobSeekerId);
+    // Get updates by job seeker ID(for ex)
+    @Query("select  au from ApplicationUpdate au where au.jobSeeker.jobSeekerId = ?1")
+    List<ApplicationUpdate> get_updates_by_js(int jobSeekerId);
 }
-
-//List<ApplicationUpdate> findByApplication_ApplicationId(Integer applicationId);
-//List<ApplicationUpdate> findByJobSeeker_JobSeekerId(Integer jobSeekerId);

@@ -1,16 +1,17 @@
 package com.jobportal.JobPortal.service;
 
+import com.jobportal.JobPortal.dto.JobPostingDTO;
 import com.jobportal.JobPortal.exception.ResourceNotFoundException;
 import com.jobportal.JobPortal.model.Hr;
 import com.jobportal.JobPortal.model.JobPosting;
 import com.jobportal.JobPortal.repository.HrRepository;
 import com.jobportal.JobPortal.repository.JobPostingRepository;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 //implemented paging for get all jobs
@@ -20,44 +21,87 @@ public class JobPostingService {
 
     @Autowired
     private JobPostingRepository jobPostingRepository;
-    
+        
     @Autowired
     private HrRepository hrRepository;
+    
+    Logger logger = LoggerFactory.getLogger("JobPostingService");
 
     //implemented batch insert for posting job   
     /* we use batch insert when HR wants to post multiple job listings at once
      * used when we want to save multiple records at once */
     
   //--------------------- Posts a new Job -------------------------------------------------------
-    public List<JobPosting> batchPostJobs(List<JobPosting> jobList, int hrId) {
-        Hr hr = hrRepository.findById(hrId)
-                .orElseThrow(() -> new ResourceNotFoundException("HR not found with ID: " + hrId));
+	/*hr posts a new job, used the hr username to fect their details then associate the hr with the job before saving*/
+    public JobPosting postJobs(JobPosting jobPosting, String username) {
+		// TODO Auto-generated method stub
+		Hr hr = hrRepository.getHrByUsername(username);//fetch hr by username
+        logger.info("Hr record fetched by username");
+        jobPosting.setHr(hr); //link tht hr to job posting
+        logger.info("Adding.. Hr to Database");
+        
+        return jobPostingRepository.save(jobPosting);//save to database
+	}
+   
+//--------------------- Get all Job Postings --------------------------------------------
+    //implemeting paging in react not in api
 
-        for (JobPosting job : jobList) {
-            job.setHr(hr);
-            job.setCreatedAt(LocalDateTime.now());
-        }
+	public List<JobPostingDTO> getAllJobs() {
 
-        return jobPostingRepository.saveAll(jobList);
+        List<JobPosting> jobPostings = jobPostingRepository.findAll();
+        return JobPostingDTO.converttoDto(jobPostings);
     }
-    
+	
   //--------------------- update a Job by its ID --------------------------------------------------
-    public JobPosting updateJob(int id, JobPosting updatedJob) {
-        JobPosting existingJob = jobPostingRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Job not found with id: " + id));
+	/*allows hr to update an existing job by its id
+	 * first check if the job existes and belongs to the hr
+	 * then update the fields..*/
+	public JobPosting updateJob(int jobId, JobPosting updatedJob,Hr hr) {
+	    JobPosting existing = jobPostingRepository.findById(jobId)
+	            .orElseThrow(() -> new ResourceNotFoundException("Job not found with ID: " + jobId));
 
-        existingJob.setJobTitle(updatedJob.getJobTitle());
-        existingJob.setDescription(updatedJob.getDescription());
-        existingJob.setSkills(updatedJob.getSkills());
-        existingJob.setLocation(updatedJob.getLocation());
-        existingJob.setSalary(updatedJob.getSalary());
-        existingJob.setDepartment(updatedJob.getDepartment());
-        existingJob.setCompany(updatedJob.getCompany());
-        existingJob.setExperience(updatedJob.getExperience());
+	    //check if the logged in hr has posted this job
+	    if (existing.getHr().getId() != hr.getId()) {
+	        throw new ResourceNotFoundException("You are not authorized to update this job posting.");
+	    }
 
-        return jobPostingRepository.save(existingJob);
-    }
+	    //update fields
+	    if (updatedJob.getJobTitle() != null)
+	        existing.setJobTitle(updatedJob.getJobTitle());
+	    if (updatedJob.getDescription() != null)
+	        existing.setDescription(updatedJob.getDescription());
+	    if (updatedJob.getSkills() != null)
+	        existing.setSkills(updatedJob.getSkills());
+	    if (updatedJob.getLocation() != null)
+	        existing.setLocation(updatedJob.getLocation());
+	    if (updatedJob.getSalary() != 0)
+	        existing.setSalary(updatedJob.getSalary());
+	    if (updatedJob.getDepartment() != null)
+	        existing.setDepartment(updatedJob.getDepartment());
+	    if (updatedJob.getCompany() != null)
+	        existing.setCompany(updatedJob.getCompany());
+	    if (updatedJob.getExperience() != null)
+	        existing.setExperience(updatedJob.getExperience());
+	    
+	    //return  the updated job
+	    return jobPostingRepository.save(existing);
+	}
+	
     
+  //--------------------- Search Jobs ------------------------------------------------------------
+   /**/
+	public List<JobPostingDTO> searchJobs(String job_title, String location, String company) {
+        
+        List<JobPosting> jobPostings = jobPostingRepository.searchJobs(job_title, location, company);
+        return JobPostingDTO.converttoDto(jobPostings);
+    }
+    //--------------------- get job by hr ------------------------------------------------------------
+/*return all job postings created by  hr, udentify by their username*/
+	public List<JobPosting> getJobsByHr(String username) {
+		// TODO Auto-generated method stub
+		return jobPostingRepository.getJobsByHr(username);
+	}
+	   
  //--------------------- Delete a Job by ID ------------------------------------------------
     public void deleteJob(int jobId) {
         if (!jobPostingRepository.existsById(jobId)) {
@@ -65,25 +109,18 @@ public class JobPostingService {
         }
         jobPostingRepository.deleteById(jobId);
     }
+   
     
-  //--------------------- Get all Job Postings --------------------------------------------
-    //implemeting paging
-
-	public Page<JobPosting> getAllJobs(int page, int size) {
-		//paging
-        PageRequest pageable = PageRequest.of(page, size);
-        return jobPostingRepository.findAll(pageable);
-    }
-	
+    
+    
+ //===================================================================================
   //--------------------- Get a Job by ID ------------------------------------------------------
-    public JobPosting getJobById(int jobId) {
-        return jobPostingRepository.findById(jobId)
-                .orElseThrow(() -> new ResourceNotFoundException("Job posting not found with ID: " + jobId));
+    public JobPostingDTO getJobById(int jobId) {
+        JobPosting jobPosting = jobPostingRepository.findById(jobId)
+                    .orElseThrow(() -> new ResourceNotFoundException("Job Id Not Found "));
+        
+        return JobPostingDTO.converttoDto(jobPosting);
     }
-    
-  //--------------------- Search Jobs ------------------------------------------------------------
-    public List<JobPosting> searchJobs(String jobTitle, String location, String company) {
-        return jobPostingRepository.searchJobs(jobTitle, location, company);
-    }
+
 
 }

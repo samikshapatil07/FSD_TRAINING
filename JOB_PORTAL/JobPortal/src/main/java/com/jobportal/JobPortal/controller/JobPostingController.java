@@ -1,97 +1,152 @@
 package com.jobportal.JobPortal.controller;
 
 import com.jobportal.JobPortal.dto.JobPostingDTO;
+import com.jobportal.JobPortal.model.Hr;
 import com.jobportal.JobPortal.model.JobPosting;
+import com.jobportal.JobPortal.repository.HrRepository;
 import com.jobportal.JobPortal.service.JobPostingService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
+import java.security.Principal;
 import java.util.List;
 
 
 /*implemented logger, dto, batch insert for job posting, paging for get all jobs*/
 //implementd principle interface
+
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 @RequestMapping("/api/jobs")
+
 public class JobPostingController {
 
     @Autowired
     private JobPostingService jobPostingService;
+    @Autowired
+    private HrRepository hrRepository;
+    
 
   //implementing logger
     private Logger logger = LoggerFactory.getLogger("JobPostingController");
     
-    //implementing dto (convert JobPosting to JobPostingDTO)
-    private JobPostingDTO convertToDTO(JobPosting job) {
-        return new JobPostingDTO(
-            job.getJobId(),
-            job.getJobTitle(),
-            job.getDescription(),
-            job.getSkills(),
-            job.getLocation(),
-            job.getSalary(),
-            job.getDepartment(),
-            job.getCompany(),
-            job.getExperience(),
-            job.getCreatedAt()
-        );
-    }
-    
-    private List<JobPostingDTO> convertListToDTO(List<JobPosting> jobs) {
-        List<JobPostingDTO> dtoList = new ArrayList<>();
-        for (JobPosting job : jobs) {
-            dtoList.add(convertToDTO(job));
-        }
-        return dtoList;
-    }
-    
+
     //implemented batch insert for job posting and 
     //use the Principal interface instead of passing the hrId as a path variable
-    // ----------------- Post a new Job (HR)----------------------
-    /*
+ // ----------------- Post a new Job (HR)----------------------
+    /*thi allows a logged in hr to post the job
+     * using the prinvipal obj. to fect the username of the logged in hr
      * AIM     : Allows an HR to post a new job
-     * PATH    : /api/jobs/{hrId}
+     * PATH    : /api/job/add
      * METHOD  : POST
-     * INPUT   : JobPosting object in request body, HR id as path variable
+     * INPUT   : JobPosting object in request body,principal interface
      * RESPONSE: Returns the saved JobPosting with generated ID and details
-     */
-    @PostMapping("/batch/{hrId}")
-    public ResponseEntity<List<JobPostingDTO>> batchPostJobs(
-            @PathVariable int hrId,
-            @RequestBody List<JobPosting> jobPostings) {
-
-        List<JobPosting> savedJobs = jobPostingService.batchPostJobs(jobPostings, hrId);
-
-        logger.info("Batch posting {} jobs by HR with ID {}", savedJobs.size(), hrId);
-        List<JobPostingDTO> dtoList = convertListToDTO(savedJobs);
-        return new ResponseEntity<>(dtoList, HttpStatus.CREATED);
-    }
+     */    
+	@PostMapping("/add") 
+	public JobPosting postJobs(Principal principal, @RequestBody JobPosting jobPosting) {
+		String username = principal.getName(); // LoggedIn hr
+		//logger
+    	logger.info("Registering Job Seeker...");
+		return jobPostingService.postJobs(jobPosting, username);
+	}
     
-//implemented paging
+    
+//implemented paging in react
     // ----------------- Get All Jobs -------------------------
-    /*
+    /*this returns all the available job postimgs
      * AIM     : Retrieve all job postings
      * PATH    : /api/jobs
      * METHOD  : GET
      * RESPONSE: List of all JobPosting objects
      */
-    @GetMapping("/api/jobs?page=0&size=5")
-    public ResponseEntity<List<JobPostingDTO>> getAllJobs(@RequestParam(defaultValue = "0") int page,
-                                                          @RequestParam(defaultValue = "5") int size){ //implementing paging
-        List<JobPosting> jobs = jobPostingService.getAllJobs(page, size).getContent();
-        //logger
-        logger.info("Retrieving all jobs...");
-        //dto
-        List<JobPostingDTO> dtoList = convertListToDTO(jobs);
-        return ResponseEntity.ok(dtoList);
-    }
+	@GetMapping("/all")
+	public List<JobPostingDTO> getAllJobs(){
+		//logger
+    	logger.info("getting all jobs...");
+		
+		return jobPostingService.getAllJobs();
+	}
 
+// ------------------------ Update Job by ID ------------------------
+    /*this allows to update the job, the updated job is passed in request body
+     * AIM     : Update an existing job posting's details
+     * PATH    : /api/jobs/{id}
+     * METHOD  : PUT
+     * INPUT   : Job ID as path variable, updated JobPosting object in request body
+     * RESPONSE: Updated JobPosting object
+     */
+	@PutMapping("/update/{jobId}")
+	public ResponseEntity<JobPosting> updateJobPosting(@PathVariable int jobId, 
+	                                                @RequestBody JobPosting updatedJob, 
+	                                                Principal principal) {
+	    logger.info("Updating job posting by logged-in HR...");
+	    String username = principal.getName(); //logged-in HR
+	    //fetched hr obj.
+	    Hr hr = hrRepository.getHrByUsername(username);
+	    JobPosting updated = jobPostingService.updateJob(jobId, updatedJob,hr); //update job
+	    //logger
+	    logger.info("Updating job with id: " + jobId);
+	    //return updated job
+	    return ResponseEntity.ok(updated);
+	}
+	
+	
+// --------------- Delete Job by ID ------------------------
+    /*
+     * AIM     : Delete a job posting by its ID
+     * PATH    : /api/jobs/{id}
+     * METHOD  : DELETE
+     * INPUT   : Job ID as path variable
+     * RESPONSE: Confirmation message on successful deletion
+     */
+	@DeleteMapping("/delete/{jobId}")
+	public ResponseEntity<?> deleteJob(@PathVariable int jobId, Principal principal) {
+	    //delete job
+	    jobPostingService.deleteJob(jobId); 
+	    return ResponseEntity.ok("Job with ID " + jobId + " has been deleted successfully.");
+	}
+	
+	 // -------------- Search Jobs -------------------
+    /*this allows to serach jons using optional parameters as title, location. company
+     * AIM     : Search jobs by title, location, and/or company
+     * PATH    : /api/jobs/search
+     * METHOD  : GET
+     * INPUT   : Optional query parameters - job_title, location, company
+     * RESPONSE: List of JobPosting objects matching search criteria
+     */
+   @GetMapping("/search")
+   public List<JobPostingDTO> searchJobs(
+           @RequestParam(required = false) String job_title,
+           @RequestParam(required = false) String location,
+           @RequestParam(required = false) String company) {
+        //logger
+       logger.info("Searching jobs...");
+       
+       return jobPostingService.searchJobs(job_title, location, company); //return the filtered list after serach
+   }
+   
+   // ------------------------- get jobs by-hr ---------------------------------------------
+
+
+	@GetMapping("/by-hr")
+	public List<JobPosting> getJobsByHr(Principal principal){
+		String username = principal.getName();
+		List<JobPosting> courses = jobPostingService.getJobsByHr(username);
+		logger.info("fethcing job");
+		return courses;
+	}
+	
+	
+	
+	
+	
+	
+   
+	//=========================================================================================================================	
     // ----------------- Get Job by ID ------------------------
     /*
      * AIM     : Retrieve a job posting by its ID
@@ -100,67 +155,14 @@ public class JobPostingController {
      * INPUT   : Job ID as path variable
      * RESPONSE: JobPosting object matching the ID
      */
-    @GetMapping("/{id}")
-    public ResponseEntity<JobPostingDTO> getJobById(@PathVariable int id) {
-        JobPosting job = jobPostingService.getJobById(id);
-        //logger
-        logger.info("Getting job with id: " + id);
-        //dto
-        JobPostingDTO dto = convertToDTO(job);
+    @GetMapping("/jobId/{jobId}")
+    public ResponseEntity<JobPostingDTO> getJobById(@PathVariable int jobId) {
+      
+    	JobPostingDTO dto = jobPostingService.getJobById(jobId);
+        logger.info("DTO fetched: " + dto);
         return ResponseEntity.ok(dto);
     }
 
-    // -------------- Search Jobs by Criteria -------------------
-    /*
-     * AIM     : Search jobs by title, location, and/or company
-     * PATH    : /api/jobs/search
-     * METHOD  : GET
-     * INPUT   : Optional query parameters - job_title, location, company
-     * RESPONSE: List of JobPosting objects matching search criteria
-     */
-    @GetMapping("/search")
-    public ResponseEntity<List<JobPostingDTO>> searchJobs(
-              @RequestParam(required = false) String job_title,
-            @RequestParam(required = false) String location,
-             @RequestParam(required = false) String company) {
-        List<JobPosting> jobs = jobPostingService.searchJobs(job_title, location, company);
-        //logger
-        logger.info("Searching jobs...");
-        //dto
-        List<JobPostingDTO> dtoList = convertListToDTO(jobs);
-        return ResponseEntity.ok(dtoList);
-    }
-    // --------------- Update Job by ID ------------------------
-    /*
-     * AIM     : Update an existing job posting's details
-     * PATH    : /api/jobs/{id}
-     * METHOD  : PUT
-     * INPUT   : Job ID as path variable, updated JobPosting object in request body
-     * RESPONSE: Updated JobPosting object
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<JobPostingDTO> updateJob(@PathVariable int id, @RequestBody JobPosting updatedJob) {
-        JobPosting job = jobPostingService.updateJob(id, updatedJob);
-        //logger
-        logger.info("Updating job with id: " + id);
-        //dto
-        JobPostingDTO dto = convertToDTO(job);
-        return ResponseEntity.ok(dto);
-    }
+   
 
-    // --------------- Delete Job by ID ------------------------
-    /*
-     * AIM     : Delete a job posting by its ID
-     * PATH    : /api/jobs/{id}
-     * METHOD  : DELETE
-     * INPUT   : Job ID as path variable
-     * RESPONSE: Confirmation message on successful deletion
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteJob(@PathVariable int id) {
-        jobPostingService.deleteJob(id);
-        //logger
-        logger.info("Deleting job with id:"+ id);
-        return ResponseEntity.ok("Job with ID " + id + " has been deleted successfully.");
-    }
 }

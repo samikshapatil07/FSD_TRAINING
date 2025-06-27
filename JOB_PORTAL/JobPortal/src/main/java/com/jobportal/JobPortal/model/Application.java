@@ -1,9 +1,11 @@
 package com.jobportal.JobPortal.model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -13,13 +15,14 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "application")
-public class Application {
+public class Application { //ap
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +33,12 @@ public class Application {
     private JobSeeker jobSeeker;
 
     @ManyToOne
-    @JoinColumn(name = "job_posting_id", nullable = false)
+    @JoinColumn(name = "job_id", nullable = false)
     private JobPosting jobPosting;
+    
+    @OneToMany(mappedBy = "application", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ApplicationUpdate> updates;
+
 
     @Column(nullable = false)
     private String resumePath;
@@ -45,7 +52,10 @@ public class Application {
 
     //  to represent current application status we are using enum
     public enum Status {
-    	   APPLIED,REJECTED, INTERVIEW_SCHEDULED,INTERVIEW_COMPLETED_OFFERED,INTERVIEW_COMPLETED_REJECTED    
+    	//for application
+    	   APPLIED,APPLICATION_REJECTED, 
+    	   //for interview
+    	   INTERVIEW_SCHEDULED,OFFERED,REJECTED    
     }
 
     public Application() {

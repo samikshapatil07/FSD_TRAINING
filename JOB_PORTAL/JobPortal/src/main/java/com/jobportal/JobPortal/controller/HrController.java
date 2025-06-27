@@ -1,17 +1,17 @@
 package com.jobportal.JobPortal.controller;
 
-import java.util.ArrayList;
+import java.security.Principal;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,12 @@ import com.jobportal.JobPortal.dto.HrDTO;
 import com.jobportal.JobPortal.model.Hr;
 import com.jobportal.JobPortal.service.HrService;
 
+//*this class handles the 3 API call : 1.register HR
+//*                                    2. get logged in HR
+//*                                    3. update HR profile (else are for executive that i have not implemented)*/
+
 @RestController
+@CrossOrigin(origins = "http://localhost:5173") //allows requests from the frontend running on port 5173
 @RequestMapping("/api/hr")
 public class HrController {
 
@@ -29,24 +34,6 @@ public class HrController {
     
   //implementing logger
     private Logger logger = LoggerFactory.getLogger("HrController");
-    
-   //implementing dto here and then using it in every method
-    private HrDTO convertToDTO(Hr hr) {
-        HrDTO dto = new HrDTO();
-        dto.setId(hr.getId());
-        dto.setName(hr.getName());
-        dto.setCompanyName(hr.getCompanyName());
-        dto.setUsername(hr.getUser() != null ? hr.getUser().getUsername() : null);
-        return dto;
-    }
-
-    private List<HrDTO> convertToDTOList(List<Hr> hrList) {
-        List<HrDTO> dtoList = new ArrayList<>();
-        for (Hr hr : hrList) {
-            dtoList.add(convertToDTO(hr));
-        }
-        return dtoList;
-    }
 
     // ------------------------- Register HR ---------------------------------------------
     /*
@@ -57,30 +44,83 @@ public class HrController {
      * RESPONSE: Hr (saved HR object)
      */
     @PostMapping("/register")
-    public ResponseEntity<HrDTO> registerHr(@RequestBody Hr hr) {
+    public Hr registerHr(@RequestBody Hr hr) {
     	//logger
         logger.info("Registering new HR...");
-        Hr savedHr = hrService.registerHr(hr);
-        //dto
-        HrDTO dto = convertToDTO(savedHr);
-        return ResponseEntity.ok(dto);
+        return hrService.registerHr(hr); //calling service ,method to register and return result
     }
-    // ------------------------- Get HR by ID ---------------------------------------------
+
+    
+    // ------------------------- Update HR ---------------------------------------------
     /*
-     * AIM     : To get HR details by ID
+     * AIM     : To update HR details
      * PATH    : /api/hr/{hrId}
+     * METHOD  : PUT
+     * INPUT   : hrId (path variable), Hr (request body)
+     * RESPONSE: String (confirmation message)
+     */    
+    @PostMapping("/update/me")
+    public ResponseEntity<Hr> updateMyHrProfile(@RequestBody Hr updatedHr, Principal principal) {
+        logger.info("Updating profile of logged-in HR...");
+
+        //fetch logged in hr details using username from principle obj.
+        HrDTO existing = hrService.getHrByUsername(principal.getName()); 
+        //update the hr data using the service methid
+       Hr updated =  hrService.updateHr(existing.getId(), updatedHr);
+       //retirn updated hr
+        return ResponseEntity.ok(updated);
+    }
+    
+    // ------------------------- login as hr --------------------------------------------
+    /*
+     * AIM     : To get HR by username
+     * PATH    : /api/hr/{username}
      * METHOD  : GET
-     * INPUT   : hrId (path variable)
-     * RESPONSE: Hr (HR object)
+     * INPUT   : @path variable hrusername
+     * RESPONSE: hr
      */
-    @GetMapping("/{hrId}")
-    public ResponseEntity<HrDTO> getHrById(@PathVariable int hrId) {
+    @GetMapping("/username/{username}")
+    public HrDTO getHrByUsername(@PathVariable String username) {
     	//logger
-        logger.info("Fetching HR by ID: " + hrId);
-        Hr hr = hrService.getHrById(hrId);
-        //dto
-        HrDTO dto = convertToDTO(hr);
-        return ResponseEntity.ok(dto);
+        logger.info("Fetching HR with username: " + username);
+        
+        return hrService.getHrByUsername(username); //call service methods and return dto
+    } 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
+ //======================================================================================================
+    //-------------------------------- for EX -----------------------------------------------------------------------
+    
+    // ------------------------- Delete HR ---------------------------------------------
+    /*
+     * AIM     : To delete an HR by ID
+     * PATH    : /api/hr/{hrId}
+     * METHOD  : DELETE
+     * INPUT   : hrId (path variable)
+     * RESPONSE: String (confirmation message)
+     */
+    @DeleteMapping("/delete/{hrId}")
+    public ResponseEntity<?> deleteHr(@PathVariable int hrId) {
+        hrService.deleteHr(hrId);
+        //logger
+        logger.info("Deleted HR with ID : " + hrId);
+        return ResponseEntity.ok("HR with ID " + hrId + " has been deleted successfully.");
     }
     
     // ------------------------- Get All HRs ---------------------------------------------
@@ -90,45 +130,30 @@ public class HrController {
      * METHOD  : GET
      * RESPONSE: List<Hr> (all HR records)
      */
-    @GetMapping
-    public ResponseEntity<List<HrDTO>> getAllHrs() {
+    @GetMapping("/all")
+    public List<HrDTO> getAllHrs() {
     	//logger
         logger.info("Fetching all HRs...");
-        List<Hr> hrList = hrService.getAllHrs();
-        //dto
-        List<HrDTO> dtoList = convertToDTOList(hrList);
-        return ResponseEntity.ok(dtoList);
+        return hrService.getAllHrs();
     }
 
-    // ------------------------- Update HR ---------------------------------------------
+
+    
+    // ------------------------- Get HR by ID ---------------------------------------------
     /*
-     * AIM     : To update HR details
+     * AIM     : To get HR details by ID
      * PATH    : /api/hr/{hrId}
-     * METHOD  : PUT
-     * INPUT   : hrId (path variable), Hr (request body)
-     * RESPONSE: String (confirmation message)
-     */
-    @PutMapping("/{hrId}")
-    public ResponseEntity<String> updateHr(@PathVariable int hrId, @RequestBody Hr updatedHr) {
-        //logger
-    	logger.info("Updating HR with ID: " + hrId);
-        hrService.updateHr(hrId, updatedHr);
-        return ResponseEntity.ok("HR with ID " + hrId + " updated successfully.");
-    }
-    // ------------------------- Delete HR ---------------------------------------------
-    /*
-     * AIM     : To delete an HR by ID
-     * PATH    : /api/hr/{hrId}
-     * METHOD  : DELETE
+     * METHOD  : GET
      * INPUT   : hrId (path variable)
-     * RESPONSE: String (confirmation message)
+     * RESPONSE: Hr 
      */
-    @DeleteMapping("/{hrId}")
-    public ResponseEntity<?> deleteHr(@PathVariable int hrId) {
-        hrService.deleteHr(hrId);
-        //logger
-        logger.info("Deleted HR with ID : " + hrId);
-        return ResponseEntity.ok("HR with ID " + hrId + " has been deleted successfully.");
+    @GetMapping("/Id/{hrId}")
+    public HrDTO getHrById(@PathVariable int hrId) {
+    	//logger
+        logger.info("Fetching HR by ID: " + hrId);
+        return hrService.getHrById(hrId);
     }
+
+
 
 }

@@ -6,7 +6,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,11 +30,12 @@ public class Interview {    //i in interview repository
     @Enumerated(EnumType.STRING)
     @Column(name = "interview_mode", nullable = false)
     private InterviewMode interviewMode; // onl, offline
+    
     @Enumerated(EnumType.STRING)
     @Column(name = "outcome", nullable = false)
     private InterviewOutcome outcome; // interview scheduled, interview completed_offered, interview completeed_rejected
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "app_id", nullable = false)
     private Application application;
     
@@ -44,7 +44,7 @@ public class Interview {    //i in interview repository
     }
 
     public enum InterviewOutcome {
-    	INTERVIEW_COMPLETED_OFFERED,INTERVIEW_COMPLETED_REJECTED,PENDING
+    	PASSED,FAILED,PENDING
   
     }
 

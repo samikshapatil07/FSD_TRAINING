@@ -1,6 +1,5 @@
 package com.jobportal.JobPortal;
 
-import com.jobportal.JobPortal.exception.ResourceNotFoundException;
 import com.jobportal.JobPortal.model.User;
 import com.jobportal.JobPortal.repository.UserRepository;
 import com.jobportal.JobPortal.service.UserService;
@@ -14,7 +13,6 @@ import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -58,28 +56,6 @@ public class UserServiceTest {
         verify(userRepository).save(user);
     }
 
-    @Test // <<<<----- Get user by ID
-    public void getUserByIdTest() {
-        // expected output
-        when(userRepository.findById(1)).thenReturn(Optional.of(user));
-
-        // actual output
-        User actual = userService.getUserById(1);
-
-        assertEquals("john_doe", actual.getUsername());
-        assertEquals("HR", actual.getRole());
-        verify(userRepository).findById(1);
-    }
-
-    @Test // <<<<--- User not found -> throws exception
-    public void getUserById_NotFound_ShouldThrowException() {
-        // expected output
-        when(userRepository.findById(99)).thenReturn(Optional.empty());
-
-        // actual output
-        assertThrows(ResourceNotFoundException.class, () -> userService.getUserById(99));
-        verify(userRepository).findById(99);
-    }
     
     // After each test case, the objects used in them will get nullified and HEAP
     // memory will be free

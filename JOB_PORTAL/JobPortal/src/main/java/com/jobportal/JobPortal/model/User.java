@@ -8,19 +8,16 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class User {
 	    @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
 	    @Column(name = "user_id") 
 	    private int id;         
-
-	    @Column(nullable = false, unique = true)
+	    @Column(nullable = false)
 	    private String username;
-
 	    @Column(nullable = false)
 	    private String password;
-
 	    @Column(nullable = false)
 	    private String role;
 

@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal;
 
+import com.jobportal.JobPortal.dto.ApplicationUpdateDTO;
 import com.jobportal.JobPortal.model.Application;
 import com.jobportal.JobPortal.model.ApplicationUpdate;
 import com.jobportal.JobPortal.model.JobSeeker;
@@ -13,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.List;
 
@@ -45,44 +48,41 @@ public class ApplicationUpdateServiceTest {
         update.setApplication(application);
         update.setJobSeeker(jobSeeker);
         update.setUpdatedResumePath("resume/path.pdf");
-    }
-
-    @Test //<<<<< createUpdate test
-    public void testCreateUpdate() {
-		/*prepare the expected output*/
-        when(repository.save(update)).thenReturn(update);
-
-		/*actual output*/
-        ApplicationUpdate saved = service.createUpdate(update);
-
-        assertEquals(update, saved);
-        verify(repository).save(update);
+        
+        update.setUpdatedOn(Timestamp.from(Instant.now()));
     }
 
     @Test //<<<<< get updates by applicationId
     public void testGetUpdatesByApplicationId() {
-		/*prepare the expected output*/
-        List<ApplicationUpdate> expectedUpdates = Arrays.asList(update);
-        when(repository.findByApplication_ApplicationId(1)).thenReturn(expectedUpdates);
+        List<ApplicationUpdate> entityUpdates = Arrays.asList(update);
+        when(repository.get_updates_by_app(1)).thenReturn(entityUpdates);
 
-		/*actual output*/
-        List<ApplicationUpdate> actualUpdates = service.getUpdatesByApplicationId(1);
+        List<ApplicationUpdateDTO> actual = service.getUpdatesByApplicationId(1);
 
-        assertEquals(expectedUpdates, actualUpdates);
-        verify(repository).findByApplication_ApplicationId(1);
+        assertEquals(1, actual.size());
+        assertEquals(update.getUpdateId(), actual.get(0).getUpdateId());
+        assertEquals(update.getUpdatedResumePath(), actual.get(0).getUpdatedResumePath());
+        assertEquals(update.getApplication().getApplicationId(), actual.get(0).getApplicationId());
+        assertEquals(update.getJobSeeker().getJobSeekerId(), actual.get(0).getJobSeekerId());
+
+        verify(repository).get_updates_by_app(1);
     }
+
 
     @Test //<<<<< get updates by jobSeekerId
     public void testGetUpdatesByJobSeekerId() {
-		/*prepare the expected output*/
-        List<ApplicationUpdate> expectedUpdates = Arrays.asList(update);
-        when(repository.findByJobSeeker_JobSeekerId(1)).thenReturn(expectedUpdates);
+        List<ApplicationUpdate> entityUpdates = Arrays.asList(update);
+        when(repository.get_updates_by_js(1)).thenReturn(entityUpdates);
 
-		/*actual output*/
-        List<ApplicationUpdate> actualUpdates = service.getUpdatesByJobSeekerId(1);
+        List<ApplicationUpdateDTO> actual = service.getUpdatesByJobSeekerId(1);
 
-        assertEquals(expectedUpdates, actualUpdates);
-        verify(repository).findByJobSeeker_JobSeekerId(1);
+        assertEquals(1, actual.size());
+        assertEquals(update.getUpdateId(), actual.get(0).getUpdateId());
+        assertEquals(update.getUpdatedResumePath(), actual.get(0).getUpdatedResumePath());
+        assertEquals(update.getApplication().getApplicationId(), actual.get(0).getApplicationId());
+        assertEquals(update.getJobSeeker().getJobSeekerId(), actual.get(0).getJobSeekerId());
+
+        verify(repository).get_updates_by_js(1);
     }
 
     @Test //<<<<< record resume update test

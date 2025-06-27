@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal.service;
 
+import com.jobportal.JobPortal.dto.SeekerActivityDTO;
 import com.jobportal.JobPortal.model.JobSeeker;
 import com.jobportal.JobPortal.model.SeekerActivity;
 import com.jobportal.JobPortal.model.SeekerActivity.ActivityType;
@@ -13,7 +14,7 @@ import java.util.List;
 public class SeekerActivityService {
 
     @Autowired
-    private SeekerActivityRepository repository;
+    private SeekerActivityRepository seekerActivityRepository;
 //----------------------Logs a new activity performed by a job seeker ---------------
 
     public void logActivity(JobSeeker jobSeeker, ActivityType activityType, String description) {
@@ -21,14 +22,17 @@ public class SeekerActivityService {
         activity.setJobSeeker(jobSeeker);
         activity.setActivityType(activityType);
         activity.setDescription(description);
-        repository.save(activity);
+        seekerActivityRepository.save(activity);
     }
 //---------------Retrieves all activities performed by a specific js by id ---------------------
-    public List<SeekerActivity> getActivitiesByJobSeekerId(int jobSeekerId) {
-        return repository.findByJobSeeker_JobSeekerId(jobSeekerId);
+    public List<SeekerActivityDTO> getActivitiesByJobSeekerId(int jobSeekerId) {
+        List<SeekerActivity> activities = seekerActivityRepository.findByJobSeekerById(jobSeekerId);
+        return SeekerActivityDTO.converttoDto(activities);
     }
+
 //-------------------------Retrieves all seeker activities---------------------
-    public List<SeekerActivity> getAllActivities() {
-        return repository.findAll();
-    }
+	public List<SeekerActivity> getAllActivities() {
+		return seekerActivityRepository.findAll();
+		
+	}
 }

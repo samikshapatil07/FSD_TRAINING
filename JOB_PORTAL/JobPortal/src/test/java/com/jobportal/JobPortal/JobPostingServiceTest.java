@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal;
 
+import com.jobportal.JobPortal.dto.JobPostingDTO;
 import com.jobportal.JobPortal.model.Hr;
 import com.jobportal.JobPortal.model.JobPosting;
 import com.jobportal.JobPortal.repository.ApplicationRepository;
@@ -14,16 +15,13 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -75,25 +73,6 @@ public class JobPostingServiceTest {
         updatedJob.setDepartment("Engineering");
         updatedJob.setSalary(1200000);
     }
-    
-    @Test // <<<< post job test
-    public void postJobTest() {
-        List<JobPosting> jobList = List.of(job); // single job into a List
-
-    	/*prepare the expected output*/
-        when(hrRepository.findById(1)).thenReturn(Optional.of(hr));
-        when(jobPostingRepository.saveAll(any())).thenReturn(jobList);
-
-        //Call the method
-        List<JobPosting> savedJobs = jobPostingService.batchPostJobs(jobList, 1);
-
-		/*actual output*/
-        assertEquals(1, savedJobs.size());
-        assertEquals(hr, savedJobs.get(0).getHr());
-        assertNotNull(savedJobs.get(0).getCreatedAt());
-        verify(hrRepository).findById(1);
-        verify(jobPostingRepository).saveAll(any());
-    }
 
     @Test // <<<< update job test
     public void updateJobTest() {
@@ -102,7 +81,7 @@ public class JobPostingServiceTest {
         when(jobPostingRepository.save(any(JobPosting.class))).thenReturn(job);
 
 		/*actual output*/
-        JobPosting result = jobPostingService.updateJob(1, updatedJob);
+        JobPosting result = jobPostingService.updateJob(1, updatedJob, hr);
 
         assertEquals("Senior Java Developer", result.getJobTitle());
         assertEquals("Remote", result.getLocation());
@@ -121,45 +100,50 @@ public class JobPostingServiceTest {
     
     @Test // <<<< get all jobs test
     public void getAllJobsTest() {
+        // Prepare mock job list
         List<JobPosting> jobList = List.of(job);
-        Page<JobPosting> expectedPage = new PageImpl<>(jobList);
+        when(jobPostingRepository.findAll()).thenReturn(jobList);
 
-        when(jobPostingRepository.findAll(PageRequest.of(0, 5))).thenReturn(expectedPage);
+        // Actual call to service
+        List<JobPostingDTO> actualList = jobPostingService.getAllJobs();
 
-        Page<JobPosting> actualPage = jobPostingService.getAllJobs(0, 5);
+        // Assertions
+        assertEquals(1, actualList.size());
+        assertEquals("Java Developer", actualList.get(0).getJobTitle());
+        assertEquals("Bangalore", actualList.get(0).getLocation());
+        assertEquals("ABC Corp", actualList.get(0).getCompany());
 
-        assertEquals(expectedPage, actualPage);
-        verify(jobPostingRepository).findAll(PageRequest.of(0, 5));
+        verify(jobPostingRepository).findAll();
     }
     
     @Test // <<<< get job by id test
     public void getJobByIdTest() {
-    	/*prepare the expected output*/
-    	when(jobPostingRepository.findById(1)).thenReturn(Optional.of(job));
+        when(jobPostingRepository.findById(1)).thenReturn(Optional.of(job));
 
-		/*actual output*/
-        JobPosting actual = jobPostingService.getJobById(1);
+        JobPostingDTO actual = jobPostingService.getJobById(1);
 
-        assertEquals(job, actual);
+        assertEquals(job.getJobId(), actual.getJobId());
+        assertEquals(job.getJobTitle(), actual.getJobTitle());
     }
 
     @Test // <<<< search jobs test
     public void searchJobsTest() {
-    	/*prepare the expected output*/     
-    	List<JobPosting> expected = List.of(job);
-        when(jobPostingRepository.searchJobs("Java Developer", "Bangalore", "ABC Corp")).thenReturn(expected);
+        List<JobPosting> entityList = List.of(job);
+        when(jobPostingRepository.searchJobs("Java Developer", "Bangalore", "ABC Corp"))
+            .thenReturn(entityList);
 
-		/*actual output*/
-        List<JobPosting> actual = jobPostingService.searchJobs("Java Developer", "Bangalore", "ABC Corp");
+        List<JobPostingDTO> actual = jobPostingService.searchJobs("Java Developer", "Bangalore", "ABC Corp");
 
-        assertEquals(expected, actual);
+        assertEquals(1, actual.size());
+        assertEquals(job.getJobTitle(), actual.get(0).getJobTitle());
     }
+    
  // After each test case, the objects used in them will get nullified and HEAP
     // memory will be free
 	@AfterEach
     public void afterTest() {
         job = null;
-        System.out.println("jobSeeker object released.." + job);
+        System.out.println("job object released.." + job);
         hr = null;
         System.out.println("jobPosting object released.." + hr);
         updatedJob = null;

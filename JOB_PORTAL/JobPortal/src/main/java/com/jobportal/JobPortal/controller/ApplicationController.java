@@ -1,14 +1,18 @@
 package com.jobportal.JobPortal.controller;
 
-import com.jobportal.JobPortal.model.Application;
-import com.jobportal.JobPortal.service.ApplicationService;
+import java.io.IOException;
+import java.nio.file.AccessDeniedException;
+import java.security.Principal;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -16,37 +20,165 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jobportal.JobPortal.dto.ApplicationDTO;
+import com.jobportal.JobPortal.dto.ApplicationStatusDTO;
+import com.jobportal.JobPortal.model.Application;
+import com.jobportal.JobPortal.model.Application.Status;
+import com.jobportal.JobPortal.service.ApplicationService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173") // aallow FE access from this origin
 @RequestMapping("/api/applications")
 public class ApplicationController {
 
     @Autowired
     private ApplicationService applicationService;
+
     
     //implementing logger
     private Logger logger = LoggerFactory.getLogger("ApplicationController");
 
-    // ------------------------- Apply to Job (Job Seeker) ---------------------------------------------
+ // ------------------------- Apply to Job (Job Seeker) ---------------------------------------------
     /*
      * AIM     : Allows a job seeker to apply for a job
-     * PATH    : /api/applications
+     * PATH    : /api/applications/{jobId}
      * METHOD  : POST
      * INPUT   : Application object from request body
      * RESPONSE: Saved Application object
      */
-    @PostMapping("/{seekerId}/{jobId}")
-    public ApplicationDTO  createApplication(@PathVariable int seekerId,
-                                         @PathVariable int jobId,
-                                         @RequestBody ApplicationDTO  application) {
-        logger.info("Seeker ID given is : " + seekerId);
-        return applicationService.saveApplication(seekerId, jobId,application);
+    @PostMapping("apply/upload/resume/{jobId}")
+    public String  applyJob(
+            @PathVariable int jobId,
+            @RequestParam("resume") MultipartFile file,
+            Principal principal) throws IOException {
+        
+        String username = principal.getName(); //logged in user
+        applicationService.applyJob(file, username, jobId);
+        
+        logger.info(" apply for job by logged in Job Seeker");
+        return file.getOriginalFilename() + file.getSize(); //return the file name 
     }
-   
+    
+    // ------------------------- Update Application (upload resume) JS ---------------------------------------------
+    /*
+     * AIM     : Update resume or other application details
+     * PATH    : /api/applications/{id}
+     * METHOD  : PUT
+     * INPUT   : applicationId (path variable), updated Application (request body)
+     * RESPONSE: Updated Application object
+     */
+    @PutMapping("/update/{appId}")
+    public String  updateApplication(
+            @PathVariable int appId,
+            @RequestParam("resume") MultipartFile file,
+            Principal principal) throws IOException {
+        
+        String username = principal.getName(); //logged in user
+        applicationService.updateApplication(file, username, appId);
+        logger.info(" Updated application resume");
+        return file.getOriginalFilename() + file.getSize(); //retuen file name
+    }
+    
+
+    
+    // ------------------------- Delete Application (Job Seeker) ---------------------------------------------
+    /*
+     * AIM     : Withdraw an application
+     * PATH    : /api/applications/{id}
+     * METHOD  : DELETE
+     * INPUT   : applicationId (path variable)
+     * RESPONSE: void
+     */    
+    @DeleteMapping("/delete/{appId}")
+    public ResponseEntity<String> deleteApplication(@PathVariable int appId, Principal principal) {
+       
+        applicationService.deleteApplication(appId);
+        
+        logger.info("Deleting application...");
+        return ResponseEntity.status(HttpStatus.OK).body("Application deleted successfully");
+    }
+
+
+ // ------------------------- Get Applications for-hr ---------------------------------------------
+    /*
+     * AIM     : View all applications submitted by a job seeker
+     * PATH    : /api/applications/jobseeker/{jobSeekerId}
+     * METHOD  : GET
+     * RESPONSE: List of Application objects
+     */
+    @GetMapping("/for-hr")
+    public List<Application> getApplicationsForHr(Principal principal) {
+        String username = principal.getName();
+        List<Application> application = applicationService.getApplicationsForHr(username);
+        logger.info("getting applications for hr");
+		return application;
+    }
+    
+    // ------------------------- Get Applications for-js ---------------------------------------------
+    /*
+     * AIM     : View all applications submitted by a you
+     * PATH    : /api/applications/jobseeker/{jobSeekerId}
+     * METHOD  : GET
+     * RESPONSE: List of Application objects
+     */
+    @GetMapping("/for-js")
+    public List<Application> getApplicationsForJs(Principal principal) {
+        logger.info("getting applications for hr");
+        String username = principal.getName();
+        List<Application> application = applicationService.getApplicationsForJs(username);
+		return application;
+    }
+    
+    
+    // ------------------------- Track Application Status JS---------------------------------------------
+    /*
+     * AIM     : Track status of a specific application
+     * PATH    : /api/applications/status/{applicationId}
+     * METHOD  : GET
+     * INPUT   : applicationId (path variable)
+     * RESPONSE: Application status as String or "Application not found"
+     */
+    @GetMapping("/status/{applicationId}")
+    public Status trackStatus(@PathVariable int applicationId, Principal principal) throws AccessDeniedException { 
+        // Get logged-in username
+        String username = principal.getName();
+
+        logger.info("Application Status with app. ID : " + applicationId);
+        // Call service layer
+        return applicationService.trackApplicationStatus(applicationId, username);
+    }
+    
+
+    // -------------------------  Update Status: Reject Application (HR) ---------------------------------------------
+    /*
+     * AIM     : Update status to SHORTLISTED or REJECTED
+     * PATH    : /api/applications/{id}/status?status=SHORTLISTED
+     * METHOD  : PATCH
+     * INPUT   : @PathVariable int id, @RequestParam status
+     * RESPONSE: Updated Application object
+     */
+    @PostMapping("/update/status/{appId}")
+    public ApplicationDTO updateApplicationStatus(@PathVariable int appId, 
+                                                   @RequestBody ApplicationStatusDTO statusDTO) {
+        logger.info("Application Status for " + appId);
+        return applicationService.updateApplicationStatus(appId, statusDTO.getStatus());
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+//===========================================================================================================
     // ------------------------- Get Application by ID ---------------------------------------------
     /*
      * AIM     : Retrieve a specific application by its ID
@@ -58,23 +190,10 @@ public class ApplicationController {
     @GetMapping("/{id}")
     public ApplicationDTO getApplicationById(@PathVariable int id) {
         logger.info("Seeker ID given is : " + id);
-        return applicationService.getApplicationResponseById(id).orElse(null);
+        return applicationService.getApplicationById(id);
     }
-
-    // ------------------------- Delete Application (Job Seeker) ---------------------------------------------
-    /*
-     * AIM     : Withdraw an application
-     * PATH    : /api/applications/{id}
-     * METHOD  : DELETE
-     * INPUT   : applicationId (path variable)
-     * RESPONSE: void
-     */
-    @DeleteMapping("/{id}")
-    public void deleteApplication(@PathVariable int id) {
-        logger.info("Deleted Application with ID : " + id);
-        applicationService.deleteApplication(id);
-    }
-
+    
+    
     // ------------------------- Get Applications by Job ID (HR) ---------------------------------------------
     /*
      * AIM     : Get all applications for a specific job
@@ -83,80 +202,20 @@ public class ApplicationController {
      * INPUT   : jobId (path variable)
      * RESPONSE: List of Application objects
      */
-    @GetMapping("/job/{jobId}")
-    public List<ApplicationDTO> getByJobId(@PathVariable int jobId) {
+    @GetMapping("/jobId/{jobId}")
+    public List<ApplicationDTO> getApplicationsByJobId(@PathVariable int jobId) {
+    	
         logger.info("Application with Job ID : " + jobId);
         return applicationService.getApplicationsByJobId(jobId);
     }
-
-    // ------------------------- Get All Applications (Admin/HR) ---------------------------------------------
-    /*
-     * AIM     : Retrieve all applications
-     * PATH    : /api/applications
-     * METHOD  : GET
-     * RESPONSE: List of all Application objects
-     */
-    @GetMapping
-    public List<ApplicationDTO> getAllApplications() {
-        logger.info("Fetched all applications.. ");
-        return applicationService.getAllApplications();
+       
+    // ------------------------- Get All Applications for Logged-in HR ---------------------------------------------
+    
+    @GetMapping("/my-applications")
+    public List<ApplicationDTO> getMyApplications(Principal principal) {
+        String username = principal.getName(); //loggeed in hr
+        logger.info("Fetching applications for HR: " + username);
+        return applicationService.getApplicationsByHrUsername(username);
     }
 
-    // ------------------------- Get Applications by Job Seeker ID ---------------------------------------------
-    /*
-     * AIM     : View all applications submitted by a job seeker
-     * PATH    : /api/applications/jobseeker/{jobSeekerId}
-     * METHOD  : GET
-     * INPUT   : jobSeekerId (path variable)
-     * RESPONSE: List of Application objects
-     */
-    @GetMapping("/jobseeker/{jobSeekerId}")
-    public List<ApplicationDTO> getByJobSeekerId(@PathVariable int jobSeekerId) {
-        logger.info("Application with Job Seeker ID : " + jobSeekerId);
-        return applicationService.getApplicationsByJobSeekerId(jobSeekerId);
-    }
-
-    // ------------------------- Track Application Status ---------------------------------------------
-    /*
-     * AIM     : Track status of a specific application
-     * PATH    : /api/applications/status/{applicationId}
-     * METHOD  : GET
-     * INPUT   : applicationId (path variable)
-     * RESPONSE: Application status as String or "Application not found"
-     */
-    @GetMapping("/status/{applicationId}")
-    public String trackStatus(@PathVariable int applicationId) {
-        logger.info("Application Status with app. ID : " + applicationId);
-        return applicationService.getApplicationResponseById(applicationId)
-                .map(app -> app.getStatus().toString())
-                .orElse("Application not found");
-    }
-
-    // ------------------------- Update Application Details (Job Seeker) ---------------------------------------------
-    /*
-     * AIM     : Update resume or other application details
-     * PATH    : /api/applications/{id}
-     * METHOD  : PUT
-     * INPUT   : applicationId (path variable), updated Application (request body)
-     * RESPONSE: Updated Application object
-     */
-    @PutMapping("/{id}")
-    public ApplicationDTO  updateApplication(@PathVariable int id, @RequestBody ApplicationDTO  updatedApp) {
-        logger.info("ID given to update is : " + id);
-        return applicationService.updateApplication(id, updatedApp);
-    }
-
-    // -------------------------  Reject Application (HR) ---------------------------------------------
-    /*
-     * AIM     : Update status to SHORTLISTED or REJECTED
-     * PATH    : /api/applications/{id}/status?status=SHORTLISTED
-     * METHOD  : PATCH
-     * INPUT   : applicationId (path variable), status (query param)
-     * RESPONSE: Updated Application object
-     */
-    @PatchMapping("/{id}/status")
-    public ApplicationDTO updateStatus(@PathVariable int id, @RequestParam Application.Status status) {
-        logger.info("Application Status for " + id);
-        return applicationService.updateApplicationStatus(id, status);
-    }
 }

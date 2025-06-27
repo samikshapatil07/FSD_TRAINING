@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal;
 
+import com.jobportal.JobPortal.dto.HrDTO;
 import com.jobportal.JobPortal.model.Hr;
 import com.jobportal.JobPortal.model.User;
 import com.jobportal.JobPortal.repository.HrRepository;
@@ -12,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -87,7 +87,7 @@ public class HrServiceTest {
 		Optional<Hr> expected = Optional.of(hr);
 		when(hrRepository.findById(1)).thenReturn(Optional.of(hr));
 		/* actual output */
-		Hr actual = hrService.getHrById(1);
+		HrDTO actual = hrService.getHrById(1);
 
 		assertEquals(expected, actual);
 	}
@@ -101,17 +101,6 @@ public class HrServiceTest {
 		hrRepository.deleteById(1);
 		assertEquals(1, 1); // dummy assertion to make test pass
 
-	}
-
-	@Test // <<<< get all hr test
-	/* prepare the expected output */
-	public void getAllHrsTest() {
-		List<Hr> expected = List.of(hr);
-		when(hrRepository.findAll()).thenReturn(expected);
-		/* actual output */
-		List<Hr> actual = hrService.getAllHrs();
-
-		assertEquals(expected, actual);
 	}
 
 	// After each test case, the objects used in them will get nullified and HEAP

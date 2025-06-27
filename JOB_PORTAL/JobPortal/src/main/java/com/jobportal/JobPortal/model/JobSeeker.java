@@ -1,49 +1,36 @@
 package com.jobportal.JobPortal.model;
 
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "job_seeker")
-public class JobSeeker { //js in repository
+public class JobSeeker { //js 
 
-    @Id //Primary key - auto-generated job seeker ID 
+    @Id                  //Primary key - auto-generated job seeker ID 
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "job_seeker_id")
     private int jobSeekerId;
     
-    @Column(nullable = false)
     private String name;
     
-    @Column(name = "education", nullable = false)
     private String education;
     
-    @Column(name = "skills", nullable = false)
     private String skills;
     
-    @Column(name = "experience", nullable = false)
     private String experience;
 
-    @OneToOne(cascade = CascadeType.ALL) //'user_id' column is the foreign key in the job_seeker table.
+ 
+    @OneToOne //'user_id' column is the foreign key in the job_seeker table.
     @JoinColumn(name = "user_id")
     private User user;
-
-    @OneToMany(mappedBy = "jobSeeker", cascade = CascadeType.ALL)
-    private List<SeekerActivity> activities;
 
 	private boolean isActive;
 
@@ -57,8 +44,8 @@ public class JobSeeker { //js in repository
 		return jobSeekerId;
 	}
 
-	public void setJobSeekerId(int i) {
-		this.jobSeekerId = i;
+	public void setJobSeekerId(int jobSeekerId) {
+		this.jobSeekerId = jobSeekerId;
 	}
 
 	public String getName() {
@@ -107,4 +94,6 @@ public class JobSeeker { //js in repository
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
 	}
+
+
 }

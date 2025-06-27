@@ -1,21 +1,13 @@
 package com.jobportal.JobPortal.model;
 
-
 import java.time.LocalDateTime;
-import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,12 +17,11 @@ public class JobPosting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer  jobId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "posted_by")
-    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "hr_id")  
     private Hr hr;
-
-    @Column(nullable = false)
+   
+ 
     private String jobTitle;
     private String description;
     private String skills;
@@ -41,8 +32,6 @@ public class JobPosting {
     private String experience;
     private LocalDateTime createdAt;
 
-    @OneToMany(mappedBy = "jobPosting", cascade = CascadeType.ALL)
-    private List<Application> applications;
 
     public JobPosting() {
         this.createdAt = LocalDateTime.now();
@@ -150,14 +139,6 @@ public class JobPosting {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public List<Application> getApplications() {
-        return applications;
-    }
-
-    public void setApplications(List<Application> applications) {
-        this.applications = applications;
     }
     
 }

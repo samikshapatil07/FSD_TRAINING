@@ -16,4 +16,11 @@ public interface InterviewRepository extends JpaRepository<Interview, Integer> {
 	("SELECT i FROM Interview i WHERE i.application.applicationId = ?1")
 	List<Interview> findByApplicationApplicationId( Integer applicationId);
 	
+	@Query("SELECT i FROM Interview i WHERE i.application.jobPosting.hr.user.username = ?1")
+	List<Interview> findAllByHrUsername( String username);
+	
+	@Query("SELECT i FROM Interview i WHERE i.application.jobSeeker.user.username = ?1")
+	List<Interview> findAllByJsUsername( String username);
+	
+	
 }

@@ -1,5 +1,6 @@
 package com.jobportal.JobPortal;
 
+import com.jobportal.JobPortal.dto.JobSeekerDTO;
 import com.jobportal.JobPortal.model.JobSeeker;
 import com.jobportal.JobPortal.model.User;
 import com.jobportal.JobPortal.repository.JobSeekerRepository;
@@ -68,7 +69,7 @@ public class JobSeekerServiceTest {
         when(jobSeekerRepository.save(jobSeeker)).thenReturn(jobSeeker);
 
 		/*actual output*/
-        JobSeeker actual = jobSeekerService.registerjobSeeker(jobSeeker);
+        JobSeeker actual = jobSeekerService.registerJobSeeker(jobSeeker);
 
         assertEquals("JOB_SEEKER", actual.getUser().getRole());
         verify(userService).signUp(user);
@@ -81,7 +82,7 @@ public class JobSeekerServiceTest {
     	when(jobSeekerRepository.findById(1)).thenReturn(Optional.of(jobSeeker));
 
 		/*actual output*/
-        JobSeeker actual = jobSeekerService.getJobSeekerById(1);
+        JobSeekerDTO actual = jobSeekerService.getJobSeekerById(1);
 
         assertEquals("Jane Doe", actual.getName());
         verify(jobSeekerRepository).findById(1);
@@ -118,12 +119,13 @@ public class JobSeekerServiceTest {
         when(jobSeekerRepository.findAll()).thenReturn(expectedList);
 
 		/*actual output*/
-        List<JobSeeker> actualList = jobSeekerService.getAllJobSeekers();
+        List<JobSeekerDTO> actualList = jobSeekerService.getAllJobSeekers();
 
         assertEquals(1, actualList.size());
         assertEquals("Jane Doe", actualList.get(0).getName());
         verify(jobSeekerRepository).findAll();
     }
+    
     // After each test case, the objects used in them will get nullified and HEAP
     // memory will be free
 	@AfterEach
