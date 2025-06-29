@@ -1,0 +1,15 @@
+.modal-large {
+    max-width: 800px;
+    width: 90%;
+}
+
+.modal-card label {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.modal-card input,
+.modal-card textarea {
+    font-size: 14px;
+}
+
