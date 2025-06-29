@@ -1,0 +1,1557 @@
+{
+	"info": {
+		"_postman_id": "ce25ba89-4f0e-4875-99f5-109e0cbdeda3",
+		"name": "JobPortal",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "45775747",
+		"_collection_link": "https://samiksha-8523646.postman.co/workspace/samiksha's-Workspace~4f0efec0-1f61-4596-817b-c6fbabcb3366/collection/45775747-ce25ba89-4f0e-4875-99f5-109e0cbdeda3?action=share&source=collection_link&creator=45775747"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "User Details",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZWVsQGdtYWlsLmNvbSIsImlhdCI6MTc1MDk0MDQxMiwiZXhwIjoxNzUwOTgzNjEyfQ.jLlOy_hmlhu4LMXfm83CM2SQFQVRX9TQvMQERBf1Wug",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/user/details",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"details"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User Token",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/user/token",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Hr",
+			"item": [
+				{
+					"name": "Register HR",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"John HR\",\r\n  \"companyName\": \"IBM\",\r\n  \"user\": {\r\n    \"username\": \"john@gmail.com\",\r\n    \"password\": \"john@123\"\r\n  }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/hr/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update HR",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXJyeUBnbWFpbC5jb20iLCJpYXQiOjE3NDk5NzU2NjQsImV4cCI6MTc1MDAxODg2NH0.QIomXH-HGrwDOHNaV6PNcuNPrv4aDO7emXhGXO4CPTI",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Harry J HR\",\r\n  \"companyName\": \"TCS\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/hr/update/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"update",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get HR by Username",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbkBnbWFpbC5jb20iLCJpYXQiOjE3NDk5NjY2MzEsImV4cCI6MTc1MDAwOTgzMX0.Qc8Lr4pxEcSAW_dZ1dJ6pMOnoC0OUwRdMyPfdLXHxn4",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/hr/username/harry@gmail.com",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"username",
+								"harry@gmail.com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get HR by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbkBnbWFpbC5jb20iLCJpYXQiOjE3NDk5NjM0MDUsImV4cCI6MTc1MDAwNjYwNX0.GwKQCehceiwxQ5AtUeVkQXQgP-f5ziCwdVhBD1J4Uyg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/hr/Id/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"Id",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": " Delete HR by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbkBnbWFpbC5jb20iLCJpYXQiOjE3NDk5NzE4MDEsImV4cCI6MTc1MDAxNTAwMX0.fRonMafQ1A0g1jXc9kNo6-h4NWFr1x6JRmZUkZyxI00",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/hr/delete/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"delete",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All HRs",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbkBnbWFpbC5jb20iLCJpYXQiOjE3NDk5NjYwNDksImV4cCI6MTc1MDAwOTI0OX0.kEAJP8Yu85A_MPyGG3z2jKFEdL3YtI41YRfcIAhYGzw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/hr/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"hr",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Job_Seeker",
+			"item": [
+				{
+					"name": "Register Job Seeker",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Alice JS\",\r\n  \"education\": \"B.Tech in CSE\",\r\n  \"skills\": \"Java,MySQL,Py,R \",\r\n  \"experience\": \"4 years\",\r\n\"user\": {\r\n    \"username\": \"alice@gmail.com\",\r\n    \"password\": \"alice@123\"\r\n  }\r\n  }\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/jobseeker/register",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseeker",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Job Seeker",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "alice@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "alice@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Alice Smart JS\",\r\n  \"education\": \"B.Tech in AIDS\",\r\n  \"skills\": \"Java,MySQL,Py,R \",\r\n  \"experience\": \"3 years\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/jobseeker/update/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseeker",
+								"update",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get JSby Username",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhbGljZUBnbWFpbC5jb20iLCJpYXQiOjE3NDk5NzcyMTMsImV4cCI6MTc1MDAyMDQxM30.KwuYtOCJJWzhO4fCVp8Gzsb8Etb3NOcHrdX2vOYcGeM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobseeker/me",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseeker",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Job Seeker by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbkBnbWFpbC5jb20iLCJpYXQiOjE3NDk5NzMxOTUsImV4cCI6MTc1MDAxNjM5NX0.mVrD4bYLE6ktMF0JGbOLJTBgR-Fy-kMAwQA5VD8cCRY",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobseeker/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseeker",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Job Seeker",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "user4@4",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "user4@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobseeker/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseeker",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Job Seekers",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbkBnbWFpbC5jb20iLCJpYXQiOjE3NDk5Nzc5NzcsImV4cCI6MTc1MDAyMTE3N30.FCuyonE0A_Ee-B-wInuWBwtRbkvwAj7OZvfF4UZMLzM",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobseeker/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobseeker",
+								"all"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Job_Posting",
+			"item": [
+				{
+					"name": "Post a New Job",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJuZWVsQGdtYWlsLmNvbSIsImlhdCI6MTc1MDk0MDQxMiwiZXhwIjoxNzUwOTgzNjEyfQ.eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhcnVzaEBnbWFpbC5jb20iLCJpYXQiOjE3NTA5NDEzMDQsImV4cCI6MTc1MDk4NDUwNH0.jeX_NAJCoKHTrOJ7sZ_Ke70U_1wECxQygp5XTgSGTqk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "  {\r\n    \"jobTitle\": \"Developer\",\r\n    \"description\": \"Devops\",\r\n    \"skills\": \"Cloud, CI/CD\",\r\n    \"location\": \"Banglore\",\r\n    \"salary\": 120000,\r\n    \"department\": \"Engineering\",\r\n    \"company\": \"EY\",\r\n    \"experience\": \"5+ years\"\r\n  }\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/jobs/add",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Jobs",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobs/all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update a job posting by ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc1MDM0MzYzNSwiZXhwIjoxNzUwMzg2ODM1fQ.ifbsUDQekSbHrHFl8cl38DV3gmJ0qyTFYdQznvGtnqQ",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"jobTitle\": \"Java Developer\",\r\n  \"description\": \"Looking for Java Developer\",\r\n  \"skills\": \"Java, MySQL\",\r\n  \"location\": \"Mumbai\",\r\n  \"salary\": 1200000.00,\r\n  \"department\": \"Development\",\r\n  \"company\": \"IBM\",\r\n  \"experience\": \"2-4 years\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/jobs/update/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"update",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete a Job Post",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXJyeUBnbWFpbC5jb20iLCJpYXQiOjE3NTAzNDQ3NDgsImV4cCI6MTc1MDM4Nzk0OH0._L9kBiEmjbqYrWqFGxfIv_LwXCMPe-0i8Rr0QVy3a8c",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobs/delete/5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"delete",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Job(title, location, company)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobs/search?jobTitle=Java Developer&location=Pune&company=TCS&exp=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"search"
+							],
+							"query": [
+								{
+									"key": "jobTitle",
+									"value": "Java Developer"
+								},
+								{
+									"key": "location",
+									"value": "Pune"
+								},
+								{
+									"key": "company",
+									"value": "TCS"
+								},
+								{
+									"key": "exp",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Job By HR ID",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "alice@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "alice@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/jobs/by-hr",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"jobs",
+								"by-hr"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Applications",
+			"item": [
+				{
+					"name": "Apply to Job",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "alice@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "alice@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "file",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "resume",
+									"type": "file",
+									"src": "/C:/Users/Shrenik Lale/Downloads/alice_resume.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/api/applications/apply/upload/resume/10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"apply",
+								"upload",
+								"resume",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Applications by JobId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXJyeUBnbWFpbC5jb20iLCJpYXQiOjE3NDk5ODQ3MzAsImV4cCI6MTc1MDAyNzkzMH0.81w-45uTUibSPwC_pdyfb5FCHT-jNYtCNA2b35zLDb0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/applications/jobId/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"jobId",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Gell all app. for HR",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/applications/for-hr",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"for-hr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View Application by appId",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXJyeUBnbWFpbC5jb20iLCJpYXQiOjE3NDk5ODQ3MzAsImV4cCI6MTc1MDAyNzkzMH0.81w-45uTUibSPwC_pdyfb5FCHT-jNYtCNA2b35zLDb0",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/applications/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "View all applications",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXJyeUBnbWFpbC5jb20iLCJpYXQiOjE3NTAzNTAwMDMsImV4cCI6MTc1MDM5MzIwM30.mGtN4JBAEvKhE9M6zcWQnrNxiAh7TsRsnVn5v7kwhXk",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Harry Potter\",\r\n    \"contact\" : \"98667434344\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/applications/get-all",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"get-all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Track Application (JS)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzdGV2ZUBnbWFpbC5jb20iLCJpYXQiOjE3NDk5ODk1NTQsImV4cCI6MTc1MDAzMjc1NH0.iN9y01D8lWxVw6VchhWPddpMDKHPCUcLLMnK9HupM7w",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/applications/status/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"status",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Application (JS)",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "alice@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "alice@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "resume",
+									"type": "file",
+									"src": "/C:/Users/Shrenik Lale/Downloads/Samiksha_Patil_Resume.pdf"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:8080/api/applications/update/5",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"update",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Application",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "alice@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "alice@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"Alice Smith\",\r\n  \"education\": \"M.Tech in AI\",\r\n  \"skills\": \"Python, ML\",\r\n  \"experience\": \"3 years\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/applications/delete/7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"delete",
+								"7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update App. Status (HR)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXJyeUBnbWFpbC5jb20iLCJpYXQiOjE3NTAzOTE0NDgsImV4cCI6MTc1MDQzNDY0OH0.VMqB_G4wrksExtxhSRIYXnCK5yaqkpkG1bGGXRDP6Zw",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"status\": \"APPLICATION_REJECTED\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/applications/update/status/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"update",
+								"status",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "My applications",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/applications/my-applications",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"my-applications"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All app. for JS",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "alice@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "alice@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/applications/for-js",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"applications",
+								"for-js"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Interview",
+			"item": [
+				{
+					"name": "Schedule interview",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"interviewDate\": \"2025-06-20\",\r\n  \"interviewLocation\": \"Zoom\",\r\n  \"interviewMode\": \"ONLINE\",\r\n  \"outcome\": \"PENDING\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/interviews/schedule/application/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"interviews",
+								"schedule",
+								"application",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get interview by Interview ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc1MDAwMDA1OCwiZXhwIjoxNzUwMDQzMjU4fQ.2qIv8argTbLNPEF32I9532OH9tXxYfqTYy7DywC8Bh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Harry Potter\",\r\n    \"contact\" : \"98667434344\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/interviews/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"interviews",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get interview by Application ID",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc1MDAwMDA1OCwiZXhwIjoxNzUwMDQzMjU4fQ.2qIv8argTbLNPEF32I9532OH9tXxYfqTYy7DywC8Bh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/interviews/application/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"interviews",
+								"application",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update interview",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc1MDAwMDA1OCwiZXhwIjoxNzUwMDQzMjU4fQ.2qIv8argTbLNPEF32I9532OH9tXxYfqTYy7DywC8Bh8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"interviewId\": 1,\r\n  \"interviewDate\": \"2025-06-10\",\r\n  \"interviewLocation\": \"Google Meet\",\r\n  \"interviewMode\": \"ONLINE\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/interviews/update-for/interview/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"interviews",
+								"update-for",
+								"interview",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete interview",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc1MDAwNjAzMywiZXhwIjoxNzUwMDQ5MjMzfQ.JnzGOCHzg61LPmluzWiE_HgU56yPD80yqmCBMmRBAn8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"updatedResumePath\": \"harry/updated_resume.pdf\",\r\n  \"application\": {\r\n    \"appId\": 1\r\n  },\r\n  \"jobSeeker\": {\r\n    \"jobSeekerId\": 1\r\n  }\r\n}\r\n"
+						},
+						"url": {
+							"raw": "localhost:8080/api/interviews/delete/4",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"interviews",
+								"delete",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Interview  Outcome",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqb2huQGdtYWlsLmNvbSIsImlhdCI6MTc1MDAwODE0NiwiZXhwIjoxNzUwMDUxMzQ2fQ.qomTnAHT-qk6HM87zhiBX5HE_dssC-ekhHffSMN14_k",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"outcome\": \"FAILED\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/interviews/update/outcome/interviewId/3",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"interviews",
+								"update",
+								"outcome",
+								"interviewId",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Interviews By HR",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/interviews/by-hr",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"interviews",
+								"by-hr"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Interviews for JS",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "steve@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "steve@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/interviews/for-js",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"interviews",
+								"for-js"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Application Update",
+			"item": [
+				{
+					"name": "Get Update by App. ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "harry@123",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "harry@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Harry Potter\",\r\n    \"contact\" : \"98667434344\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/updates/application/7",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"updates",
+								"application",
+								"7"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Seeker Activity",
+			"item": [
+				{
+					"name": "Get all seeker activities",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZXZpbkBnbWFpbC5jb20iLCJpYXQiOjE3NDk5OTM3ODksImV4cCI6MTc1MDAzNjk4OX0.mhlrPhetV4AgB85JEMxJKCOeWOxd0Q0F_WYii0SvcNc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Harry Potter\",\r\n    \"contact\" : \"98667434344\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/seeker-activities",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"seeker-activities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get activity by JS Id",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJoYXJyeUBnbWFpbC5jb20iLCJpYXQiOjE3NDk5OTQzNDcsImV4cCI6MTc1MDAzNzU0N30.XScu8pNrcdMSmn4dXvxZIC-AgBFHRj76lUlpYI7Hbg8",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":\"Harry Potter\",\r\n    \"contact\" : \"98667434344\"\r\n}"
+						},
+						"url": {
+							"raw": "localhost:8080/api/seeker-activities/jobseeker/2",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"seeker-activities",
+								"jobseeker",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
