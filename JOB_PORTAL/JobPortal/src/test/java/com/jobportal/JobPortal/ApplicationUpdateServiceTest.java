@@ -54,8 +54,8 @@ public class ApplicationUpdateServiceTest {
 
     @Test //<<<<< get updates by applicationId
     public void testGetUpdatesByApplicationId() {
-        List<ApplicationUpdate> entityUpdates = Arrays.asList(update);
-        when(repository.get_updates_by_app(1)).thenReturn(entityUpdates);
+        List<ApplicationUpdate> expected = Arrays.asList(update);
+        when(repository.get_updates_by_app(1)).thenReturn(expected);
 
         List<ApplicationUpdateDTO> actual = service.getUpdatesByApplicationId(1);
 
@@ -71,8 +71,8 @@ public class ApplicationUpdateServiceTest {
 
     @Test //<<<<< get updates by jobSeekerId
     public void testGetUpdatesByJobSeekerId() {
-        List<ApplicationUpdate> entityUpdates = Arrays.asList(update);
-        when(repository.get_updates_by_js(1)).thenReturn(entityUpdates);
+        List<ApplicationUpdate> expected = Arrays.asList(update);
+        when(repository.get_updates_by_js(1)).thenReturn(expected);
 
         List<ApplicationUpdateDTO> actual = service.getUpdatesByJobSeekerId(1);
 
@@ -84,23 +84,18 @@ public class ApplicationUpdateServiceTest {
 
         verify(repository).get_updates_by_js(1);
     }
+    
+    @Test // <<<<< No updates exist for given application ID
+    public void testGetUpdatesByApplicationId_NotFound() {
+        when(repository.get_updates_by_app(999)).thenReturn(List.of());
 
-    @Test //<<<<< record resume update test
-    public void testRecordResumeUpdate() {
-		/*prepare the expected output*/
-        doAnswer(invocation -> {
-            ApplicationUpdate savedUpdate = invocation.getArgument(0);
-            assertEquals("resume/path.pdf", savedUpdate.getUpdatedResumePath());
-            assertEquals(application, savedUpdate.getApplication());
-            assertEquals(jobSeeker, savedUpdate.getJobSeeker());
-            return null;
-        }).when(repository).save(any(ApplicationUpdate.class));
+        List<ApplicationUpdateDTO> result = service.getUpdatesByApplicationId(999);
 
-		/*actual output*/
-        service.recordResumeUpdate(application, jobSeeker, "resume/path.pdf");
-
-        verify(repository, times(1)).save(any(ApplicationUpdate.class));
+        // Expecting empty list
+        assertEquals(0, result.size());
+        verify(repository).get_updates_by_app(999);
     }
+    
 
         // After each test case, the objects used in them will get nullified and HEAP
         // memory will be free

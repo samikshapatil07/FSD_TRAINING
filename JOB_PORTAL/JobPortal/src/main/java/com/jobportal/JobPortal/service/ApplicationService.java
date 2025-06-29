@@ -14,8 +14,7 @@ import com.jobportal.JobPortal.repository.JobSeekerRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -178,23 +177,15 @@ public void updateApplication(MultipartFile file, String username, int appId) th
     }
 
     
- // ---------------- Track Application Status -------------------------------
-    public Status trackApplicationStatus(int applicationId, String username) throws AccessDeniedException {
-        // Fetch Application entity
-        Application application = applicationRepository.findById(applicationId)
-            .orElseThrow(() -> new ResourceNotFoundException("Application Id Not Found"));
+	 // ---------------- get application by ID ------------------------------------
+    public ApplicationDTO getApplicationById(int applicationId) {
+    Application application = applicationRepository.findById(applicationId)
+   	.orElseThrow(() -> new ResourceNotFoundException("Application Id Not Found "));
 
-        // Fetch Job Seeker's username from Application entity
-        String applicationOwnerUsername = application.getJobSeeker().getUser().getUsername();
-
-        // Compare logged-in username with application's job seeker username
-        if (!applicationOwnerUsername.equals(username)) {
-            throw new AccessDeniedException("You are not authorized to view this application.");
-        }
-
-        // Return status
-        return application.getStatus();
-    }   
+    return ApplicationDTO.converttoDto(application);
+}
+   
+  
 
  // ---------------- Update the status of an application ----------------
     	public ApplicationDTO updateApplicationStatus(int id, Application.Status status) {
@@ -222,19 +213,31 @@ public void updateApplication(MultipartFile file, String username, int appId) th
     	
     	
  //================================================================================================================  	
-    	 // ---------------- get application by ID ------------------------------------
-    	    public ApplicationDTO getApplicationById(int applicationId) {
-    	    Application application = applicationRepository.findById(applicationId)
-    	   	.orElseThrow(() -> new ResourceNotFoundException("Application Id Not Found "));
-
-    	    return ApplicationDTO.converttoDto(application);
-    	}
-    	    
+ 
     	    // ---------------- Get all applications by job id -------------------------------------------
     	    public List<ApplicationDTO> getApplicationsByJobId(int jobId) {
     	        List<ApplicationDTO> applications = applicationRepository.findByJobPosting_JobId(jobId);
     	        return ApplicationDTO.converttoDto(applications);
     	    }
+    	    
+    	    
+    	    // ---------------- Track Application Status -------------------------------
+    	       public Status trackApplicationStatus(int applicationId, String username) throws AccessDeniedException {
+    	           // Fetch Application entity
+    	           Application application = applicationRepository.findById(applicationId)
+    	               .orElseThrow(() -> new ResourceNotFoundException("Application Id Not Found"));
+
+    	           // Fetch Job Seeker's username from Application entity
+    	           String applicationOwnerUsername = application.getJobSeeker().getUser().getUsername();
+
+    	           // Compare logged-in username with application's job seeker username
+    	           if (!applicationOwnerUsername.equals(username)) {
+    	               throw new AccessDeniedException("You are not authorized to view this application.");
+    	           }
+
+    	           // Return status
+    	           return application.getStatus();
+    	       } 
     	    
 
 

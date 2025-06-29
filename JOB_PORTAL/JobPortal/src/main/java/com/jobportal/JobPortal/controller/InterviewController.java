@@ -30,7 +30,7 @@ public class InterviewController {
     private Logger logger = LoggerFactory.getLogger("InterviewController");
 
  // ------------------ Schedule a new Interview -------------------
-    /*
+    /* FE: HR------->ScheduleInterview
      * AIM     : To schedule a new interview for an application
      * PATH    : /api/interviews
      * METHOD  : POST
@@ -48,23 +48,10 @@ public class InterviewController {
         logger.info("Scheduled Interview for Application ID: " + appId + " by HR: " + username);
         return ResponseEntity.ok(dto);
     }
- // ------------------ Update Interview Details (HR)----------------------
-    /*
-     * AIM     : To update interview details
-     * PATH    : /api/interviews
-     * METHOD  : PUT
-     * INPUT   : Interview object with updated details in request body
-     * RESPONSE: Updated Interview object
-     */
-    @PutMapping("/update-for/interview/{interviewId}")
-    public Interview updateInterview(@PathVariable int interviewId,@RequestBody Interview interview) {
-        //logger                      
-        logger.info("Updating Interview ID: " + interview.getInterviewId() + " for application ID: " + interviewId);
-        return interviewService.updateInterview(interview, interviewId);
-    }
+   
 
 // ------------------ Update Interview Outcome Status ---------------
-    /*
+    /* FE: HR-------> Interviews
      * AIM     : To update the outcome/status of an interview
      * PATH    : /api/interviews/{id}/status?status=OUTCOME
      * METHOD  : PATCH
@@ -81,20 +68,40 @@ public class InterviewController {
 
         return interviewService.updateInterviewOutcome( interviewId,  outcome);
     }
-// -------------- Get Interviews by Application ID -------------
-    /*
-     * AIM     : To get all interviews associated with a specific application
-     * PATH    : /api/interviews/application/{appId}
-     * METHOD  : GET
-     * INPUT   : appId (application ID path variable)
-     * RESPONSE: List<Interview> (list of interviews)
-     */
-    @GetMapping("/applicationId/{appId}")
-    public List<InterviewDTO> getInterviewsByApplicationId(@PathVariable int appId) {
-        logger.info("Interviews with application id: " + appId);
-        return interviewService.getInterviewsByApplicationId(appId);
-    }
+    
+ // ------------------ Get  Interviews by hr-----------------
+  //  FE: HR-------> Interviews
+  @GetMapping("/by-hr")
+  public List<InterviewDTO> getInterviewsByHR(Principal principal) {
+      String username = principal.getName(); //logged inn hr
+      return interviewService.getInterviewsByHRUsername(username);
+  }
+  
+  
+   
+  // ------------------ Get  Interviews for js-----------------
+   //FE: HR-------> Interviews
+  @GetMapping("/for-js")
+  public List<InterviewDTO> getInterviewsForJS(Principal principal) {
+      String username = principal.getName(); // logged in js
+      return interviewService.getInterviewsForJS(username);
+  }
+    
 
+
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  //============================================================================not executed =======================================
 
 // ------------------ Delete an Interview ---------------------------
     /*
@@ -110,18 +117,23 @@ public class InterviewController {
         return ResponseEntity.status(HttpStatus.OK).body("Interview deleted successfully..");
     }
      
-// ------------------ Get  Interviews by hr-----------------
-    @GetMapping("/by-hr")
-    public List<InterviewDTO> getInterviewsByHR(Principal principal) {
-        String username = principal.getName(); //logged inn hr
-        return interviewService.getInterviewsByHRUsername(username);
-    }
+
     
- // ------------------ Get  Interviews for js-----------------
-    @GetMapping("/for-js")
-    public List<InterviewDTO> getInterviewsForJS(Principal principal) {
-        String username = principal.getName(); // logged in js
-        return interviewService.getInterviewsForJS(username);
+
+    
+    // ------------------ Update Interview Details (HR)----------------------
+    /*  FE: HR------->ScheduleInterview
+     * AIM     : To update interview details
+     * PATH    : /api/interviews
+     * METHOD  : PUT
+     * INPUT   : Interview object with updated details in request body
+     * RESPONSE: Updated Interview object
+     */
+    @PutMapping("/update-for/interview/{interviewId}")
+    public Interview updateInterview(@PathVariable int interviewId,@RequestBody Interview interview) {
+        //logger                      
+        logger.info("Updating Interview ID: " + interview.getInterviewId() + " for application ID: " + interviewId);
+        return interviewService.updateInterview(interview, interviewId);
     }
 
     
@@ -153,6 +165,20 @@ public class InterviewController {
     	//logger
         logger.info("Interview with Interview id: " + interviewId);
         return interviewService.getInterviewById(interviewId);
+    }
+    
+ // -------------- Get Interviews by Application ID -------------
+    /*
+     * AIM     : To get all interviews associated with a specific application
+     * PATH    : /api/interviews/application/{appId}
+     * METHOD  : GET
+     * INPUT   : appId (application ID path variable)
+     * RESPONSE: List<Interview> (list of interviews)
+     */
+    @GetMapping("/applicationId/{appId}")
+    public List<InterviewDTO> getInterviewsByApplicationId(@PathVariable int appId) {
+        logger.info("Interviews with application id: " + appId);
+        return interviewService.getInterviewsByApplicationId(appId);
     }
    
    

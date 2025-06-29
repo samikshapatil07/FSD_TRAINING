@@ -36,7 +36,7 @@ public class HrController {
     private Logger logger = LoggerFactory.getLogger("HrController");
 
     // ------------------------- Register HR ---------------------------------------------
-    /*
+    /* FE:--------> SignUp
      * AIM     : To register a new HR having user role as HR
      * PATH    : /api/hr/register
      * METHOD  : POST
@@ -52,7 +52,7 @@ public class HrController {
 
     
     // ------------------------- Update HR ---------------------------------------------
-    /*
+    /* FE: HR--------> UpdateProfile
      * AIM     : To update HR details
      * PATH    : /api/hr/{hrId}
      * METHOD  : PUT
@@ -71,21 +71,7 @@ public class HrController {
         return ResponseEntity.ok(updated);
     }
     
-    // ------------------------- login as hr --------------------------------------------
-    /*
-     * AIM     : To get HR by username
-     * PATH    : /api/hr/{username}
-     * METHOD  : GET
-     * INPUT   : @path variable hrusername
-     * RESPONSE: hr
-     */
-    @GetMapping("/username/{username}")
-    public HrDTO getHrByUsername(@PathVariable String username) {
-    	//logger
-        logger.info("Fetching HR with username: " + username);
-        
-        return hrService.getHrByUsername(username); //call service methods and return dto
-    } 
+
     
     
     
@@ -154,6 +140,22 @@ public class HrController {
         return hrService.getHrById(hrId);
     }
 
+    
+    // ------------------------- login as hr --------------------------------------------
+    /*
+     * AIM     : To get HR by username
+     * PATH    : /api/hr/{username}
+     * METHOD  : GET
+     * INPUT   : @path variable hrusername
+     * RESPONSE: hr
+     */
+//    @GetMapping("/username/{username}")
+//    public HrDTO getHrByUsername(@PathVariable String username) {
+//    	//logger
+//        logger.info("Fetching HR with username: " + username);
+//        
+//        return hrService.getHrByUsername(username); //call service methods and return dto
+//    } 
 
 
 }

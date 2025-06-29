@@ -57,17 +57,20 @@ public class SecurityConfig {
 
 					
         			// -------------------- FOR JOB POSTING  -------------------------------------
-        			.requestMatchers( "/api/jobs/add").hasAuthority("HR") // only hr can post jobs
+        			.requestMatchers("/api/jobs/search").permitAll() // search jobs by title, location, and company name
         			.requestMatchers("/api/jobs/all").permitAll() // all can view the jobs that hr has posted
+
+
+        			.requestMatchers( "/api/jobs/add").hasAuthority("HR") // only hr can post jobs
         			.requestMatchers( "/api/jobs/update/{JobId}").hasAuthority("HR") //only hr can update the jobs by job id
         			.requestMatchers( "/api/jobs/delete/{id}").hasAuthority("HR") //only hr can delete the jobs
-        			.requestMatchers("/api/jobs/search").permitAll() // search jobs by title, location, and company name
         			.requestMatchers( "/api/jobs/by-hr").hasAuthority("HR") //get jobs posted by logged in hr
 
         			
 
         			// -------------------- FOR  APPLICATIONS  -------------------------------------
-                    .requestMatchers("/api/applications/apply/{jobId}").hasAuthority("JOB_SEEKER") //only job seeker can apply for job            
+                    .requestMatchers("/api/applications/apply/{jobId}").hasAuthority("JOB_SEEKER") //apply job
+                    
                     .requestMatchers("/api/applications/jobId/{JobID}").hasAuthority("HR") //view  applications by job ID
                     .requestMatchers("/api/applications/for-hr").hasAuthority("HR") //view appliction by js ID
                     .requestMatchers("/api/applications/for-js").hasAuthority("JOB_SEEKER") //get application of  logged in js

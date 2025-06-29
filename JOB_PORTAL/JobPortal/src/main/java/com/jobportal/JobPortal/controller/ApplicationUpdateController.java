@@ -31,7 +31,7 @@ public class ApplicationUpdateController {
     private Logger logger = LoggerFactory.getLogger("ApplicationUpdateController");
 
   // ------------------- Get all updates by Application ID -----------------
-    /*
+    /* FE: HR----> ApplicationUpdates
      * AIM     : To retrieve all updates related to a specific application
      * PATH    : /api/updates/application/{appId}
      * METHOD  : GET

@@ -32,7 +32,6 @@ public class JobSeeker { //js
     @JoinColumn(name = "user_id")
     private User user;
 
-	private boolean isActive;
 
 	@Override
 	public String toString() {
@@ -87,13 +86,7 @@ public class JobSeeker { //js
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public boolean isActive() {
-		return isActive;
-	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-	}
 
 
 }

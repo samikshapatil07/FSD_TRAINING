@@ -11,12 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.jobportal.JobPortal.model.User;
 import com.jobportal.JobPortal.service.UserService;
 import com.jobportal.JobPortal.util.JwtUtil;
 
@@ -36,24 +33,7 @@ public class UserController {
   //implementing logger to tarck activity
     private Logger logger = LoggerFactory.getLogger("UserController");
 
-    
- //------------------------- SignUp user ---------------------------------------------
-    /* USED IN --------> components/SignUp 
-     * when a new user digns up, this api is called..it receives a user obejct from FE(username, pswd, role) and 
-     * then it saves the user after encrypting the password and returns the saved user
-	 * AIM : insert the user in the DB with password encryped
-	 * PATH : /api/user/signup
-	 * PARAM: @RequestBody User user
-	 * RESPONSE: User
-	 * METHOD: POST
-	 * */
-	@PostMapping("/signup")
-	public User SignUp(@RequestBody User user) {
-        logger.info("Registering User: " + user);
-		return userService.signUp(user);
-		
-	}
-	
+
 //----------------------------------- login api -----------------------------------------------------------
     /*USED IN --------> components/Login
      * This endpoint is used to get details of the currently logged-in user.
@@ -73,12 +53,14 @@ public class UserController {
 		 * As we dont know who the user really is? JS? HR?
 		 */
 		Object object = userService.getUserInfo(username);
+        logger.info("loging in user");
 		return object;
 	}
 	
 //----------------------------TOKEN API ---------------------------------------------------
 	 
-	 /* USED IN --------> components/Loginafter a successful login , this generates a jwT token for the logged in user
+	 /* USED IN --------> components/Login  
+	  * after a successful login , this generates a jwT token for the logged in user
 	   * this token is used for authentication in furthur requests
    * AIM     : To get token for valid users..
    * PATH    : /api/user/token}
@@ -96,6 +78,7 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(map);
 		}
 		catch(Exception e){
+			 logger.info("getting token....");
 			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
 		}
 	}
@@ -116,7 +99,22 @@ public class UserController {
 
 
 
-
+//------------------------- SignUp user ---------------------------------------------
+/* USED IN --------> components/SignUp 
+ * when a new user digns up, this api is called..it receives a user obejct from FE(username, pswd, role) and 
+ * then it saves the user after encrypting the password and returns the saved user
+ * AIM : insert the user in the DB with password encryped
+ * PATH : /api/user/signup
+ * PARAM: @RequestBody User user
+ * RESPONSE: User
+ * METHOD: POST
+ * */
+//@PostMapping("/signup")
+//public User SignUp(@RequestBody User user) {
+//    logger.info("Registering User: " + user);
+//	return userService.signUp(user);
+//	
+//}
 
 
 

@@ -95,6 +95,7 @@ public class JobPostingService {
         List<JobPosting> jobPostings = jobPostingRepository.searchJobs(job_title, location, company);
         return JobPostingDTO.converttoDto(jobPostings);
     }
+	
     //--------------------- get job by hr ------------------------------------------------------------
 /*return all job postings created by  hr, udentify by their username*/
 	public List<JobPosting> getJobsByHr(String username) {

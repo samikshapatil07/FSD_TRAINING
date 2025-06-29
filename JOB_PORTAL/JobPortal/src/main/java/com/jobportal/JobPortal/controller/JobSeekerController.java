@@ -30,7 +30,7 @@ public class JobSeekerController {
  
 
 // ------------------------- Register Job Seeker (JS)---------------------------------------------
-    /* called in component/signup
+    /* FE: -------->  SignUp
      * AIM     : To register a new Job Seeker
      * PATH    : /api/jobseeker/register
      * METHOD  : POST
@@ -43,24 +43,9 @@ public class JobSeekerController {
     	logger.info("Registering Job Seeker...");
         return jobSeekerService.registerJobSeeker(jobSeeker); // here call service to save the JS
     }
-
-
-// ------------------------- get js by username (EX)---------------------------------------------
-    /*
-     * AIM     : To get js by username
-     * PATH    : /api//jobseeker/{username}
-     * METHOD  : GET
-     * INPUT   : @path variable id
-     * RESPONSE: job seeker
-     */
-    @GetMapping("/username/{username}")
-    public JobSeekerDTO getJobSeekerByUsername(@PathVariable String username) {
-        logger.info("Fetching Job seeker with username: " + username);
-        return jobSeekerService.getJobSeekerByUsername(username);
-    }
-
-// ------------------------- Update Job Seeker profile (JS)---------------------------------------------
-    /*called in component/jobseeker/UpdateProfile
+    
+ // ------------------------- Update Job Seeker profile (JS)---------------------------------------------
+    /* FE: JS --------> UpdateProfile
      * AIM     : To update Job Seeker details
      * PATH    : /api/jobseeker/update/me
      * METHOD  : PUT
@@ -84,8 +69,15 @@ public class JobSeekerController {
         return ResponseEntity.ok("Profile updated successfully.");
     }
 
+
+
     
       
+    
+    
+    
+    
+    
     
     
   //--------------------------------------------------------------------------------------------------- 
@@ -140,4 +132,21 @@ public class JobSeekerController {
         return jobSeekerService.getAllJobSeekers();
     }
     
+    
+
+
+ // ------------------------- get js by username (EX)---------------------------------------------
+     /*
+      * AIM     : To get js by username
+      * PATH    : /api//jobseeker/{username}
+      * METHOD  : GET
+      * INPUT   : @path variable id
+      * RESPONSE: job seeker
+      */
+     @GetMapping("/username/{username}")
+     public JobSeekerDTO getJobSeekerByUsername(@PathVariable String username) {
+         logger.info("Fetching Job seeker with username: " + username);
+         return jobSeekerService.getJobSeekerByUsername(username);
+     }
+
 }

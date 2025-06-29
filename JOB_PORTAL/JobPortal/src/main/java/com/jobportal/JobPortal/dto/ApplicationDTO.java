@@ -14,11 +14,13 @@ public class ApplicationDTO {
     private int jobId;
     private String resumePath;
     private String status;
+    private String jobTitle;
     private LocalDateTime appliedOn;
     
     
     private JobPostingDTO jobPosting;  
     private JobSeekerDTO jobSeeker;
+    
     
     
     //implementing dto by convertToDTO
@@ -34,6 +36,9 @@ public class ApplicationDTO {
             dto.setApplicationId(application.getApplicationId());
             dto.setJobSeekerId(application.getJobSeeker().getJobSeekerId());
             dto.setJobId(application.getJobPosting().getJobId());
+            dto.setJobId(application.getJobPosting().getJobId());
+            dto.setJobTitle(application.getJobPosting().getJobTitle());
+
             
             
             dto.setResumePath(application.getResumePath());
@@ -69,6 +74,7 @@ public class ApplicationDTO {
         dto.setResumePath(application.getResumePath());
         dto.setStatus(application.getStatus().toString());
         dto.setAppliedOn(application.getAppliedOn());
+        dto.setJobTitle(application.getJobPosting().getJobTitle());
         
         // Now properly populate nested JobSeekerDTO
         JobSeeker seeker = application.getJobSeeker();
@@ -145,6 +151,14 @@ public class ApplicationDTO {
 
 	public void setJobSeeker(JobSeekerDTO jobSeeker) {
 		this.jobSeeker = jobSeeker;
+	}
+	
+	public String getJobTitle() {
+	    return jobTitle;
+	}
+
+	public void setJobTitle(String jobTitle) {
+	    this.jobTitle = jobTitle;
 	}
 
 

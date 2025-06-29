@@ -35,10 +35,11 @@ public class JobPostingController {
     private Logger logger = LoggerFactory.getLogger("JobPostingController");
     
 
-    //implemented batch insert for job posting and 
     //use the Principal interface instead of passing the hrId as a path variable
+    
  // ----------------- Post a new Job (HR)----------------------
-    /*thi allows a logged in hr to post the job
+    /* FE: HR ------> PostJobs
+     * thi allows a logged in hr to post the job
      * using the prinvipal obj. to fect the username of the logged in hr
      * AIM     : Allows an HR to post a new job
      * PATH    : /api/job/add
@@ -56,8 +57,9 @@ public class JobPostingController {
     
     
 //implemented paging in react
-    // ----------------- Get All Jobs -------------------------
-    /*this returns all the available job postimgs
+// ----------------- Get All Jobs -------------------------
+    /* FE : JOBSEEKER----> JobsList
+     * this returns all the available job postimgs
      * AIM     : Retrieve all job postings
      * PATH    : /api/jobs
      * METHOD  : GET
@@ -67,12 +69,29 @@ public class JobPostingController {
 	public List<JobPostingDTO> getAllJobs(){
 		//logger
     	logger.info("getting all jobs...");
-		
 		return jobPostingService.getAllJobs();
 	}
 
+	
+    // ----------------- Get Job by ID ------------------------
+    /* FE : HR----> EditJobs
+     * AIM     : Retrieve a job posting by its ID
+     * PATH    : /api/jobs/{id}
+     * METHOD  : GET
+     * INPUT   : Job ID as path variable
+     * RESPONSE: JobPosting object matching the ID
+     */
+    @GetMapping("/jobId/{jobId}")
+    public ResponseEntity<JobPostingDTO> getJobById(@PathVariable int jobId) {
+      
+    	JobPostingDTO dto = jobPostingService.getJobById(jobId);
+        logger.info("DTO fetched: " + dto);
+        return ResponseEntity.ok(dto);
+    }
+    
 // ------------------------ Update Job by ID ------------------------
-    /*this allows to update the job, the updated job is passed in request body
+    /* FE : HR----> EditJobs
+     * this allows to update the job, the updated job is passed in request body
      * AIM     : Update an existing job posting's details
      * PATH    : /api/jobs/{id}
      * METHOD  : PUT
@@ -96,7 +115,7 @@ public class JobPostingController {
 	
 	
 // --------------- Delete Job by ID ------------------------
-    /*
+    /* FE : HR----> DeleteJob
      * AIM     : Delete a job posting by its ID
      * PATH    : /api/jobs/{id}
      * METHOD  : DELETE
@@ -110,8 +129,9 @@ public class JobPostingController {
 	    return ResponseEntity.ok("Job with ID " + jobId + " has been deleted successfully.");
 	}
 	
-	 // -------------- Search Jobs -------------------
-    /*this allows to serach jons using optional parameters as title, location. company
+// -------------- Search Jobs -------------------
+    /* FE : JS----> Jshome
+     * this allows to serach jons using optional parameters as title, location. company
      * AIM     : Search jobs by title, location, and/or company
      * PATH    : /api/jobs/search
      * METHOD  : GET
@@ -122,16 +142,18 @@ public class JobPostingController {
    public List<JobPostingDTO> searchJobs(
            @RequestParam(required = false) String job_title,
            @RequestParam(required = false) String location,
-           @RequestParam(required = false) String company) {
+           @RequestParam(required = false) String company
+          ){
         //logger
        logger.info("Searching jobs...");
        
        return jobPostingService.searchJobs(job_title, location, company); //return the filtered list after serach
    }
    
+   
    // ------------------------- get jobs by-hr ---------------------------------------------
 
-
+   //FE : JS----> Jobs
 	@GetMapping("/by-hr")
 	public List<JobPosting> getJobsByHr(Principal principal){
 		String username = principal.getName();
@@ -139,30 +161,5 @@ public class JobPostingController {
 		logger.info("fethcing job");
 		return courses;
 	}
-	
-	
-	
-	
-	
-	
-   
-	//=========================================================================================================================	
-    // ----------------- Get Job by ID ------------------------
-    /*
-     * AIM     : Retrieve a job posting by its ID
-     * PATH    : /api/jobs/{id}
-     * METHOD  : GET
-     * INPUT   : Job ID as path variable
-     * RESPONSE: JobPosting object matching the ID
-     */
-    @GetMapping("/jobId/{jobId}")
-    public ResponseEntity<JobPostingDTO> getJobById(@PathVariable int jobId) {
-      
-    	JobPostingDTO dto = jobPostingService.getJobById(jobId);
-        logger.info("DTO fetched: " + dto);
-        return ResponseEntity.ok(dto);
-    }
-
-   
 
 }

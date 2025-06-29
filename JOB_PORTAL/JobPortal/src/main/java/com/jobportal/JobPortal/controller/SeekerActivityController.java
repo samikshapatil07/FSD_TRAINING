@@ -27,6 +27,8 @@ public class SeekerActivityController {
   //implementing logger
     private Logger logger = LoggerFactory.getLogger("SeekerActivityController");
     
+    //===================== this was for EXecutive ====to be implemented=============
+    
 // ----------------- get all seeker activity ----------------------
     /**
      * AIM     : Retrieve all seeker activities
@@ -40,7 +42,7 @@ public class SeekerActivityController {
         logger.info("Getting all job seekers activity....");
         return seekerActivityService.getAllActivities();
     }
-    // ----------------- get all seeker activity by job id ----------------------
+    // ----------------- get all seeker activity by jobSeekerId ----------------------
     /**
      * AIM     : Retrieve seeker activities by Job Seeker ID
      * PATH    : /api/seeker-activities/jobseeker/{jobSeekerId}
